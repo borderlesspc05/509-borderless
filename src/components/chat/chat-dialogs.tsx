@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Check, Search, Users, UserRound } from "lucide-react";
+import { Check, Users, UserRound } from "lucide-react";
 
+import { AppSearchField } from "@/components/ui/app-search-field";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -81,15 +82,12 @@ export function NewChatDialog({ open, onOpenChange }: NewChatDialogProps) {
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="relative">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Buscar por nome ou cargo..."
-              className="pl-9"
-            />
-          </div>
+          <AppSearchField
+            id="new-chat-search"
+            value={search}
+            onChange={setSearch}
+            placeholder="Buscar por nome ou cargo..."
+          />
 
           <div className="max-h-72 space-y-1 overflow-y-auto">
             {isLoadingUsers ? (
@@ -227,15 +225,12 @@ export function CreateGroupDialog({
 
           <div className="space-y-2">
             <Label>Participantes</Label>
-            <div className="relative">
-              <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Buscar participantes..."
-                className="pl-9"
-              />
-            </div>
+            <AppSearchField
+              id="create-group-search"
+              value={search}
+              onChange={setSearch}
+              placeholder="Buscar participantes..."
+            />
           </div>
 
           <div className="max-h-56 space-y-1 overflow-y-auto rounded-lg border border-border p-2">

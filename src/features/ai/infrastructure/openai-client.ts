@@ -46,7 +46,7 @@ function buildMockReply(
       "Na Biblioteca de Modelos, posso sugerir adaptações de documentos clínicos.",
     reports:
       "Em Relatórios, posso interpretar indicadores, destacar tendências e verificar o padrão de escrita contra modelos clínicos.",
-    team: "Em Profissionais, posso resumir a equipe clínica e filtrar por cargo.",
+    team: "Em Profissionais e Equipe terapêutica, posso resumir a equipe clínica e filtrar por cargo ou aprendiz.",
   };
 
   return `**${agent.name}** (modo demonstração)\n\n${agentIntros[agentId]}\n\nSobre sua solicitação *"${message.trim()}"*${entityHint}${routeHint}: em produção, consultaria o Supabase via tools tipadas e, se configurado, o modelo **${agent.model}** da OpenAI.\n\nPor ora, esta resposta é simulada para validar UX e contratos da integração.${toolSection}\n\n> Quando \`OPENAI_API_KEY\` estiver definida e \`AI_MOCK_MODE=false\`, o mesmo fluxo chamará a API real com auditoria e confirmação humana para escrita.`;

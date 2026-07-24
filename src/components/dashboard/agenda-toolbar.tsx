@@ -231,7 +231,7 @@ export function AgendaToolbar({
   return (
     <section
       className={cn(
-        "rounded-xl border border-border/80 bg-card p-3 shadow-sm",
+        "app-surface-card p-3",
         className
       )}
     >

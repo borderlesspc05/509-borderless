@@ -157,7 +157,7 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
       <>
         <div
           className={cn(
-            "overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm",
+            "app-surface-card overflow-hidden",
             disabled && "opacity-70",
             className
           )}

@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
+  Paperclip,
 } from "lucide-react";
 
 import { updatePatientAction } from "@/app/actions/patient-record-actions";
@@ -23,6 +24,7 @@ import {
 } from "@/components/patients/patient-form-sections";
 import { PatientBodyMapPanel } from "@/components/patients/patient-body-map-panel";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { patientRowToFormState } from "@/lib/patient-form";
 import { formatPatientRegistrationStatus } from "@/lib/patient-format";
@@ -144,7 +146,7 @@ export function PatientEditPageView({ patient }: PatientEditPageViewProps) {
 
 
       <form onSubmit={handleSubmit}>
-        <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+        <section className="app-surface-card overflow-hidden">
           <Tabs defaultValue="geral" className="gap-0">
             <div className="border-b border-border/60 bg-muted/25 px-6 py-4 sm:px-8">
               <TabsList className="grid h-auto w-full grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-5">
@@ -234,22 +236,20 @@ export function PatientEditPageView({ patient }: PatientEditPageViewProps) {
             </TabsContent>
 
             <TabsContent value="anexos" className="mt-0 px-6 py-8 sm:px-8">
-              <div className="rounded-xl border border-dashed border-border bg-muted/20 px-6 py-12 text-center">
-                <p className="text-sm font-medium text-foreground">
-                  Nenhum anexo cadastrado
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Os documentos do aprendiz podem ser gerenciados no prontuário.
-                </p>
-                <Button
-                  className="mt-5"
-                  variant="outline"
-                  nativeButton={false}
-                  render={<Link href={`/paciente/${patient.id}/prontuario`} />}
-                >
-                  Abrir prontuário
-                </Button>
-              </div>
+              <EmptyState
+                icon={Paperclip}
+                title="Nenhum anexo cadastrado"
+                description="Os documentos do aprendiz podem ser gerenciados no prontuário."
+                action={
+                  <Button
+                    variant="outline"
+                    nativeButton={false}
+                    render={<Link href={`/paciente/${patient.id}/prontuario`} />}
+                  >
+                    Abrir prontuário
+                  </Button>
+                }
+              />
             </TabsContent>
 
             {(error || successMessage) && (

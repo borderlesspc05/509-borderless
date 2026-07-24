@@ -25,7 +25,7 @@ export function EvolucaoConvencionalPageView({
         ]}
       />
 
-      <section className="rounded-xl border border-border/70 bg-card/60 p-4 text-sm text-muted-foreground sm:p-5">
+      <section className="app-surface-card p-4 text-sm text-muted-foreground sm:p-5">
         <div className="flex items-start gap-3">
           <ShieldCheck
             className="mt-0.5 size-5 shrink-0 text-primary"

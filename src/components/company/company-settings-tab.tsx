@@ -67,7 +67,7 @@ export function CompanySettingsTab({
   }
 
   return (
-    <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+    <section className="app-surface-card overflow-hidden">
       <div className="flex items-center gap-2 border-b border-border/60 bg-muted/25 px-5 py-3.5">
         <CalendarClock className="size-4 text-primary" />
         <h3 className="text-sm font-semibold text-foreground">Agendamento</h3>

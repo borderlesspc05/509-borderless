@@ -8,6 +8,7 @@ import { AnamnesisFisioterapiaForm } from "@/components/clinical-reports/anamnes
 import { AnamnesisTerapiaOcupacionalForm } from "@/components/clinical-reports/anamnesis-terapia-ocupacional-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatPatientDateTime } from "@/lib/patient-format";
 
@@ -84,9 +85,11 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
             {isLoading ? (
               <div className="flex h-32 items-center justify-center text-sm text-muted-foreground">Carregando...</div>
             ) : anamneses.length === 0 ? (
-              <div className="flex h-32 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 text-sm text-muted-foreground">
-                <p>Nenhuma anamnese registrada.</p>
-              </div>
+              <EmptyState
+                icon={ClipboardList}
+                title="Nenhuma anamnese registrada"
+                description="Ainda não há anamneses estruturadas para este paciente."
+              />
             ) : (
               <div className="space-y-3">
                 {anamneses.map(anamnese => (

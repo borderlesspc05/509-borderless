@@ -159,7 +159,7 @@ export function ClinicalReportsPageView() {
         ]}
       />
 
-      <Card className="shadow-sm">
+      <Card className="app-surface-card">
         <CardHeader className="border-b border-border/60 pb-4">
           <CardTitle>Filtros analíticos</CardTitle>
           <CardDescription>
@@ -352,7 +352,7 @@ export function ClinicalReportsPageView() {
 
       <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="space-y-5">
-          <Card className="shadow-sm">
+          <Card className="app-surface-card">
             <CardHeader className="border-b border-border/60 pb-4">
               <div className="flex items-start gap-3">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">

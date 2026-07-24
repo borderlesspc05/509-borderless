@@ -69,7 +69,7 @@ export function ProgramCard({ program, onToggleStatus }: ProgramCardProps) {
   const initials = getProgramInitials(program.name);
 
   return (
-    <article className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+    <article className="app-surface-card overflow-hidden">
       <div className="flex items-start justify-between gap-3 border-b border-border/60 bg-muted/30 px-4 py-4">
         <div className="flex min-w-0 items-start gap-3">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background text-sm font-semibold text-muted-foreground">
@@ -163,7 +163,7 @@ export function ProgramListRow({
   const toggleLabel = getProgramToggleActionLabel(program.status);
 
   return (
-    <article className="flex flex-col gap-4 rounded-xl border border-border/70 bg-card px-4 py-4 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+    <article className="app-surface-card flex flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="min-w-0 space-y-1">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="font-semibold text-foreground">{program.name}</h3>

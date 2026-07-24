@@ -31,7 +31,7 @@ export function AuditLogFiltersBar({
   );
 
   return (
-    <section className="rounded-xl border border-border/80 bg-card p-4 shadow-sm">
+    <section className="app-surface-card p-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 lg:items-end">
         <div className="space-y-2">
           <Label htmlFor="audit-start-date">Data inicial</Label>

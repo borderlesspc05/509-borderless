@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { redirect } from "next/navigation";
 
 import { listProfessionalsAction } from "@/app/actions/team-actions";
 import { ProfissionaisPageView } from "@/components/team/profissionais-page-view";
@@ -8,20 +8,31 @@ import { PERMISSIONS } from "@/lib/rbac";
 
 export const metadata: Metadata = {
   title: "Profissionais",
-  description: "Cadastro e gestão da equipe clínica e terapêutica.",
+  description: "Cadastro e gestão dos profissionais clínicos.",
 };
 
-export default async function ProfissionaisPage() {
+type ProfissionaisPageProps = {
+  searchParams: Promise<{ aba?: string | string[] }>;
+};
+
+export default async function ProfissionaisPage({
+  searchParams,
+}: ProfissionaisPageProps) {
   await requirePermission(PERMISSIONS.PROFESSIONALS_VIEW);
+
+  const params = await searchParams;
+  const aba = Array.isArray(params.aba) ? params.aba[0] : params.aba;
+
+  if (aba === "equipe") {
+    redirect("/dashboard/equipe-terapeutica");
+  }
 
   const result = await listProfessionalsAction();
 
   return (
-    <Suspense fallback={null}>
-      <ProfissionaisPageView
-        professionals={result.success ? (result.data?.professionals ?? []) : []}
-        error={result.success ? undefined : result.error}
-      />
-    </Suspense>
+    <ProfissionaisPageView
+      professionals={result.success ? (result.data?.professionals ?? []) : []}
+      error={result.success ? undefined : result.error}
+    />
   );
 }

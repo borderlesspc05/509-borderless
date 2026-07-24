@@ -263,7 +263,7 @@ export function AgendaCalendar({ careType = "ABA" }: AgendaCalendarProps) {
         <p className="text-sm text-muted-foreground">Carregando agenda...</p>
       ) : null}
 
-      <section className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm">
+      <section className="app-surface-card overflow-hidden">
         <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2.5 sm:px-4">
           <div className="flex items-center gap-0.5">
             <Button

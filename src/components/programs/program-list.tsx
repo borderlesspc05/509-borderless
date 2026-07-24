@@ -3,12 +3,9 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  Copy,
-  Download,
   LayoutGrid,
   List,
   Plus,
-  Search,
   SlidersHorizontal,
   Sparkles,
 } from "lucide-react";
@@ -19,8 +16,9 @@ import {
   ProgramCard,
   ProgramListRow,
 } from "@/components/programs/program-card";
+import { AppSearchField } from "@/components/ui/app-search-field";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -145,29 +143,51 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
     });
   }
 
-
-
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap gap-2">
-        <Button nativeButton={false} render={<Link href="/dashboard/programas/novo" />}>
-          <Plus className="size-4" />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link href="/dashboard/programas/novo" />}
+        >
+          <Plus className="size-4" aria-hidden />
           Novo Programa
         </Button>
+
+        <div className="flex items-center gap-1 self-end sm:self-auto">
+          <Button
+            type="button"
+            variant={viewMode === "grid" ? "default" : "outline"}
+            size="icon-sm"
+            aria-label="Visualização em grade"
+            onClick={() => setViewMode("grid")}
+          >
+            <LayoutGrid className="size-4" aria-hidden />
+          </Button>
+          <Button
+            type="button"
+            variant={viewMode === "list" ? "default" : "outline"}
+            size="icon-sm"
+            aria-label="Visualização em lista"
+            onClick={() => setViewMode("list")}
+          >
+            <List className="size-4" aria-hidden />
+          </Button>
+        </div>
       </div>
 
-      <section className="rounded-xl border border-border/70 bg-card p-4 shadow-sm sm:p-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-1 flex-col gap-3 sm:flex-row">
-            <div className="relative min-w-0 flex-1">
-              <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Busque por programas..."
-                className="h-11 pl-9"
-              />
-            </div>
+      <section className="app-surface-card p-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+          <AppSearchField
+            id="program-search"
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Busque por programas..."
+            className="min-w-0 flex-1"
+          />
+
+          <div className="flex flex-wrap gap-2 lg:shrink-0">
             <Select
               value={visibilityFilter}
               items={visibilityFilterItems}
@@ -188,22 +208,29 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
 
-          <div className="flex items-center gap-2">
             <Sheet open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
               <SheetTrigger
                 render={
-                  <Button variant="outline" className="h-11">
-                    <SlidersHorizontal className="size-4" />
-                    Filtros
-                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={cn(
+                      "h-11 border-primary/30 text-primary hover:bg-primary/5 hover:text-primary",
+                      hasActiveFilters && "bg-primary/5"
+                    )}
+                  />
                 }
-              />
-              <SheetContent>
+              >
+                <SlidersHorizontal className="size-4" aria-hidden />
+                Filtros
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[min(100vw-2rem,24rem)]">
                 <SheetHeader>
                   <SheetTitle>Filtros</SheetTitle>
-                  <SheetDescription>Refine a listagem de programas.</SheetDescription>
+                  <SheetDescription>
+                    Refine a listagem de programas.
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="space-y-4 px-4 pb-6">
                   <div className="space-y-2">
@@ -215,7 +242,7 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
                         setStatusFilter(value as StatusFilter)
                       }
                     >
-                      <SelectTrigger className="h-10">
+                      <SelectTrigger className="h-11">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -229,77 +256,64 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => {
+                        setStatusFilter("all");
+                        setSearchQuery("");
+                      }}
+                    >
+                      Limpar
+                    </Button>
+                    <Button
+                      type="button"
+                      className="flex-1"
+                      onClick={() => setIsFiltersOpen(false)}
+                    >
+                      Aplicar
+                    </Button>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
-
-            <div className="flex rounded-lg border border-border/70 p-1">
-              <Button
-                type="button"
-                size="icon"
-                variant={viewMode === "grid" ? "default" : "ghost"}
-                className="size-9"
-                onClick={() => setViewMode("grid")}
-                aria-label="Visualização em grade"
-              >
-                <LayoutGrid className="size-4" />
-              </Button>
-              <Button
-                type="button"
-                size="icon"
-                variant={viewMode === "list" ? "default" : "ghost"}
-                className="size-9"
-                onClick={() => setViewMode("list")}
-                aria-label="Visualização em lista"
-              >
-                <List className="size-4" />
-              </Button>
-            </div>
           </div>
         </div>
-
-        {hasActiveFilters ? (
-          <p className="mt-3 text-xs text-muted-foreground">
-            Filtros ativos aplicados à listagem.
-          </p>
-        ) : null}
-
-        <div
-          className={cn(
-            "mt-5",
-            viewMode === "grid"
-              ? "grid gap-4 md:grid-cols-2 xl:grid-cols-3"
-              : "space-y-3"
-          )}
-        >
-          {filteredPrograms.length > 0 ? (
-            filteredPrograms.map((program) =>
-              viewMode === "grid" ? (
-                <ProgramCard
-                  key={program.id}
-                  program={program}
-                  onToggleStatus={handleToggleStatus}
-                />
-              ) : (
-                <ProgramListRow
-                  key={program.id}
-                  program={program}
-                  onToggleStatus={handleToggleStatus}
-                />
-              )
-            )
-          ) : (
-            <div className="col-span-full rounded-xl border border-dashed border-border bg-muted/20 px-6 py-12 text-center">
-              <p className="text-sm font-medium text-foreground">
-                Nenhum programa encontrado
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Ajuste os filtros ou cadastre um novo programa.
-              </p>
-            </div>
-          )}
-        </div>
       </section>
+
+      {filteredPrograms.length === 0 ? (
+        <EmptyState
+          icon={Sparkles}
+          title="Nenhum programa encontrado"
+          description={
+            programs.length === 0
+              ? "Ainda não há programas cadastrados."
+              : "Ajuste a busca ou os filtros para ver outros resultados."
+          }
+        />
+      ) : viewMode === "grid" ? (
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {filteredPrograms.map((program) => (
+            <ProgramCard
+              key={program.id}
+              program={program}
+              onToggleStatus={handleToggleStatus}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-3">
+          {filteredPrograms.map((program) => (
+            <ProgramListRow
+              key={program.id}
+              program={program}
+              onToggleStatus={handleToggleStatus}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -49,7 +49,7 @@ export function ProgramEditPageView({
         }
       />
 
-      <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+      <section className="app-surface-card overflow-hidden">
         <Tabs defaultValue="geral" className="gap-0">
           <div className="border-b border-border/60 bg-muted/25 px-4 py-4 sm:px-6">
             <TabsList className="grid h-auto w-full grid-cols-2 gap-2 bg-transparent p-0 lg:grid-cols-6">

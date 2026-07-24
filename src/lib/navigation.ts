@@ -64,7 +64,7 @@ export const mainNavEntries: NavEntry[] = [
       },
       {
         title: "Equipe terapêutica",
-        href: "/dashboard/profissionais?aba=equipe",
+        href: "/dashboard/equipe-terapeutica",
         permission: PERMISSIONS.PROFESSIONALS_VIEW,
       },
       {

@@ -17,10 +17,6 @@ type DashboardNavProps = {
   onNavigate?: () => void;
 };
 
-function getHrefPath(href: string) {
-  return href.split("?")[0] ?? href;
-}
-
 function getHrefSearchParams(href: string) {
   const queryIndex = href.indexOf("?");
   if (queryIndex === -1) {
@@ -41,27 +37,6 @@ function isNavItemActive(
       pathname === "/em-desenvolvimento" &&
       activeTitle === getHrefSearchParams(href)?.get("titulo")
     );
-  }
-
-  const hrefPath = getHrefPath(href);
-  const hrefParams = getHrefSearchParams(href);
-
-  if (hrefPath === "/dashboard/profissionais") {
-    const isProfessionalsPath =
-      pathname === hrefPath || pathname.startsWith(`${hrefPath}/`);
-
-    if (!isProfessionalsPath) {
-      return false;
-    }
-
-    const currentAba = searchParams.get("aba");
-    const hrefAba = hrefParams?.get("aba") ?? null;
-
-    if (hrefAba === "equipe") {
-      return currentAba === "equipe";
-    }
-
-    return currentAba !== "equipe";
   }
 
   return isNavHrefActive(pathname, href);

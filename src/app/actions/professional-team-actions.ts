@@ -1,25 +1,48 @@
 "use server";
 
 import { requirePermission } from "@/lib/auth-guard";
-import { PERMISSIONS } from "@/lib/rbac";
+import { getProfileLabel } from "@/lib/user-profile";
+import { normalizeRole, PERMISSIONS } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { PatientRow } from "@/lib/supabase/database.types";
+import type { UserProfileRow } from "@/lib/supabase/database.types";
 
 type ActionResult<T = undefined> =
   | { success: true; data?: T }
   | { success: false; error: string };
 
-export type ProfessionalTeamPatient = {
+export type PatientTeamProfessional = {
   id: string;
   fullName: string;
+  professionalRole: string | null;
+  profileLabel: string;
+  professionalCouncil: string | null;
   isAssigned: boolean;
 };
 
-export async function getProfessionalTeamAction(
-  professionalId: string
+function mapPatientTeamProfessional(
+  row: Pick<
+    UserProfileRow,
+    "id" | "full_name" | "professional_role" | "professional_council" | "profile"
+  >,
+  isAssigned: boolean
+): PatientTeamProfessional {
+  const profile = normalizeRole(row.profile);
+
+  return {
+    id: row.id,
+    fullName: row.full_name,
+    professionalRole: row.professional_role,
+    profileLabel: getProfileLabel(profile),
+    professionalCouncil: row.professional_council,
+    isAssigned,
+  };
+}
+
+export async function getPatientTeamAction(
+  patientId: string
 ): Promise<
   ActionResult<{
-    patients: ProfessionalTeamPatient[];
+    professionals: PatientTeamProfessional[];
     assignedCount: number;
   }>
 > {
@@ -31,48 +54,49 @@ export async function getProfessionalTeamAction(
     return { success: false, error: "Supabase não configurado." };
   }
 
-  const [patientsResult, assignmentsResult] = await Promise.all([
+  const [professionalsResult, assignmentsResult] = await Promise.all([
     supabase
-      .from("patients")
-      .select("id, full_name")
+      .from("user_profiles")
+      .select(
+        "id, full_name, professional_role, professional_council, profile, status"
+      )
+      .neq("profile", "RECEPCAO")
       .eq("status", "active")
       .order("full_name"),
     supabase
       .from("professional_patient_assignments")
-      .select("patient_id")
-      .eq("professional_id", professionalId),
+      .select("professional_id")
+      .eq("patient_id", patientId),
   ]);
 
-  if (patientsResult.error) {
-    return { success: false, error: patientsResult.error.message };
+  if (professionalsResult.error) {
+    return { success: false, error: professionalsResult.error.message };
   }
 
   if (assignmentsResult.error) {
     return { success: false, error: assignmentsResult.error.message };
   }
 
-  const assignedPatientIds = new Set(
-    (assignmentsResult.data ?? []).map((row) => row.patient_id)
+  const assignedProfessionalIds = new Set(
+    (assignmentsResult.data ?? []).map((row) => row.professional_id)
   );
 
-  const patients = (patientsResult.data ?? []).map((patient: Pick<PatientRow, "id" | "full_name">) => ({
-    id: patient.id,
-    fullName: patient.full_name,
-    isAssigned: assignedPatientIds.has(patient.id),
-  }));
+  const professionals = (professionalsResult.data ?? []).map((row) =>
+    mapPatientTeamProfessional(row, assignedProfessionalIds.has(row.id))
+  );
 
   return {
     success: true,
     data: {
-      patients,
-      assignedCount: assignedPatientIds.size,
+      professionals,
+      assignedCount: assignedProfessionalIds.size,
     },
   };
 }
 
-export async function saveProfessionalTeamAction(input: {
-  professionalId: string;
-  patientIds: string[];
+export async function savePatientTeamAction(input: {
+  patientId: string;
+  professionalIds: string[];
 }): Promise<ActionResult<{ assignedCount: number }>> {
   await requirePermission(PERMISSIONS.TEAM_MANAGE);
 
@@ -85,19 +109,19 @@ export async function saveProfessionalTeamAction(input: {
   const { error: deleteError } = await supabase
     .from("professional_patient_assignments")
     .delete()
-    .eq("professional_id", input.professionalId);
+    .eq("patient_id", input.patientId);
 
   if (deleteError) {
     return { success: false, error: deleteError.message };
   }
 
-  if (input.patientIds.length === 0) {
+  if (input.professionalIds.length === 0) {
     return { success: true, data: { assignedCount: 0 } };
   }
 
-  const rows = input.patientIds.map((patientId) => ({
-    professional_id: input.professionalId,
-    patient_id: patientId,
+  const rows = input.professionalIds.map((professionalId) => ({
+    professional_id: professionalId,
+    patient_id: input.patientId,
   }));
 
   const { error: insertError } = await supabase
@@ -110,6 +134,6 @@ export async function saveProfessionalTeamAction(input: {
 
   return {
     success: true,
-    data: { assignedCount: input.patientIds.length },
+    data: { assignedCount: input.professionalIds.length },
   };
 }

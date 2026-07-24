@@ -75,7 +75,7 @@ export function PatientCard({ patient, onView, onToggleStatus }: PatientCardProp
   const toggleLabel = getPatientToggleActionLabel(patient.status);
 
   return (
-    <article className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+    <article className="app-surface-card overflow-hidden">
       <div className="flex items-start justify-between gap-3 border-b border-border/60 bg-muted/30 px-4 py-4">
         <div className="flex min-w-0 items-start gap-3">
           <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border/60 bg-background text-muted-foreground">
@@ -188,7 +188,7 @@ export function PatientListRow({
   const toggleLabel = getPatientToggleActionLabel(patient.status);
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-border/70 bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+    <div className="app-surface-card flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-start gap-3">
         <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
           <UserRound className="size-5" aria-hidden />

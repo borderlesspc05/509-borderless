@@ -13,6 +13,7 @@ const ROUTE_AGENT_MAP: Array<{ prefix: string; agentId: AiAgentId }> = [
   { prefix: "/dashboard/modelos", agentId: "document-templates" },
   { prefix: "/dashboard/relatorios", agentId: "reports" },
   { prefix: "/dashboard/profissionais", agentId: "team" },
+  { prefix: "/dashboard/equipe-terapeutica", agentId: "team" },
   { prefix: "/dashboard", agentId: "global" },
 ];
 

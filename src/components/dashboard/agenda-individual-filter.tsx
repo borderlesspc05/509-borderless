@@ -200,7 +200,7 @@ export function AgendaIndividualFilter({
   return (
     <section
       className={cn(
-        "rounded-xl border border-border/80 bg-card p-3 shadow-sm sm:p-4",
+        "app-surface-card p-3 sm:p-4",
         className
       )}
       aria-label="Filtro individual da agenda"
@@ -220,7 +220,7 @@ export function AgendaIndividualFilter({
           >
             <SelectTrigger
               id="agenda-individual-filter-type"
-              className="h-10 w-full"
+              className="h-11 w-full"
               size="default"
             >
               <SelectValue />

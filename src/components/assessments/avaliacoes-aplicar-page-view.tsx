@@ -28,7 +28,7 @@ export function AvaliacoesAplicarPageView() {
         {APPLICABLE_ASSESSMENTS.map((instrument) => (
           <article
             key={instrument.name}
-            className="flex flex-col overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm"
+            className="app-surface-card flex flex-col overflow-hidden"
           >
             <div className="flex flex-1 flex-col gap-3 p-5">
               <div className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">

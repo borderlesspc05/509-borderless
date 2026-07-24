@@ -234,7 +234,7 @@ export function DemucaApplicationPageView({
         }
       />
 
-      <div className="grid gap-4 rounded-xl border border-border/70 bg-card p-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="app-surface-card grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-2">
           <Label htmlFor="demuca-patient">Paciente</Label>
           <Select
@@ -245,7 +245,7 @@ export function DemucaApplicationPageView({
               setScores(null);
             }}
           >
-            <SelectTrigger id="demuca-patient" className="w-full">
+            <SelectTrigger id="demuca-patient" className="h-11 w-full">
               <SelectValue placeholder="Selecione o paciente" />
             </SelectTrigger>
             <SelectContent>

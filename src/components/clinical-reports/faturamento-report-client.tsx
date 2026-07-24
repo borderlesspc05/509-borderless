@@ -60,16 +60,16 @@ export function FaturamentoReportClient({ initialData, initialMes, initialAno }:
       </div>
 
       {isPending ? (
-        <div className="flex h-40 items-center justify-center rounded-xl border border-border/80 bg-card">
-          <p className="text-muted-foreground">Carregando...</p>
+        <div className="app-surface-card flex h-40 items-center justify-center">
+          <p className="text-sm text-muted-foreground">Carregando...</p>
         </div>
       ) : !data ? (
-        <div className="flex h-40 items-center justify-center rounded-xl border border-border/80 bg-card">
-          <p className="text-muted-foreground">Nenhum dado encontrado.</p>
+        <div className="app-surface-card flex h-40 items-center justify-center">
+          <p className="text-sm text-muted-foreground">Nenhum dado encontrado.</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-xl border border-border/80 bg-card p-6 shadow-sm">
+          <div className="app-surface-card p-6">
             <div className="flex items-center gap-3 text-muted-foreground">
               <div className="rounded-md bg-primary/10 p-2 text-primary">
                 <Activity className="size-5" />
@@ -80,7 +80,7 @@ export function FaturamentoReportClient({ initialData, initialMes, initialAno }:
             <p className="mt-1 text-sm text-muted-foreground">Realizadas no período</p>
           </div>
 
-          <div className="rounded-xl border border-border/80 bg-card p-6 shadow-sm">
+          <div className="app-surface-card p-6">
             <div className="flex items-center gap-3 text-muted-foreground">
               <div className="rounded-md bg-clinical-success/10 p-2 text-clinical-success">
                 <DollarSign className="size-5" />
@@ -93,7 +93,7 @@ export function FaturamentoReportClient({ initialData, initialMes, initialAno }:
             <p className="mt-1 text-sm text-muted-foreground">Faturamento projetado</p>
           </div>
 
-          <div className="rounded-xl border border-border/80 bg-card p-6 shadow-sm sm:col-span-2 lg:col-span-1">
+          <div className="app-surface-card p-6 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 text-muted-foreground">
               <div className="rounded-md bg-clinical-warning/10 p-2 text-clinical-warning">
                 <Calculator className="size-5" />

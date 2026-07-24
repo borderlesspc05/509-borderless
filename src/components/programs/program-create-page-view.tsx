@@ -34,7 +34,7 @@ export function ProgramCreatePageView({ patients }: ProgramCreatePageViewProps) 
         }
       />
 
-      <section className="overflow-hidden rounded-xl border border-border/70 bg-card p-4 shadow-sm sm:p-6">
+      <section className="app-surface-card overflow-hidden p-4 sm:p-6">
         <ProgramGeneralTab patients={patients} />
       </section>
     </PageContainer>

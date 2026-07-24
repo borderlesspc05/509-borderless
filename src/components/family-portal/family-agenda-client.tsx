@@ -6,6 +6,7 @@ import { Calendar, CheckCircle, XCircle, Clock } from "lucide-react";
 import { updateFamilyPortalAgendaStatusAction, type FamilyAgendaEvent } from "@/app/actions/family-portal-agenda-actions";
 import { useAppToast } from "@/hooks/use-app-toast";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export function FamilyAgendaClient({ events }: { events: FamilyAgendaEvent[] }) {
   const toast = useAppToast();
@@ -24,11 +25,12 @@ export function FamilyAgendaClient({ events }: { events: FamilyAgendaEvent[] }) 
 
   if (events.length === 0) {
     return (
-      <div className="flex min-h-[300px] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card px-4 py-12 text-center">
-        <Calendar className="mb-4 size-10 text-muted-foreground" />
-        <p className="text-sm font-medium text-foreground">Nenhuma consulta agendada.</p>
-        <p className="text-sm text-muted-foreground">Você não possui agendamentos futuros no momento.</p>
-      </div>
+      <EmptyState
+        icon={Calendar}
+        title="Nenhuma consulta agendada."
+        description="Você não possui agendamentos futuros no momento."
+        className="min-h-[300px]"
+      />
     );
   }
 
@@ -40,7 +42,7 @@ export function FamilyAgendaClient({ events }: { events: FamilyAgendaEvent[] }) 
         const isPendingAction = event.status === "agendado" || event.status === "pendente";
 
         return (
-          <div key={event.id} className="flex flex-col gap-4 rounded-xl border border-border/70 bg-card p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+          <div key={event.id} className="app-surface-card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1.5">
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-foreground">{event.title || "Sessão"}</span>

@@ -13,6 +13,7 @@ import {
 import { BodyMapCanvas } from "@/components/patients/body-map-3d/body-map-canvas";
 import { useAppToast } from "@/hooks/use-app-toast";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import {
   Dialog,
   DialogContent,
@@ -433,9 +434,11 @@ export function PatientBodyMapPanel({
               Marcações ({marks.length})
             </p>
             {marks.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-border bg-muted/20 px-4 py-8 text-center text-sm text-muted-foreground">
-                Nenhuma marcação registrada. Toque no manequim para começar.
-              </div>
+              <EmptyState
+                icon={MapPin}
+                title="Nenhuma marcação registrada"
+                description="Toque no manequim para começar."
+              />
             ) : (
               <ul className="max-h-[min(50vh,24rem)] space-y-2 overflow-y-auto lg:max-h-[32rem]">
                 {marks.map((mark) => {

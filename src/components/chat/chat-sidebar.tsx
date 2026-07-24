@@ -1,11 +1,11 @@
 "use client";
 
-import { MessageSquarePlus, Search, Users } from "lucide-react";
+import { MessageSquarePlus, Users } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AppSearchField } from "@/components/ui/app-search-field";
 import { useChat } from "@/contexts/chat-context";
 import { useUserRole } from "@/hooks/use-user-role";
 import { formatChatTime, getInitials } from "@/lib/chat";
@@ -72,15 +72,12 @@ export function ChatSidebar({
           </div>
         </div>
 
-        <div className="relative">
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={search}
-            onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Buscar conversas..."
-            className="pl-9"
-          />
-        </div>
+        <AppSearchField
+          id="chat-sidebar-search"
+          value={search}
+          onChange={onSearchChange}
+          placeholder="Buscar conversas..."
+        />
       </div>
 
       <div className="flex-1 overflow-y-auto p-2">

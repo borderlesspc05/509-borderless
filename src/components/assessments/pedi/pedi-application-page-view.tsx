@@ -237,7 +237,7 @@ export function PediApplicationPageView({
         }
       />
 
-      <div className="print:hidden space-y-4 rounded-xl border border-border/70 bg-card p-4 sm:p-5">
+      <div className="print:hidden app-surface-card space-y-4 p-4 sm:p-5">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2">
             <Label htmlFor="pedi-patient">Paciente</Label>
@@ -249,7 +249,7 @@ export function PediApplicationPageView({
                 setScores(null);
               }}
             >
-              <SelectTrigger id="pedi-patient" className="w-full">
+              <SelectTrigger id="pedi-patient" className="h-11 w-full">
                 <SelectValue placeholder="Selecione o paciente" />
               </SelectTrigger>
               <SelectContent>

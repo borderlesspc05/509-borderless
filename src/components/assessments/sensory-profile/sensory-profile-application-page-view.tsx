@@ -207,7 +207,7 @@ export function SensoryProfileApplicationPageView({
         }
       />
 
-      <div className="space-y-4 rounded-xl border border-border/70 bg-card p-4 sm:p-5">
+      <div className="app-surface-card space-y-4 p-4 sm:p-5">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2">
             <Label htmlFor="sp-patient">Paciente</Label>
@@ -219,7 +219,7 @@ export function SensoryProfileApplicationPageView({
                 setScores(null);
               }}
             >
-              <SelectTrigger id="sp-patient" className="w-full">
+              <SelectTrigger id="sp-patient" className="h-11 w-full">
                 <SelectValue placeholder="Selecione o paciente" />
               </SelectTrigger>
               <SelectContent>

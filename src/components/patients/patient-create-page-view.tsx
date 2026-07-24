@@ -145,7 +145,7 @@ export function PatientCreatePageView() {
       />
 
       <form onSubmit={handleSubmit}>
-        <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+        <section className="app-surface-card overflow-hidden">
           <div className="border-b border-border/60 px-6 py-5 sm:px-8">
             <div className="space-y-1">
               <h2 className="flex items-center gap-2 text-lg font-semibold">

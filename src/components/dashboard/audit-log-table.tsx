@@ -1,6 +1,9 @@
 "use client";
 
+import { ClipboardList } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
+import { EmptyState } from "@/components/ui/empty-state";
 import {
   Table,
   TableBody,
@@ -42,7 +45,7 @@ function getActionVariant(actionLabel: string) {
 export function AuditLogTable({ logs, isLoading = false }: AuditLogTableProps) {
   if (isLoading) {
     return (
-      <div className="flex min-h-48 items-center justify-center rounded-xl border border-border/80 bg-card p-6 text-sm text-muted-foreground">
+      <div className="app-surface-card flex min-h-48 items-center justify-center p-6 text-sm text-muted-foreground">
         Carregando registros de auditoria...
       </div>
     );
@@ -50,19 +53,16 @@ export function AuditLogTable({ logs, isLoading = false }: AuditLogTableProps) {
 
   if (logs.length === 0) {
     return (
-      <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-6 text-center">
-        <p className="text-sm font-medium text-foreground">
-          Nenhum registro encontrado
-        </p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Ajuste o período ou o nome do paciente para ampliar a busca.
-        </p>
-      </div>
+      <EmptyState
+        icon={ClipboardList}
+        title="Nenhum registro encontrado"
+        description="Ajuste o período ou o nome do paciente para ampliar a busca."
+      />
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm">
+    <div className="app-surface-card overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>

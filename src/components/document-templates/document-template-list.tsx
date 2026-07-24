@@ -188,7 +188,7 @@ export function DocumentTemplateList({
             items={categoryFilterItems}
             onValueChange={(value) => setCategoryFilter(value as string)}
           >
-            <SelectTrigger className="h-10 w-full lg:w-52">
+            <SelectTrigger className="h-11 w-full lg:w-52">
               <SelectValue placeholder="Categoria" />
             </SelectTrigger>
             <SelectContent>
@@ -207,7 +207,7 @@ export function DocumentTemplateList({
             items={statusFilterItems}
             onValueChange={(value) => setStatusFilter(value as StatusFilter)}
           >
-            <SelectTrigger className="h-10 w-full lg:w-44">
+            <SelectTrigger className="h-11 w-full lg:w-44">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>

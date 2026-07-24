@@ -142,7 +142,7 @@ export function CompanyDataTab({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[20rem_minmax(0,1fr)]">
-      <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+      <section className="app-surface-card overflow-hidden">
         <div className="border-b border-border/60 bg-muted/25 px-5 py-4">
           <div className="flex flex-col items-center text-center">
             <div className="relative">
@@ -273,7 +273,7 @@ export function CompanyDataTab({
       </section>
 
       <div className="space-y-6">
-        <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+        <section className="app-surface-card overflow-hidden">
           <div className="flex items-center gap-2 border-b border-border/60 bg-muted/25 px-5 py-3.5">
             <Building2 className="size-4 text-primary" />
             <h3 className="text-sm font-semibold text-foreground">Dados Gerais</h3>
@@ -341,7 +341,7 @@ export function CompanyDataTab({
           </div>
         </section>
 
-        <section className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+        <section className="app-surface-card overflow-hidden">
           <div className="flex items-center gap-2 border-b border-border/60 bg-muted/25 px-5 py-3.5">
             <MapPinned className="size-4 text-primary" />
             <h3 className="text-sm font-semibold text-foreground">Endereço</h3>

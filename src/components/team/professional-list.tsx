@@ -7,8 +7,8 @@ import {
   LayoutGrid,
   List,
   Plus,
-  Search,
   SlidersHorizontal,
+  UserRound,
 } from "lucide-react";
 
 import type { TeamMember } from "@/app/actions/team-actions";
@@ -18,10 +18,10 @@ import {
 } from "@/components/team/professional-card";
 import { ProfessionalStatsRow } from "@/components/team/professional-stats-row";
 import { ProfessionalStatusDialog } from "@/components/team/professional-status-dialog";
-import { ProfessionalTeamDialog } from "@/components/team/professional-team-dialog";
 import { ProfessionalViewDialog } from "@/components/team/professional-view-dialog";
+import { AppSearchField } from "@/components/ui/app-search-field";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -44,7 +44,6 @@ import { cn } from "@/lib/utils";
 
 type ProfessionalListProps = {
   professionals: TeamMember[];
-  mode?: "cadastro" | "equipe";
 };
 
 type ViewMode = "grid" | "list";
@@ -124,10 +123,7 @@ function exportProfessionalsToCsv(professionals: TeamMember[]) {
   URL.revokeObjectURL(url);
 }
 
-export function ProfessionalList({
-  professionals,
-  mode = "cadastro",
-}: ProfessionalListProps) {
+export function ProfessionalList({ professionals }: ProfessionalListProps) {
   const [professionalItems, setProfessionalItems] = useState(professionals);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
@@ -136,8 +132,6 @@ export function ProfessionalList({
   const [viewingProfessional, setViewingProfessional] =
     useState<TeamMember | null>(null);
   const [statusToggleProfessional, setStatusToggleProfessional] =
-    useState<TeamMember | null>(null);
-  const [teamManageProfessional, setTeamManageProfessional] =
     useState<TeamMember | null>(null);
 
   const filteredProfessionals = useMemo(() => {
@@ -175,16 +169,6 @@ export function ProfessionalList({
     }
   }
 
-  function handleManageTeamProfessional(professional: TeamMember) {
-    setTeamManageProfessional(professional);
-  }
-
-  function handleTeamDialogOpenChange(open: boolean) {
-    if (!open) {
-      setTeamManageProfessional(null);
-    }
-  }
-
   function handleProfessionalStatusChanged(updatedProfessional: TeamMember) {
     setProfessionalItems((current) =>
       current.map((professional) =>
@@ -210,29 +194,17 @@ export function ProfessionalList({
         onStatusChanged={handleProfessionalStatusChanged}
       />
 
-      <ProfessionalTeamDialog
-        professional={teamManageProfessional}
-        open={teamManageProfessional !== null}
-        onOpenChange={handleTeamDialogOpenChange}
-      />
-
       <ProfessionalStatsRow professionals={professionalItems} />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {mode === "cadastro" ? (
-          <Button
-            size="lg"
-            nativeButton={false}
-            render={<Link href="/dashboard/profissionais/novo" />}
-          >
-            <Plus className="size-4" aria-hidden />
-            Novo Profissional
-          </Button>
-        ) : (
-          <p className="text-sm font-medium text-foreground">
-            Selecione um profissional para gerenciar a equipe terapêutica
-          </p>
-        )}
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link href="/dashboard/profissionais/novo" />}
+        >
+          <Plus className="size-4" aria-hidden />
+          Novo Profissional
+        </Button>
 
         <div className="flex items-center gap-1 self-end sm:self-auto">
           <Button
@@ -256,20 +228,15 @@ export function ProfessionalList({
         </div>
       </div>
 
-      <section className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
+      <section className="app-surface-card p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div className="relative min-w-0 flex-1">
-            <Search
-              className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-              aria-hidden
-            />
-            <Input
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
-              placeholder="Busque por profissionais..."
-              className="h-10 pl-9"
-            />
-          </div>
+          <AppSearchField
+            id="professional-search"
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Busque por profissionais..."
+            className="min-w-0 flex-1"
+          />
 
           <div className="flex flex-wrap gap-2 lg:shrink-0">
             <Button
@@ -363,25 +330,23 @@ export function ProfessionalList({
       </section>
 
       {filteredProfessionals.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border bg-muted/20 px-4 py-12 text-center">
-          <p className="text-sm font-medium text-foreground">
-            Nenhum profissional encontrado
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {professionalItems.length === 0
+        <EmptyState
+          icon={UserRound}
+          title="Nenhum profissional encontrado"
+          description={
+            professionalItems.length === 0
               ? "Ainda não há profissionais cadastrados."
-              : "Ajuste a busca ou os filtros para ver outros resultados."}
-          </p>
-        </div>
+              : "Ajuste a busca ou os filtros para ver outros resultados."
+          }
+        />
       ) : viewMode === "grid" ? (
-        <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filteredProfessionals.map((professional) => (
             <ProfessionalCard
               key={professional.id}
               professional={professional}
               onView={handleViewProfessional}
               onToggleStatus={handleToggleStatusProfessional}
-              onManageTeam={handleManageTeamProfessional}
             />
           ))}
         </div>
@@ -393,7 +358,6 @@ export function ProfessionalList({
               professional={professional}
               onView={handleViewProfessional}
               onToggleStatus={handleToggleStatusProfessional}
-              onManageTeam={handleManageTeamProfessional}
             />
           ))}
         </div>

@@ -155,7 +155,7 @@ export function TeamManagement() {
   return (
     <div className="space-y-6">
       <ProtectedComponent permission={PERMISSIONS.TEAM_MANAGE}>
-        <section className="rounded-xl border border-border/80 bg-card p-4 shadow-sm sm:p-6">
+        <section className="app-surface-card p-4 sm:p-6">
           <div className="mb-5 space-y-1">
             <h2 className="flex items-center gap-2 text-lg font-semibold">
               <UserPlus className="size-5 text-primary" />
@@ -308,7 +308,7 @@ export function TeamManagement() {
         </section>
       </ProtectedComponent>
 
-      <section className="rounded-xl border border-border/80 bg-card shadow-sm">
+      <section className="app-surface-card">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-4 sm:px-6">
           <div>
             <h2 className="flex items-center gap-2 text-lg font-semibold">

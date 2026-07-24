@@ -87,7 +87,7 @@ function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-xl border border-border/50 bg-card/80 p-3 shadow-sm">
+    <div className="app-surface-card p-3">
       <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
         {label}
       </p>
@@ -137,7 +137,7 @@ function SectionPanel({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-[0_2px_12px_rgb(0_0_0_/_0.04)] sm:p-5">
+      <div className="app-surface-card p-4 sm:p-5">
         {children}
       </div>
     </section>

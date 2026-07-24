@@ -14,7 +14,7 @@ export function AccessDeniedCard({
 }: AccessDeniedCardProps) {
   return (
     <div className="flex min-h-[50vh] items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-xl border border-border/80 bg-card p-6 text-center shadow-sm">
+      <div className="app-surface-card w-full max-w-md p-6 text-center">
         <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
           <ShieldAlert className="size-6" aria-hidden />
         </div>

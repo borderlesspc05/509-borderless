@@ -75,7 +75,7 @@ export function AppointmentDetailDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <section className="space-y-4 rounded-xl border border-border/80 bg-card p-4 shadow-sm">
+        <section className="app-surface-card space-y-4 p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 space-y-2">
               <p className="text-base font-semibold">{currentAppointment.patient}</p>

@@ -19,6 +19,7 @@ import {
 } from "@/app/actions/parent-orientation-actions";
 import { RichTextEditor } from "@/components/clinical-evolution/rich-text-editor";
 import { useAppToast } from "@/hooks/use-app-toast";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -194,7 +195,7 @@ export function ParentOrientationsManager({
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 rounded-xl border border-border/80 bg-card p-4 shadow-sm sm:grid-cols-2">
+      <section className="app-surface-card grid gap-4 p-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="orientation-patient">Aprendiz</Label>
           {activePatients.length === 0 ? (
@@ -210,7 +211,7 @@ export function ParentOrientationsManager({
                 resetForm();
               }}
             >
-              <SelectTrigger id="orientation-patient" className="h-10 w-full">
+              <SelectTrigger id="orientation-patient" className="h-11 w-full">
                 <SelectValue placeholder="Selecione o aprendiz" />
               </SelectTrigger>
               <SelectContent>
@@ -227,7 +228,7 @@ export function ParentOrientationsManager({
         </div>
       </section>
 
-      <section className="space-y-4 rounded-xl border border-border/80 bg-card p-4 shadow-sm sm:p-5">
+      <section className="app-surface-card space-y-4 p-4 sm:p-5">
         <div className="flex items-center gap-2">
           <Lightbulb className="size-4 text-primary" aria-hidden />
           <h2 className="text-sm font-semibold">
@@ -352,15 +353,17 @@ export function ParentOrientationsManager({
             Carregando...
           </div>
         ) : orientations.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-border bg-muted/15 px-4 py-8 text-center text-sm text-muted-foreground">
-            Nenhuma orientação cadastrada para este aprendiz.
-          </p>
+          <EmptyState
+            icon={Lightbulb}
+            title="Nenhuma orientação cadastrada"
+            description="Nenhuma orientação cadastrada para este aprendiz."
+          />
         ) : (
           <ul className="space-y-3">
             {orientations.map((row) => (
               <li
                 key={row.id}
-                className="rounded-xl border border-border/70 bg-card p-4"
+                className="app-surface-card p-4"
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="min-w-0">

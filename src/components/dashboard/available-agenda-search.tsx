@@ -19,6 +19,7 @@ import {
 } from "@/components/dashboard/new-appointment-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -122,7 +123,7 @@ export function AvailableAgendaSearch() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-border/80 bg-card p-4 shadow-sm sm:p-6">
+      <section className="app-surface-card p-4 sm:p-6">
         <div className="mb-5 space-y-1">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
             <CalendarSearch className="size-5 text-primary" />
@@ -254,20 +255,17 @@ export function AvailableAgendaSearch() {
           </div>
 
           {results.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-muted/20 px-6 py-10 text-center">
-              <p className="text-sm font-medium text-foreground">
-                Nenhum profissional disponível neste intervalo.
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Tente outra data, cargo ou faixa de horário.
-              </p>
-            </div>
+            <EmptyState
+              icon={CalendarSearch}
+              title="Nenhum profissional disponível neste intervalo."
+              description="Tente outra data, cargo ou faixa de horário."
+            />
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {results.map((professional) => (
                 <article
                   key={professional.id}
-                  className="flex flex-col gap-4 rounded-xl border border-border/80 bg-card p-4 shadow-sm"
+                  className="app-surface-card flex flex-col gap-4 p-4"
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">

@@ -105,7 +105,7 @@ export function DocumentTemplateForm({ template }: DocumentTemplateFormProps) {
       />
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <section className="grid gap-4 rounded-xl border border-border/80 bg-card p-4 shadow-sm lg:grid-cols-2">
+        <section className="app-surface-card grid gap-4 p-4 lg:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="template-name">Nome do modelo</Label>
             <Input

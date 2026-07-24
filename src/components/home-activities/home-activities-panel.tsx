@@ -20,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -308,9 +309,11 @@ export function HomeActivitiesPanel({
               Carregando atividades...
             </p>
           ) : activities.length === 0 ? (
-            <p className="rounded-xl border border-dashed border-border px-4 py-10 text-center text-sm text-muted-foreground">
-              Nenhuma atividade cadastrada ainda.
-            </p>
+            <EmptyState
+              icon={BookOpen}
+              title="Nenhuma atividade cadastrada"
+              description="Nenhuma atividade cadastrada ainda."
+            />
           ) : (
             <ul className="space-y-3">
               {activities.map((activity) => (

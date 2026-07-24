@@ -70,7 +70,7 @@ export function PaymentIntegrationsForm({
   }
 
   return (
-    <Card className="shadow-sm">
+    <Card className="app-surface-card border-0 shadow-none">
       <CardHeader className="border-b border-border/60 pb-4">
         <div className="flex items-start gap-3">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">

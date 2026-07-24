@@ -137,7 +137,7 @@ export function ProfessionalCreatePageView() {
         }
       />
 
-      <section className="rounded-xl border border-border/70 bg-card p-6 shadow-sm sm:p-8">
+      <section className="app-surface-card p-6 sm:p-8">
         <div className="mb-6 space-y-1">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
             <UserPlus className="size-5 text-primary" aria-hidden />

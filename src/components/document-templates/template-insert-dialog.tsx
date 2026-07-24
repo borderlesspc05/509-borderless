@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { FileStack, Loader2 } from "lucide-react";
+import { FileText, Loader2 } from "lucide-react";
 
 import { listDocumentTemplatesAction } from "@/app/actions/document-template-actions";
 import { useAppToast } from "@/hooks/use-app-toast";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import {
   Dialog,
   DialogContent,
@@ -181,12 +182,10 @@ export function TemplateInsertDialog({
             {error}
           </div>
         ) : filteredTemplates.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-muted/20 px-4 py-12 text-center">
-            <FileStack className="size-8 text-muted-foreground" aria-hidden />
-            <p className="text-sm text-muted-foreground">
-              Nenhum modelo ativo disponível.
-            </p>
-          </div>
+          <EmptyState
+            icon={FileText}
+            title="Nenhum modelo ativo disponível."
+          />
         ) : (
           <div className="max-h-72 space-y-2 overflow-y-auto rounded-xl border border-border/70 p-2">
             {filteredTemplates.map((template) => (

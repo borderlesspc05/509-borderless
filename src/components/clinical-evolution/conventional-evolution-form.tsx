@@ -268,7 +268,7 @@ export function ConventionalEvolutionForm({
         </div>
       </section>
 
-      <section className="grid gap-4 rounded-xl border border-border/80 bg-card p-4 shadow-sm lg:grid-cols-3">
+      <section className="app-surface-card grid gap-4 p-4 lg:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="conv-evolution-patient">Paciente</Label>
           {activePatients.length === 0 ? (
@@ -281,7 +281,7 @@ export function ConventionalEvolutionForm({
               items={patientSelectItems}
               onValueChange={(value) => setPatientId(value as string)}
             >
-              <SelectTrigger id="conv-evolution-patient" className="h-10 w-full">
+              <SelectTrigger id="conv-evolution-patient" className="h-11 w-full">
                 <SelectValue placeholder="Selecione o paciente" />
               </SelectTrigger>
               <SelectContent>

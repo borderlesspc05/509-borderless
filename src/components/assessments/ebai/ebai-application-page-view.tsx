@@ -188,7 +188,7 @@ export function EbaiApplicationPageView({
         }
       />
 
-      <div className="grid gap-4 rounded-xl border border-border/70 bg-card p-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="app-surface-card grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="ebai-patient">Paciente</Label>
           <Select
@@ -199,7 +199,7 @@ export function EbaiApplicationPageView({
               setScores(null);
             }}
           >
-            <SelectTrigger id="ebai-patient" className="w-full">
+            <SelectTrigger id="ebai-patient" className="h-11 w-full">
               <SelectValue placeholder="Selecione o paciente" />
             </SelectTrigger>
             <SelectContent>

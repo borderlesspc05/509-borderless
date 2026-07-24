@@ -218,7 +218,7 @@ export function AgendaWorkloadSettingsView() {
         }
       />
 
-      <section className="rounded-xl border border-border/80 bg-card shadow-sm">
+      <section className="app-surface-card">
         <div className="space-y-8 p-5 sm:p-6">
           <div className="space-y-4">
             <div className="flex items-start gap-3">
