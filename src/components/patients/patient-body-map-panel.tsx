@@ -33,10 +33,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  BODY_LATERALITY_OPTIONS,
   BODY_MARK_TYPES,
+  getBodyLateralityLabel,
   getBodyMarkTypeColorClass,
   getBodyMarkTypeLabel,
   getBodyViewSideLabel,
+  type BodyLaterality,
   type BodyMarkType,
   type BodyViewSide,
 } from "@/lib/body-map-format";
@@ -53,6 +56,7 @@ export type DraftBodyMark = BodyMarkInput & {
   bodyPart?: string | null;
   position3d?: { x: number; y: number; z: number } | null;
   modelType?: BodyModelType;
+  laterality?: BodyLaterality | null;
 };
 
 type PatientBodyMapPanelProps = {
@@ -77,6 +81,14 @@ const markTypeItems = BODY_MARK_TYPES.map((item) => ({
   value: item.value,
 }));
 
+const lateralityItems = [
+  { label: "Não informado", value: "__none__" },
+  ...BODY_LATERALITY_OPTIONS.map((item) => ({
+    label: item.label,
+    value: item.value,
+  })),
+];
+
 function severityTone(severity: number) {
   if (severity <= 3) return "text-amber-600";
   if (severity <= 6) return "text-orange-600";
@@ -99,6 +111,7 @@ function rowToDraft(row: PatientBodyMarkRow): DraftBodyMark {
       ? { x: meta.x, y: meta.y, z: meta.z }
       : null,
     modelType: meta?.model ?? "child",
+    laterality: meta?.laterality ?? null,
   };
 }
 
@@ -107,6 +120,7 @@ function persistNotes(mark: {
   bodyPart?: string | null;
   position3d?: { x: number; y: number; z: number } | null;
   modelType?: BodyModelType;
+  laterality?: BodyLaterality | null;
 }) {
   if (mark.position3d && mark.bodyPart) {
     return encodeNotesWith3D(mark.notes, {
@@ -115,6 +129,7 @@ function persistNotes(mark: {
       z: Number(mark.position3d.z.toFixed(4)),
       part: mark.bodyPart,
       model: mark.modelType ?? "child",
+      laterality: mark.laterality ?? null,
     });
   }
   return mark.notes?.trim() || null;
@@ -135,6 +150,7 @@ export function PatientBodyMapPanel({
   const [editingMarkId, setEditingMarkId] = useState<string | null>(null);
   const [markType, setMarkType] = useState<BodyMarkType>("pain");
   const [severity, setSeverity] = useState(5);
+  const [laterality, setLaterality] = useState<BodyLaterality | null>(null);
   const [notes, setNotes] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -200,6 +216,7 @@ export function PatientBodyMapPanel({
     setEditingMarkId(null);
     setMarkType("pain");
     setSeverity(5);
+    setLaterality(null);
     setNotes("");
   }
 
@@ -211,6 +228,7 @@ export function PatientBodyMapPanel({
     setEditingMarkId(markId);
     setMarkType(mark.markType);
     setSeverity(mark.severity != null ? mark.severity : 5);
+    setLaterality(mark.laterality ?? null);
     setNotes(mark.notes ?? "");
   }
 
@@ -239,6 +257,7 @@ export function PatientBodyMapPanel({
                     ...mark,
                     markType,
                     severity: severityValue,
+                    laterality,
                     notes: nextNotes,
                   }
                 : mark
@@ -259,6 +278,7 @@ export function PatientBodyMapPanel({
               bodyPart: editingMark.bodyPart,
               position3d: editingMark.position3d,
               modelType: editingMark.modelType ?? modelType,
+              laterality,
             }),
           }
         );
@@ -295,6 +315,7 @@ export function PatientBodyMapPanel({
         bodyPart: pendingPoint.bodyPart,
         position3d: pendingPoint.position3d,
         modelType,
+        laterality,
       };
 
       if (isDraftMode) {
@@ -362,12 +383,12 @@ export function PatientBodyMapPanel({
       <div className="space-y-1">
         <h3 className="flex items-center gap-2 text-base font-semibold text-foreground">
           <MapPin className="size-4 text-primary" aria-hidden />
-          Mapa corporal 3D
+          Bonequinho 3D — mapa corporal
         </h3>
         <p className="text-sm text-muted-foreground">
           {readOnly
             ? "Marcações clínicas no manequim (dor, lesão e outras observações)."
-            : "Toque no manequim para marcar. Arraste para orbitar; use a lista para editar notas e intensidade."}
+            : "Toque no manequim para marcar. Informe o lado acometido (direito, esquerdo ou bilateral). Arraste para orbitar; use a lista para editar notas e intensidade."}
         </p>
         {isDraftMode && !readOnly ? (
           <p className="text-xs text-muted-foreground">
@@ -442,7 +463,7 @@ export function PatientBodyMapPanel({
             ) : (
               <ul className="max-h-[min(50vh,24rem)] space-y-2 overflow-y-auto lg:max-h-[32rem]">
                 {marks.map((mark) => {
-                  const { userNotes } = parseNotes3D(mark.notes);
+                  const lateralityLabel = getBodyLateralityLabel(mark.laterality);
                   return (
                     <li key={mark.localId}>
                       <button
@@ -473,10 +494,9 @@ export function PatientBodyMapPanel({
                             {mark.bodyPart
                               ? `${mark.bodyPart} · `
                               : ""}
+                            {lateralityLabel ? `${lateralityLabel} · ` : ""}
                             {getBodyViewSideLabel(mark.viewSide)}
-                            {userNotes || mark.notes
-                              ? ` — ${userNotes || mark.notes}`
-                              : ""}
+                            {mark.notes ? ` — ${mark.notes}` : ""}
                           </span>
                         </span>
                       </button>
@@ -568,12 +588,41 @@ export function PatientBodyMapPanel({
             ) : null}
 
             <div className="space-y-2">
+              <Label htmlFor="body-mark-laterality">Lado acometido</Label>
+              <Select
+                value={laterality ?? "__none__"}
+                items={lateralityItems}
+                onValueChange={(value) =>
+                  setLaterality(
+                    !value || value === "__none__"
+                      ? null
+                      : (value as BodyLaterality)
+                  )
+                }
+              >
+                <SelectTrigger id="body-mark-laterality" className="h-11">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="__none__">Não informado</SelectItem>
+                    {BODY_LATERALITY_OPTIONS.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="body-mark-notes">Observações</Label>
               <Textarea
                 id="body-mark-notes"
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
-                placeholder="Ex.: dor ao movimento, cicatriz cirúrgica..."
+                placeholder="Ex.: dor ao movimento, cicatriz cirúrgica, cuidados no atendimento..."
                 rows={3}
                 className="min-h-[5.5rem]"
               />

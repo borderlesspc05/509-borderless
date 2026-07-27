@@ -15,6 +15,14 @@ export const BODY_VIEW_SIDES = [
 
 export type BodyViewSide = (typeof BODY_VIEW_SIDES)[number]["value"];
 
+export const BODY_LATERALITY_OPTIONS = [
+  { value: "right", label: "Direito" },
+  { value: "left", label: "Esquerdo" },
+  { value: "bilateral", label: "Bilateral" },
+] as const;
+
+export type BodyLaterality = (typeof BODY_LATERALITY_OPTIONS)[number]["value"];
+
 export function getBodyMarkTypeLabel(type: string) {
   return BODY_MARK_TYPES.find((item) => item.value === type)?.label ?? type;
 }
@@ -35,4 +43,11 @@ export function getBodyMarkTypeColorClass(type: string) {
 
 export function getBodyViewSideLabel(side: string) {
   return BODY_VIEW_SIDES.find((item) => item.value === side)?.label ?? side;
+}
+
+export function getBodyLateralityLabel(value: string | null | undefined) {
+  if (!value) return null;
+  return (
+    BODY_LATERALITY_OPTIONS.find((item) => item.value === value)?.label ?? value
+  );
 }

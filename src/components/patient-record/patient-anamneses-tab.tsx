@@ -10,13 +10,97 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  ALTERACAO_MUSCULOESQUELETICA_OPTIONS,
+  COMPORTAMENTO_OPTIONS,
+  COMPONENTES_MOTORES_OPTIONS,
+  DESENVOLVIMENTO_MOTOR_OPTIONS,
+  getAvdNivelLabel,
+  getQualidadeLabel,
+  type AnamnesisFisioterapiaFormData,
+} from "@/lib/anamnesis-fisioterapia";
 import { formatPatientDateTime } from "@/lib/patient-format";
+
+const ANAMNESIS_TYPE_LABELS: Record<string, string> = {
+  fisioterapia: "Fisioterapia",
+  terapia_ocupacional: "Terapia Ocupacional",
+};
+
+function selectedLabels(
+  values: Record<string, boolean> | undefined,
+  options: readonly { key: string; label: string }[]
+) {
+  if (!values) return "—";
+  const labels = options
+    .filter((option) => values[option.key])
+    .map((option) => option.label);
+  return labels.length > 0 ? labels.join(", ") : "—";
+}
+
+function FisioterapiaSummary({ data }: { data: AnamnesisFisioterapiaFormData }) {
+  return (
+    <div className="space-y-3 text-sm text-muted-foreground">
+      <p>
+        <span className="font-medium text-foreground">Queixa principal:</span>{" "}
+        {data.diagnosticoQueixaPrincipal || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Queixa funcional:</span>{" "}
+        {data.queixaFuncional || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Desenvolvimento:</span>{" "}
+        {selectedLabels(data.desenvolvimento, DESENVOLVIMENTO_MOTOR_OPTIONS)}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Musculoesquelético:</span>{" "}
+        {selectedLabels(
+          data.alteracaoMusculoEsqueletica,
+          ALTERACAO_MUSCULOESQUELETICA_OPTIONS
+        )}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Componentes motores:</span>{" "}
+        {selectedLabels(data.componentesMotores, COMPONENTES_MOTORES_OPTIONS)}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Dominância:</span>{" "}
+        {data.dominancia || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Compreensão / imitação:</span>{" "}
+        {getQualidadeLabel(data.compreensao || "")} /{" "}
+        {getQualidadeLabel(data.imitacaoMotora || "")}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Comportamento:</span>{" "}
+        {selectedLabels(data.comportamento, COMPORTAMENTO_OPTIONS)}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">AVDs:</span> higiene{" "}
+        {getAvdNivelLabel(data.avd?.higiene?.nivel || "")}, banho{" "}
+        {getAvdNivelLabel(data.avd?.banho?.nivel || "")}, vestuário{" "}
+        {getAvdNivelLabel(data.avd?.vestuario?.nivel || "")}, alimentação{" "}
+        {getAvdNivelLabel(data.avd?.alimentacao?.nivel || "")}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Objetivos da família:</span>{" "}
+        {data.objetivosFamilia || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Objetivos funcionais:</span>{" "}
+        {data.objetivosFuncionais || "—"}
+      </p>
+    </div>
+  );
+}
 
 export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
   const [anamneses, setAnamneses] = useState<AnamnesisRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedType, setSelectedType] = useState<string>("fisioterapia");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const loadAnamneses = async () => {
     setIsLoading(true);
@@ -92,18 +176,54 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
               />
             ) : (
               <div className="space-y-3">
-                {anamneses.map(anamnese => (
-                  <div key={anamnese.id} className="flex flex-col gap-2 rounded-xl border border-border/80 bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="space-y-1">
-                      <p className="font-medium capitalize text-foreground">
-                        <FileText className="mr-2 inline size-4 text-primary" />
-                        Anamnese de {anamnese.anamnesisType.replace("_", " ")}
-                      </p>
-                      <p className="text-sm text-muted-foreground">Criado em {formatPatientDateTime(anamnese.createdAt)}</p>
+                {anamneses.map((anamnese) => {
+                  const isExpanded = expandedId === anamnese.id;
+                  const typeLabel =
+                    ANAMNESIS_TYPE_LABELS[anamnese.anamnesisType] ??
+                    anamnese.anamnesisType.replace(/_/g, " ");
+
+                  return (
+                    <div
+                      key={anamnese.id}
+                      className="rounded-xl border border-border/80 bg-card p-4"
+                    >
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="space-y-1">
+                          <p className="font-medium text-foreground">
+                            <FileText className="mr-2 inline size-4 text-primary" />
+                            Anamnese de {typeLabel}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Criado em {formatPatientDateTime(anamnese.createdAt)}
+                          </p>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            setExpandedId(isExpanded ? null : anamnese.id)
+                          }
+                        >
+                          {isExpanded ? "Ocultar" : "Ver resumo"}
+                        </Button>
+                      </div>
+                      {isExpanded ? (
+                        <div className="mt-4 border-t border-border/60 pt-4">
+                          {anamnese.anamnesisType === "fisioterapia" ? (
+                            <FisioterapiaSummary
+                              data={anamnese.formData as AnamnesisFisioterapiaFormData}
+                            />
+                          ) : (
+                            <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-xs text-muted-foreground">
+                              {JSON.stringify(anamnese.formData, null, 2)}
+                            </pre>
+                          )}
+                        </div>
+                      ) : null}
                     </div>
-                    {/* Aqui poderia abrir um modal de visualização dos dados JSON */}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </CardContent>

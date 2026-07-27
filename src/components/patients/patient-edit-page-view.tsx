@@ -172,7 +172,7 @@ export function PatientEditPageView({ patient }: PatientEditPageViewProps) {
                   value="mapa"
                   className="rounded-lg border border-transparent px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground data-active:border-transparent data-active:bg-primary data-active:text-primary-foreground sm:text-sm"
                 >
-                  Mapa corporal
+                  Mapa corporal (bonequinho)
                 </TabsTrigger>
                 <TabsTrigger
                   value="anexos"

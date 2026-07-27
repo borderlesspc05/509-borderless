@@ -37,6 +37,7 @@ import {
 } from "@/components/clinical-evolution/rich-text-editor";
 import { HomeActivitiesPanel } from "@/components/home-activities/home-activities-panel";
 import { PatientAnamnesesTab } from "@/components/patient-record/patient-anamneses-tab";
+import { PatientTherapeuticPlanPanel } from "@/components/patient-record/patient-therapeutic-plan-panel";
 import { PatientBodyMapPanel } from "@/components/patients/patient-body-map-panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -359,6 +360,7 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
           <TabsTrigger value="evolucoes">Evoluções</TabsTrigger>
           <TabsTrigger value="anamneses">Anamneses</TabsTrigger>
           <TabsTrigger value="mapa-corporal">Mapa corporal</TabsTrigger>
+          <TabsTrigger value="planejamento">Planejamento</TabsTrigger>
           <TabsTrigger value="relatorios">Relatórios</TabsTrigger>
           <TabsTrigger value="orientacoes">Orientações à família</TabsTrigger>
           <TabsTrigger value="programas">Programas</TabsTrigger>
@@ -720,17 +722,22 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MapPin className="size-5 text-primary" />
-                Mapa corporal
+                Mapa corporal (bonequinho 3D)
               </CardTitle>
               <CardDescription>
-                Marcações de dor, lesão, ausência de membro e outras
-                informações clínicas visíveis para toda a equipe.
+                Manequim anatômico para marcar dor, lesão, cicatriz e outras
+                observações clínicas — visível para toda a equipe. Toque no
+                corpo para registrar a região acometida.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <PatientBodyMapPanel patientId={patient.id} />
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="planejamento">
+          <PatientTherapeuticPlanPanel patientId={patient.id} />
         </TabsContent>
 
         <TabsContent value="relatorios" className="space-y-4">

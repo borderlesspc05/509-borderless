@@ -511,6 +511,42 @@ export type Database = {
         };
         Relationships: [];
       };
+      patient_therapeutic_plans: {
+        Row: {
+          id: string;
+          patient_id: string;
+          professional_id: string;
+          short_term_goals: string;
+          medium_term_goals: string;
+          long_term_goals: string;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          patient_id: string;
+          professional_id: string;
+          short_term_goals?: string;
+          medium_term_goals?: string;
+          long_term_goals?: string;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          patient_id?: string;
+          professional_id?: string;
+          short_term_goals?: string;
+          medium_term_goals?: string;
+          long_term_goals?: string;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       clinical_evolution_records: {
         Row: {
           id: string;
@@ -1796,6 +1832,9 @@ export type DocumentTemplateRow =
 
 export type PatientBodyMarkRow =
   Database["public"]["Tables"]["patient_body_marks"]["Row"];
+
+export type PatientTherapeuticPlanRow =
+  Database["public"]["Tables"]["patient_therapeutic_plans"]["Row"];
 
 export type ClinicSettingsRow =
   Database["public"]["Tables"]["clinic_settings"]["Row"];

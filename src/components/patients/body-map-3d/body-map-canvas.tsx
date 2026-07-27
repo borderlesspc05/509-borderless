@@ -124,16 +124,18 @@ function Scene({
 
   return (
     <>
-      <color attach="background" args={["#0b1220"]} />
-      <ambientLight intensity={0.55} />
+      <color attach="background" args={["#121926"]} />
+      <hemisphereLight args={["#f0e6dc", "#1a2332", 0.55]} />
+      <ambientLight intensity={0.35} />
       <directionalLight
-        position={[2.2, 4.5, 2.8]}
-        intensity={1.15}
+        position={[2.4, 4.8, 3.2]}
+        intensity={1.35}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
-      <directionalLight position={[-2.5, 2, -1.5]} intensity={0.35} />
+      <directionalLight position={[-2.8, 2.2, -1.2]} intensity={0.45} color="#c8d4e8" />
+      <directionalLight position={[0.2, 1.5, 3.5]} intensity={0.35} color="#fff6ee" />
 
       <group position={[0, -metrics.totalHeight * 0.48, 0]}>
         <CodedBody
@@ -165,10 +167,10 @@ function Scene({
         />
         <ContactShadows
           position={[0, 0.01, 0]}
-          opacity={0.35}
-          scale={3.2}
-          blur={2.2}
-          far={2.5}
+          opacity={0.42}
+          scale={3.4}
+          blur={2.4}
+          far={2.8}
         />
       </group>
 
@@ -197,7 +199,7 @@ export function BodyMapCanvas({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl border border-border/70 bg-[#0b1220]",
+        "relative overflow-hidden rounded-xl border border-border/70 bg-[#121926]",
         "h-[min(62vh,28rem)] min-h-[16rem] w-full touch-none sm:h-[min(68vh,32rem)]",
         className
       )}

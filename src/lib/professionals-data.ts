@@ -9,6 +9,7 @@ export const PROFESSIONAL_ROLES = [
   "Musicoterapeuta",
   "Neuropsicólogo",
   "Psicopedagoga",
+  "Fisioterapeuta",
 ] as const;
 
 export type ProfessionalRole = (typeof PROFESSIONAL_ROLES)[number];

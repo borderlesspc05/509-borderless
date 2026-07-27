@@ -1,4 +1,5 @@
 import { DEMUCA_TEMPLATE_NAME } from "@/lib/demuca";
+import { DICCAO_TEMPLATE_NAME } from "@/lib/diccao";
 import { EBAI_TEMPLATE_NAME } from "@/lib/ebai";
 import { PEDI_TEMPLATE_NAME } from "@/lib/pedi";
 import { SENSORY_PROFILE_TEMPLATE_NAME } from "@/lib/sensory-profile";
@@ -11,6 +12,7 @@ export const ASSESSMENT_APPLY_ROUTES: Record<string, string> = {
   [SENSORY_PROFILE_TEMPLATE_NAME]: "/dashboard/avaliacoes/perfil-sensorial",
   [EBAI_TEMPLATE_NAME]: "/dashboard/avaliacoes/ebai",
   [DEMUCA_TEMPLATE_NAME]: "/dashboard/avaliacoes/demuca",
+  [DICCAO_TEMPLATE_NAME]: "/dashboard/avaliacoes/diccao",
 };
 
 /** Instrumentos com tela de aplicação — usado no hub de atendimento. */
@@ -41,7 +43,14 @@ export const APPLICABLE_ASSESSMENTS = [
     href: ASSESSMENT_APPLY_ROUTES[DEMUCA_TEMPLATE_NAME],
     buttonLabel: "DEMUCA",
     description:
-      "Desenvolvimento Motor e Habilidades Funcionais da Criança.",
+      "Escala de Desenvolvimento Musical da Criança com Autismo (DEMUCA 2.0).",
+  },
+  {
+    name: DICCAO_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[DICCAO_TEMPLATE_NAME],
+    buttonLabel: "Dicção",
+    description:
+      "Protocolo adaptado de articulação, fonação, diadocinesia e mobilidade orofacial.",
   },
 ] as const;
 

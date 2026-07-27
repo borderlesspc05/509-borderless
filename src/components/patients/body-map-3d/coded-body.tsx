@@ -10,11 +10,11 @@ import {
   type DerivedBodyMetrics,
 } from "@/lib/body-map-3d/proportions";
 
-/** Tom clínico azul-acinzentado (referência visual tipo manequim). */
+/** Tom de pele clínico (manequim anatômico, não cinza metálico). */
 const SKIN = {
-  color: "#a8b7c8",
-  roughness: 0.72,
-  metalness: 0.06,
+  color: "#d4b8a0",
+  roughness: 0.55,
+  metalness: 0.02,
 } as const;
 
 type ClickHandler = (point: THREE.Vector3, partName: string) => void;
@@ -44,38 +44,63 @@ function getClickProps(name: string, onPartClick?: ClickHandler) {
 }
 
 function SoftMaterial() {
-  return <meshStandardMaterial {...SKIN} />;
+  return (
+    <meshStandardMaterial
+      color={SKIN.color}
+      roughness={SKIN.roughness}
+      metalness={SKIN.metalness}
+      flatShading={false}
+    />
+  );
 }
 
-/** Cápsula afilada (ombro→cotovelo, coxa→joelho…). */
-function CapsuleLimb({
+/**
+ * Segmento de membro como cápsula ao longo do eixo Y local,
+ * posicionada entre dois pontos do mundo (com sobreposição nas articulações).
+ */
+function LimbSegment({
   name,
-  position,
-  rotation,
+  from,
+  to,
   radius,
-  length,
+  overlap = 0.12,
   onPartClick,
 }: {
   name: string;
-  position: [number, number, number];
-  rotation?: [number, number, number];
+  from: THREE.Vector3;
+  to: THREE.Vector3;
   radius: number;
-  length: number;
+  /** Fração extra de comprimento para fundir nas juntas (0–0.25). */
+  overlap?: number;
   onPartClick?: ClickHandler;
 }) {
+  const { position, quaternion, height } = useMemo(() => {
+    const direction = new THREE.Vector3().subVectors(to, from);
+    const distance = direction.length();
+    const mid = new THREE.Vector3().addVectors(from, to).multiplyScalar(0.5);
+    const extended = Math.max(0.04, distance * (1 + overlap));
+    const quat = new THREE.Quaternion().setFromUnitVectors(
+      new THREE.Vector3(0, 1, 0),
+      direction.clone().normalize()
+    );
+    return {
+      position: mid.toArray() as [number, number, number],
+      quaternion: quat,
+      height: Math.max(0.02, extended - radius * 2),
+    };
+  }, [from, to, radius, overlap]);
+
   const click = getClickProps(name, onPartClick);
-  // CapsuleGeometry: height = distância entre centros das hemisferas
-  const height = Math.max(0.02, length - radius * 2);
 
   return (
-    <mesh {...click} position={position} rotation={rotation}>
-      <capsuleGeometry args={[radius, height, 8, 16]} />
+    <mesh {...click} position={position} quaternion={quaternion}>
+      <capsuleGeometry args={[radius, height, 10, 20]} />
       <SoftMaterial />
     </mesh>
   );
 }
 
-function Ball({
+function SoftSphere({
   name,
   position,
   radius,
@@ -91,363 +116,332 @@ function Ball({
   const click = getClickProps(name, onPartClick);
   return (
     <mesh {...click} position={position} scale={scale}>
-      <sphereGeometry args={[radius, 28, 28]} />
+      <sphereGeometry args={[radius, 32, 32]} />
       <SoftMaterial />
     </mesh>
   );
 }
 
+/** Perfil suave ombro → peito → cintura → quadril (lathe). */
 function buildTorsoProfile(m: DerivedBodyMetrics): THREE.Vector2[] {
   const isChild = m.type === "child";
-  const topY = m.shoulderY;
-  const bottomY = m.crotchY + m.H * 0.08;
+  const topY = m.shoulderY + m.H * 0.06;
+  const bottomY = m.crotchY + m.H * 0.02;
   const h = topY - bottomY;
 
-  // Raios relativos (silhueta ombro → peito → cintura → quadril)
-  const shoulderR = m.torsoWidthTop * 0.48;
-  const chestR = shoulderR * (isChild ? 0.92 : 0.95);
-  const waistR = shoulderR * (isChild ? 0.78 : 0.68);
-  const hipR = m.torsoWidthBottom * 0.52;
-  const pelvisR = hipR * 0.9;
+  const shoulderR = m.torsoWidthTop * 0.5;
+  const chestR = shoulderR * (isChild ? 0.9 : 0.93);
+  const waistR = shoulderR * (isChild ? 0.72 : 0.62);
+  const hipR = m.torsoWidthBottom * 0.5;
+  const pelvisR = hipR * 0.82;
 
   const samples: Array<[number, number]> = [
-    [0.0, pelvisR * 0.55],
-    [0.08, pelvisR * 0.85],
-    [0.18, hipR],
-    [0.32, hipR * 0.98],
-    [0.45, waistR * 1.05],
-    [0.55, waistR],
-    [0.68, chestR * 0.92],
-    [0.8, chestR],
-    [0.9, shoulderR * 0.96],
-    [1.0, shoulderR * 0.72],
+    [0.0, pelvisR * 0.35],
+    [0.06, pelvisR * 0.75],
+    [0.14, hipR],
+    [0.26, hipR * 0.98],
+    [0.38, waistR * 1.08],
+    [0.48, waistR],
+    [0.6, waistR * 1.05],
+    [0.72, chestR * 0.95],
+    [0.84, chestR],
+    [0.93, shoulderR * 0.98],
+    [0.98, shoulderR * 0.88],
+    [1.0, shoulderR * 0.55],
   ];
 
   return samples.map(([t, r]) => new THREE.Vector2(r, bottomY + t * h));
 }
 
 /**
- * Manequim clínico orgânico em primitivas (cápsulas, lathe, esferas).
- * A-pose, tronco com cintura/quadril, membros afilados — sem .glb.
+ * Manequim clínico contínuo: tronco orgânico + membros sobrepostos nas juntas.
+ * A-pose, silhueta humana — sem gaps entre cápsulas.
  */
 export function CodedBody({ type, onPartClick }: CodedBodyProps) {
   const m = useMemo(() => deriveBodyMetrics(type), [type]);
   const torsoPoints = useMemo(() => buildTorsoProfile(m), [m]);
 
-  // A-pose: braços abertos ~18°
-  const armOut = (18 * Math.PI) / 180;
-  const shoulderDrop = m.H * 0.04;
+  const layout = useMemo(() => {
+    const armOut = (22 * Math.PI) / 180;
+    const legOut = (5 * Math.PI) / 180;
+    const shoulderDrop = m.H * 0.02;
 
-  const shoulderLX = -m.shoulderHalfWidth * 0.92;
-  const shoulderRX = m.shoulderHalfWidth * 0.92;
-  const shoulderY = m.shoulderY - shoulderDrop;
+    const shoulderLX = -m.shoulderHalfWidth * 0.95;
+    const shoulderRX = m.shoulderHalfWidth * 0.95;
+    const shoulderY = m.shoulderY - shoulderDrop;
 
-  // Braço esquerdo em A-pose (local: -X, -Y)
-  const upperArmMidL: [number, number, number] = [
-    shoulderLX - Math.sin(armOut) * (m.upperArmLen * 0.5),
-    shoulderY - Math.cos(armOut) * (m.upperArmLen * 0.5),
-    0,
-  ];
-  const elbowL: [number, number, number] = [
-    shoulderLX - Math.sin(armOut) * m.upperArmLen,
-    shoulderY - Math.cos(armOut) * m.upperArmLen,
-    0.02,
-  ];
-  const forearmMidL: [number, number, number] = [
-    elbowL[0] - Math.sin(armOut * 0.85) * (m.forearmLen * 0.5),
-    elbowL[1] - Math.cos(armOut * 0.85) * (m.forearmLen * 0.5),
-    0.02,
-  ];
-  const wristL: [number, number, number] = [
-    elbowL[0] - Math.sin(armOut * 0.85) * m.forearmLen,
-    elbowL[1] - Math.cos(armOut * 0.85) * m.forearmLen,
-    0.03,
-  ];
+    const dirL = new THREE.Vector3(-Math.sin(armOut), -Math.cos(armOut), 0);
+    const dirR = new THREE.Vector3(Math.sin(armOut), -Math.cos(armOut), 0);
 
-  const upperArmMidR: [number, number, number] = [
-    -upperArmMidL[0],
-    upperArmMidL[1],
-    upperArmMidL[2],
-  ];
-  const elbowR: [number, number, number] = [
-    -elbowL[0],
-    elbowL[1],
-    elbowL[2],
-  ];
-  const forearmMidR: [number, number, number] = [
-    -forearmMidL[0],
-    forearmMidL[1],
-    forearmMidL[2],
-  ];
-  const wristR: [number, number, number] = [
-    -wristL[0],
-    wristL[1],
-    wristL[2],
-  ];
+    const shoulderL = new THREE.Vector3(shoulderLX, shoulderY, 0);
+    const elbowL = shoulderL
+      .clone()
+      .add(dirL.clone().multiplyScalar(m.upperArmLen));
+    const wristL = elbowL
+      .clone()
+      .add(
+        new THREE.Vector3(
+          -Math.sin(armOut * 0.9),
+          -Math.cos(armOut * 0.9),
+          0.02
+        ).multiplyScalar(m.forearmLen)
+      );
 
-  const hipLX = -m.hipHalfWidth * 0.78;
-  const hipRX = m.hipHalfWidth * 0.78;
-  const hipY = m.crotchY + m.H * 0.12;
+    const shoulderR = new THREE.Vector3(shoulderRX, shoulderY, 0);
+    const elbowR = shoulderR
+      .clone()
+      .add(dirR.clone().multiplyScalar(m.upperArmLen));
+    const wristR = elbowR
+      .clone()
+      .add(
+        new THREE.Vector3(
+          Math.sin(armOut * 0.9),
+          -Math.cos(armOut * 0.9),
+          0.02
+        ).multiplyScalar(m.forearmLen)
+      );
 
-  // Leve abertura das pernas
-  const legOut = (4 * Math.PI) / 180;
+    const hipLX = -m.hipHalfWidth * 0.72;
+    const hipRX = m.hipHalfWidth * 0.72;
+    const hipY = m.crotchY + m.H * 0.14;
 
-  const thighMidL: [number, number, number] = [
-    hipLX - Math.sin(legOut) * (m.thighLen * 0.45),
-    (hipY + m.kneeY) / 2,
-    0,
-  ];
-  const kneeL: [number, number, number] = [
-    hipLX - Math.sin(legOut) * m.thighLen * 0.9,
-    m.kneeY,
-    0.01,
-  ];
-  const calfMidL: [number, number, number] = [
-    kneeL[0] - Math.sin(legOut * 0.5) * (m.calfLen * 0.45),
-    (m.kneeY + m.ankleY) / 2,
-    0.01,
-  ];
-  const ankleL: [number, number, number] = [
-    kneeL[0] - Math.sin(legOut * 0.5) * m.calfLen * 0.85,
-    m.ankleY,
-    0.02,
-  ];
+    const hipL = new THREE.Vector3(hipLX, hipY, 0);
+    const kneeL = new THREE.Vector3(
+      hipLX - Math.sin(legOut) * m.thighLen * 0.95,
+      m.kneeY,
+      0.01
+    );
+    const ankleL = new THREE.Vector3(
+      kneeL.x - Math.sin(legOut * 0.4) * m.calfLen * 0.92,
+      m.ankleY,
+      0.02
+    );
 
-  const thighMidR: [number, number, number] = [
-    -thighMidL[0],
-    thighMidL[1],
-    thighMidL[2],
-  ];
-  const kneeR: [number, number, number] = [-kneeL[0], kneeL[1], kneeL[2]];
-  const calfMidR: [number, number, number] = [
-    -calfMidL[0],
-    calfMidL[1],
-    calfMidL[2],
-  ];
-  const ankleR: [number, number, number] = [-ankleL[0], ankleL[1], ankleL[2]];
+    const hipR = new THREE.Vector3(hipRX, hipY, 0);
+    const kneeR = new THREE.Vector3(-kneeL.x, kneeL.y, kneeL.z);
+    const ankleR = new THREE.Vector3(-ankleL.x, ankleL.y, ankleL.z);
 
-  const armRotL: [number, number, number] = [0, 0, armOut];
-  const armRotR: [number, number, number] = [0, 0, -armOut];
-  const legRotL: [number, number, number] = [0, 0, legOut];
-  const legRotR: [number, number, number] = [0, 0, -legOut];
+    return {
+      shoulderL,
+      elbowL,
+      wristL,
+      shoulderR,
+      elbowR,
+      wristR,
+      hipL,
+      kneeL,
+      ankleL,
+      hipR,
+      kneeR,
+      ankleR,
+    };
+  }, [m]);
 
-  const chestZ = m.torsoDepth * 0.28;
-  const bellyZ = m.torsoDepth * 0.22;
   const isChild = type === "child";
+  const depthScale = m.torsoDepth / (m.torsoWidthTop * 0.52);
 
   return (
     <group>
-      {/* ——— Cabeça (oval) ——— */}
-      <Ball
+      {/* Cabeça */}
+      <SoftSphere
         name="Cabeça"
         position={[0, m.headCenterY, 0]}
         radius={m.headR}
-        scale={[0.92, 1.12, 0.98]}
+        scale={isChild ? [0.95, 1.08, 0.98] : [0.9, 1.15, 0.95]}
         onPartClick={onPartClick}
       />
-      {/* Nariz sutil */}
-      <Ball
+      {/* Queixo / transição para o pescoço */}
+      <SoftSphere
         name="Cabeça"
-        position={[0, m.headCenterY - m.headR * 0.05, m.headR * 0.78]}
-        radius={m.headR * 0.14}
-        scale={[0.7, 1.1, 1.3]}
+        position={[0, m.chinY + m.headR * 0.08, m.headR * 0.12]}
+        radius={m.headR * 0.42}
+        scale={[0.85, 0.7, 0.9]}
         onPartClick={onPartClick}
       />
 
-      {/* ——— Pescoço ——— */}
-      <CapsuleLimb
+      {/* Pescoço — funde cabeça e tronco */}
+      <LimbSegment
         name="Pescoço"
-        position={[0, m.neckCenterY, 0]}
-        radius={m.neckR * 0.95}
-        length={m.neckH * 1.15}
+        from={new THREE.Vector3(0, m.chinY + m.H * 0.04, 0)}
+        to={new THREE.Vector3(0, m.shoulderY + m.H * 0.08, 0)}
+        radius={m.neckR}
+        overlap={0.2}
         onPartClick={onPartClick}
       />
 
-      {/* ——— Tronco (Lathe = silhueta orgânica) ——— */}
+      {/* Tronco orgânico contínuo */}
       <mesh
         {...getClickProps("Tronco", onPartClick)}
-        scale={[1, 1, m.torsoDepth / (m.torsoWidthTop * 0.55)]}
+        scale={[1, 1, Math.min(1.15, Math.max(0.75, depthScale))]}
       >
-        <latheGeometry args={[torsoPoints, 48]} />
+        <latheGeometry args={[torsoPoints, 64]} />
         <SoftMaterial />
       </mesh>
 
-      {/* Volume peitoral / abdomen (sobreposição suave) */}
-      <Ball
-        name="Tronco"
-        position={[0, m.chestY, chestZ * 0.35]}
-        radius={m.H * (isChild ? 0.28 : 0.32)}
-        scale={[1.35, 0.85, 0.7]}
-        onPartClick={onPartClick}
-      />
-      <Ball
-        name="Tronco"
-        position={[0, m.navelY, bellyZ * 0.4]}
-        radius={m.H * (isChild ? 0.26 : 0.28)}
-        scale={[1.15, 0.95, 0.75]}
-        onPartClick={onPartClick}
-      />
-      {/* Quadril / glúteo */}
-      <Ball
-        name="Tronco"
-        position={[0, m.crotchY + m.H * 0.22, -m.torsoDepth * 0.15]}
-        radius={m.H * 0.3}
-        scale={[1.45, 0.75, 0.85]}
-        onPartClick={onPartClick}
-      />
-
-      {/* ——— Ombros ——— */}
-      <Ball
+      {/* Ombros fundidos no tronco */}
+      <SoftSphere
         name="Ombro esquerdo"
-        position={[shoulderLX, shoulderY, 0]}
-        radius={m.jointR * 1.05}
+        position={[layout.shoulderL.x, layout.shoulderL.y, 0]}
+        radius={m.jointR * 1.25}
+        scale={[1.15, 1.05, 1.1]}
         onPartClick={onPartClick}
       />
-      <Ball
+      <SoftSphere
         name="Ombro direito"
-        position={[shoulderRX, shoulderY, 0]}
-        radius={m.jointR * 1.05}
+        position={[layout.shoulderR.x, layout.shoulderR.y, 0]}
+        radius={m.jointR * 1.25}
+        scale={[1.15, 1.05, 1.1]}
         onPartClick={onPartClick}
       />
 
-      {/* ——— Braços (A-pose) ——— */}
-      <CapsuleLimb
+      {/* Braços — segmentos sobrepostos */}
+      <LimbSegment
         name="Braço esquerdo"
-        position={upperArmMidL}
-        rotation={armRotL}
+        from={layout.shoulderL}
+        to={layout.elbowL}
         radius={m.upperArmR}
-        length={m.upperArmLen}
+        overlap={0.18}
         onPartClick={onPartClick}
       />
-      <CapsuleLimb
+      <LimbSegment
         name="Braço direito"
-        position={upperArmMidR}
-        rotation={armRotR}
+        from={layout.shoulderR}
+        to={layout.elbowR}
         radius={m.upperArmR}
-        length={m.upperArmLen}
+        overlap={0.18}
         onPartClick={onPartClick}
       />
-      <Ball
+      <SoftSphere
         name="Cotovelo esquerdo"
-        position={elbowL}
-        radius={m.jointR * 0.78}
+        position={layout.elbowL.toArray() as [number, number, number]}
+        radius={m.jointR * 0.95}
         onPartClick={onPartClick}
       />
-      <Ball
+      <SoftSphere
         name="Cotovelo direito"
-        position={elbowR}
-        radius={m.jointR * 0.78}
+        position={layout.elbowR.toArray() as [number, number, number]}
+        radius={m.jointR * 0.95}
         onPartClick={onPartClick}
       />
-      <CapsuleLimb
+      <LimbSegment
         name="Antebraço esquerdo"
-        position={forearmMidL}
-        rotation={[0, 0, armOut * 0.85]}
+        from={layout.elbowL}
+        to={layout.wristL}
         radius={m.forearmR}
-        length={m.forearmLen}
+        overlap={0.18}
         onPartClick={onPartClick}
       />
-      <CapsuleLimb
+      <LimbSegment
         name="Antebraço direito"
-        position={forearmMidR}
-        rotation={[0, 0, -armOut * 0.85]}
+        from={layout.elbowR}
+        to={layout.wristR}
         radius={m.forearmR}
-        length={m.forearmLen}
+        overlap={0.18}
         onPartClick={onPartClick}
       />
 
       {/* Mãos */}
-      <Ball
+      <SoftSphere
         name="Mão esquerda"
-        position={wristL}
+        position={layout.wristL.toArray() as [number, number, number]}
         radius={m.handR}
-        scale={[0.7, 1.15, 0.45]}
+        scale={[0.65, 1.2, 0.4]}
         onPartClick={onPartClick}
       />
-      <Ball
+      <SoftSphere
         name="Mão direita"
-        position={wristR}
+        position={layout.wristR.toArray() as [number, number, number]}
         radius={m.handR}
-        scale={[0.7, 1.15, 0.45]}
+        scale={[0.65, 1.2, 0.4]}
         onPartClick={onPartClick}
       />
 
-      {/* ——— Quadril / pernas ——— */}
-      <Ball
+      {/* Quadris + pernas contínuas */}
+      <SoftSphere
         name="Quadril esquerdo"
-        position={[hipLX, hipY, 0]}
-        radius={m.jointR * 1.15}
-        scale={[1.1, 1, 1.05]}
+        position={layout.hipL.toArray() as [number, number, number]}
+        radius={m.jointR * 1.35}
+        scale={[1.2, 1.1, 1.15]}
         onPartClick={onPartClick}
       />
-      <Ball
+      <SoftSphere
         name="Quadril direito"
-        position={[hipRX, hipY, 0]}
-        radius={m.jointR * 1.15}
-        scale={[1.1, 1, 1.05]}
+        position={layout.hipR.toArray() as [number, number, number]}
+        radius={m.jointR * 1.35}
+        scale={[1.2, 1.1, 1.15]}
         onPartClick={onPartClick}
       />
 
-      <CapsuleLimb
+      <LimbSegment
         name="Coxa esquerda"
-        position={thighMidL}
-        rotation={legRotL}
+        from={layout.hipL}
+        to={layout.kneeL}
         radius={m.thighR}
-        length={m.thighLen}
+        overlap={0.16}
         onPartClick={onPartClick}
       />
-      <CapsuleLimb
+      <LimbSegment
         name="Coxa direita"
-        position={thighMidR}
-        rotation={legRotR}
+        from={layout.hipR}
+        to={layout.kneeR}
         radius={m.thighR}
-        length={m.thighLen}
+        overlap={0.16}
         onPartClick={onPartClick}
       />
-      <Ball
+      <SoftSphere
         name="Joelho esquerdo"
-        position={kneeL}
-        radius={m.jointR * 0.88}
+        position={layout.kneeL.toArray() as [number, number, number]}
+        radius={m.jointR * 1.05}
         onPartClick={onPartClick}
       />
-      <Ball
+      <SoftSphere
         name="Joelho direito"
-        position={kneeR}
-        radius={m.jointR * 0.88}
+        position={layout.kneeR.toArray() as [number, number, number]}
+        radius={m.jointR * 1.05}
         onPartClick={onPartClick}
       />
-      <CapsuleLimb
+      <LimbSegment
         name="Panturrilha esquerda"
-        position={calfMidL}
-        rotation={[0, 0, legOut * 0.5]}
+        from={layout.kneeL}
+        to={layout.ankleL}
         radius={m.calfR}
-        length={m.calfLen}
+        overlap={0.16}
         onPartClick={onPartClick}
       />
-      <CapsuleLimb
+      <LimbSegment
         name="Panturrilha direita"
-        position={calfMidR}
-        rotation={[0, 0, -legOut * 0.5]}
+        from={layout.kneeR}
+        to={layout.ankleR}
         radius={m.calfR}
-        length={m.calfLen}
+        overlap={0.16}
         onPartClick={onPartClick}
       />
 
       {/* Pés */}
       <mesh
         {...getClickProps("Pé esquerdo", onPartClick)}
-        position={[ankleL[0], m.footR * 0.55, m.footLen * 0.22]}
-        scale={[1, 0.55, 1]}
+        position={[
+          layout.ankleL.x,
+          m.footR * 0.45,
+          layout.ankleL.z + m.footLen * 0.28,
+        ]}
+        rotation={[0.12, 0, 0]}
+        scale={[0.85, 0.45, 1.15]}
       >
-        <capsuleGeometry args={[m.footR * 0.85, m.footLen * 0.55, 6, 12]} />
+        <capsuleGeometry args={[m.footR, m.footLen * 0.45, 8, 16]} />
         <SoftMaterial />
       </mesh>
       <mesh
         {...getClickProps("Pé direito", onPartClick)}
-        position={[ankleR[0], m.footR * 0.55, m.footLen * 0.22]}
-        scale={[1, 0.55, 1]}
+        position={[
+          layout.ankleR.x,
+          m.footR * 0.45,
+          layout.ankleR.z + m.footLen * 0.28,
+        ]}
+        rotation={[0.12, 0, 0]}
+        scale={[0.85, 0.45, 1.15]}
       >
-        <capsuleGeometry args={[m.footR * 0.85, m.footLen * 0.55, 6, 12]} />
+        <capsuleGeometry args={[m.footR, m.footLen * 0.45, 8, 16]} />
         <SoftMaterial />
       </mesh>
     </group>

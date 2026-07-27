@@ -147,17 +147,17 @@ export function deriveBodyMetrics(type: BodyModelType): DerivedBodyMetrics {
     forearmLen,
     thighLen,
     calfLen,
-    upperArmR: H * 0.155,
-    forearmR: H * 0.12,
-    thighR: H * 0.195,
-    calfR: H * 0.135,
-    jointR: H * 0.155,
-    handR: H * 0.13,
-    footLen: H * 0.52,
-    footR: H * 0.11,
+    upperArmR: H * 0.17,
+    forearmR: H * 0.13,
+    thighR: H * 0.21,
+    calfR: H * 0.145,
+    jointR: H * 0.17,
+    handR: H * 0.135,
+    footLen: H * 0.55,
+    footR: H * 0.115,
     neckH,
-    neckR: H * 0.16,
-    headR: H * 0.46,
+    neckR: H * 0.175,
+    headR: H * 0.48,
   };
 }
 
@@ -209,6 +209,7 @@ export type BodyMap3DMeta = {
   z: number;
   part: string;
   model: BodyModelType;
+  laterality?: "right" | "left" | "bilateral" | null;
 };
 
 const META_PREFIX = "⟦mapa3d⟧";

@@ -51,7 +51,9 @@ alter table public.user_profiles
       'Terapeuta Ocupacional',
       'Supervisor Administrativo',
       'Musicoterapeuta',
-      'Neuropsicólogo'
+      'Neuropsicólogo',
+      'Psicopedagoga',
+      'Fisioterapeuta'
     )
   );
 
