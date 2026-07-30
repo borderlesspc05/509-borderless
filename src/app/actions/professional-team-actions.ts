@@ -1,6 +1,7 @@
 "use server";
 
 import { requirePermission } from "@/lib/auth-guard";
+import { syncPatientResponsibleProfessionals } from "@/lib/patient-access";
 import { getProfileLabel } from "@/lib/user-profile";
 import { normalizeRole, PERMISSIONS } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -38,6 +39,56 @@ function mapPatientTeamProfessional(
   };
 }
 
+async function listActiveClinicalProfessionals(): Promise<
+  | { ok: true; data: Pick<
+      UserProfileRow,
+      "id" | "full_name" | "professional_role" | "professional_council" | "profile"
+    >[] }
+  | { ok: false; error: string }
+> {
+  const supabase = await createServerSupabaseClient();
+
+  if (!supabase) {
+    return { ok: false, error: "Supabase não configurado." };
+  }
+
+  const { data, error } = await supabase
+    .from("user_profiles")
+    .select(
+      "id, full_name, professional_role, professional_council, profile, status"
+    )
+    .neq("profile", "RECEPCAO")
+    .eq("status", "active")
+    .order("full_name");
+
+  if (error) {
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true, data: data ?? [] };
+}
+
+export async function listAssignableProfessionalsAction(): Promise<
+  ActionResult<{ professionals: PatientTeamProfessional[] }>
+> {
+  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+
+  const result = await listActiveClinicalProfessionals();
+
+  if (!result.ok) {
+    return { success: false, error: result.error };
+  }
+
+  return {
+    success: true,
+    data: {
+      professionals: result.data.map((row) =>
+        mapPatientTeamProfessional(row, false)
+      ),
+    },
+  };
+}
+
 export async function getPatientTeamAction(
   patientId: string
 ): Promise<
@@ -46,7 +97,7 @@ export async function getPatientTeamAction(
     assignedCount: number;
   }>
 > {
-  await requirePermission(PERMISSIONS.PROFESSIONALS_VIEW);
+  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
 
   const supabase = await createServerSupabaseClient();
 
@@ -55,22 +106,15 @@ export async function getPatientTeamAction(
   }
 
   const [professionalsResult, assignmentsResult] = await Promise.all([
-    supabase
-      .from("user_profiles")
-      .select(
-        "id, full_name, professional_role, professional_council, profile, status"
-      )
-      .neq("profile", "RECEPCAO")
-      .eq("status", "active")
-      .order("full_name"),
+    listActiveClinicalProfessionals(),
     supabase
       .from("professional_patient_assignments")
       .select("professional_id")
       .eq("patient_id", patientId),
   ]);
 
-  if (professionalsResult.error) {
-    return { success: false, error: professionalsResult.error.message };
+  if (!professionalsResult.ok) {
+    return { success: false, error: professionalsResult.error };
   }
 
   if (assignmentsResult.error) {
@@ -81,7 +125,7 @@ export async function getPatientTeamAction(
     (assignmentsResult.data ?? []).map((row) => row.professional_id)
   );
 
-  const professionals = (professionalsResult.data ?? []).map((row) =>
+  const professionals = professionalsResult.data.map((row) =>
     mapPatientTeamProfessional(row, assignedProfessionalIds.has(row.id))
   );
 
@@ -100,40 +144,20 @@ export async function savePatientTeamAction(input: {
 }): Promise<ActionResult<{ assignedCount: number }>> {
   await requirePermission(PERMISSIONS.TEAM_MANAGE);
 
-  const supabase = await createServerSupabaseClient();
+  const syncResult = await syncPatientResponsibleProfessionals(
+    input.patientId,
+    input.professionalIds
+  );
 
-  if (!supabase) {
-    return { success: false, error: "Supabase não configurado." };
-  }
-
-  const { error: deleteError } = await supabase
-    .from("professional_patient_assignments")
-    .delete()
-    .eq("patient_id", input.patientId);
-
-  if (deleteError) {
-    return { success: false, error: deleteError.message };
-  }
-
-  if (input.professionalIds.length === 0) {
-    return { success: true, data: { assignedCount: 0 } };
-  }
-
-  const rows = input.professionalIds.map((professionalId) => ({
-    professional_id: professionalId,
-    patient_id: input.patientId,
-  }));
-
-  const { error: insertError } = await supabase
-    .from("professional_patient_assignments")
-    .insert(rows);
-
-  if (insertError) {
-    return { success: false, error: insertError.message };
+  if (!syncResult.ok) {
+    return { success: false, error: syncResult.error };
   }
 
   return {
     success: true,
-    data: { assignedCount: input.professionalIds.length },
+    data: {
+      assignedCount: [...new Set(input.professionalIds.filter(Boolean))]
+        .length,
+    },
   };
 }

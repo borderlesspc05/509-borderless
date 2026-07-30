@@ -1353,6 +1353,7 @@ export type Database = {
           category: string;
           body_html: string;
           status: "active" | "inactive";
+          clinical_areas: string[];
           created_at: string;
           updated_at: string;
         };
@@ -1362,6 +1363,7 @@ export type Database = {
           category: string;
           body_html?: string;
           status?: "active" | "inactive";
+          clinical_areas?: string[];
           created_at?: string;
           updated_at?: string;
         };
@@ -1371,6 +1373,7 @@ export type Database = {
           category?: string;
           body_html?: string;
           status?: "active" | "inactive";
+          clinical_areas?: string[];
           created_at?: string;
           updated_at?: string;
         };

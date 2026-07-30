@@ -1,8 +1,15 @@
 "use server";
 
 import { requirePermission } from "@/lib/auth-guard";
+import { requireServerUserSession } from "@/lib/auth-server";
+import {
+  clinicalAreasIntersect,
+  getClinicalAreasForSession,
+  normalizeClinicalAreas,
+  type ClinicalArea,
+} from "@/lib/clinical-areas";
 import type { DocumentTemplateCategory } from "@/lib/document-template-format";
-import { PERMISSIONS } from "@/lib/rbac";
+import { normalizeRole, PERMISSIONS, ROLES } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { DocumentTemplateRow } from "@/lib/supabase/database.types";
 
@@ -12,12 +19,22 @@ type ActionResult<T> = {
   data?: T;
 };
 
+function sessionCanSeeAllAreas(session: {
+  isMaster: boolean;
+  profile: string;
+}) {
+  if (session.isMaster) return true;
+  const role = normalizeRole(session.profile);
+  return role === ROLES.ADMIN || role === ROLES.SUPERVISOR;
+}
+
 export type SaveDocumentTemplateInput = {
   id?: string;
   name: string;
   category: DocumentTemplateCategory | string;
   bodyHtml: string;
   status?: DocumentTemplateRow["status"];
+  clinicalAreas?: string[];
 };
 
 export async function listDocumentTemplatesAction(options?: {
@@ -25,6 +42,7 @@ export async function listDocumentTemplatesAction(options?: {
 }): Promise<ActionResult<{ templates: DocumentTemplateRow[] }>> {
   await requirePermission(PERMISSIONS.DOCUMENT_TEMPLATES_VIEW);
 
+  const session = await requireServerUserSession();
   const supabase = await createServerSupabaseClient();
 
   if (!supabase) {
@@ -47,7 +65,17 @@ export async function listDocumentTemplatesAction(options?: {
     return { success: false, error: error.message };
   }
 
-  return { success: true, data: { templates: data ?? [] } };
+  const userAreas = getClinicalAreasForSession({
+    professionalRole: session.professionalRole,
+    isMaster: session.isMaster,
+    canManageAll: sessionCanSeeAllAreas(session),
+  });
+
+  const templates = (data ?? []).filter((template) =>
+    clinicalAreasIntersect(template.clinical_areas, userAreas)
+  );
+
+  return { success: true, data: { templates } };
 }
 
 export async function getDocumentTemplateAction(
@@ -55,6 +83,7 @@ export async function getDocumentTemplateAction(
 ): Promise<ActionResult<{ template: DocumentTemplateRow }>> {
   await requirePermission(PERMISSIONS.DOCUMENT_TEMPLATES_VIEW);
 
+  const session = await requireServerUserSession();
   const supabase = await createServerSupabaseClient();
 
   if (!supabase) {
@@ -75,6 +104,16 @@ export async function getDocumentTemplateAction(
     return { success: false, error: "Modelo não encontrado." };
   }
 
+  const userAreas = getClinicalAreasForSession({
+    professionalRole: session.professionalRole,
+    isMaster: session.isMaster,
+    canManageAll: sessionCanSeeAllAreas(session),
+  });
+
+  if (!clinicalAreasIntersect(data.clinical_areas, userAreas)) {
+    return { success: false, error: "Modelo indisponível para a sua área." };
+  }
+
   return { success: true, data: { template: data } };
 }
 
@@ -86,6 +125,7 @@ export async function saveDocumentTemplateAction(
   const name = input.name.trim();
   const category = input.category.trim();
   const bodyHtml = input.bodyHtml.trim();
+  const clinicalAreas = normalizeClinicalAreas(input.clinicalAreas);
 
   if (!name) {
     return { success: false, error: "Informe o nome do modelo." };
@@ -106,6 +146,7 @@ export async function saveDocumentTemplateAction(
     category,
     body_html: bodyHtml,
     status: input.status ?? "active",
+    clinical_areas: clinicalAreas as ClinicalArea[],
     updated_at: new Date().toISOString(),
   };
 

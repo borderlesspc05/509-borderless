@@ -25,6 +25,12 @@ import {
   documentTemplateCategories,
   documentTemplateVariables,
 } from "@/lib/document-template-format";
+import {
+  CLINICAL_AREAS,
+  CLINICAL_AREA_LABELS,
+  normalizeClinicalAreas,
+  type ClinicalArea,
+} from "@/lib/clinical-areas";
 import type { DocumentTemplateRow } from "@/lib/supabase/database.types";
 
 type DocumentTemplateFormProps = {
@@ -46,10 +52,23 @@ export function DocumentTemplateForm({ template }: DocumentTemplateFormProps) {
   const [category, setCategory] = useState(
     template?.category ?? documentTemplateCategories[0].value
   );
+  const [clinicalAreas, setClinicalAreas] = useState<ClinicalArea[]>(
+    normalizeClinicalAreas(template?.clinical_areas)
+  );
   const [bodyHtml, setBodyHtml] = useState(template?.body_html ?? "");
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  function toggleClinicalArea(area: ClinicalArea) {
+    setClinicalAreas((current) => {
+      if (current.includes(area)) {
+        const next = current.filter((item) => item !== area);
+        return next.length > 0 ? next : ["geral"];
+      }
+      return [...current, area];
+    });
+  }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -63,6 +82,7 @@ export function DocumentTemplateForm({ template }: DocumentTemplateFormProps) {
         category,
         bodyHtml,
         status: template?.status ?? "active",
+        clinicalAreas,
       });
 
       if (!result.success || !result.data?.template) {
@@ -138,6 +158,31 @@ export function DocumentTemplateForm({ template }: DocumentTemplateFormProps) {
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </div>
+        </section>
+
+        <section className="app-surface-card space-y-3 p-4">
+          <div className="space-y-1">
+            <Label>Áreas clínicas com acesso</Label>
+            <p className="text-sm text-muted-foreground">
+              Defina quais especialidades podem ver e usar este modelo.
+            </p>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {CLINICAL_AREAS.map((area) => (
+              <label
+                key={area}
+                className="flex items-center gap-2 rounded-lg border border-border/60 px-3 py-2 text-sm"
+              >
+                <input
+                  type="checkbox"
+                  checked={clinicalAreas.includes(area)}
+                  onChange={() => toggleClinicalArea(area)}
+                  className="size-4 rounded border-input"
+                />
+                {CLINICAL_AREA_LABELS[area]}
+              </label>
+            ))}
           </div>
         </section>
 

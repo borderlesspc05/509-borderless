@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireServerUserSession } from "@/lib/auth-server";
+import { assertPatientAccess } from "@/lib/patient-access";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export type AnamnesisRecord = {
@@ -25,6 +26,11 @@ export async function saveAnamnesisAction({
   formData: any;
 }) {
   const session = await requireServerUserSession();
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
+
   const supabase = await createServerSupabaseClient();
   
   if (!supabase) return { success: false, error: "Falha na conexão" };
@@ -50,6 +56,12 @@ export async function saveAnamnesisAction({
 }
 
 export async function getAnamnesisListAction(patientId: string): Promise<AnamnesisRecord[]> {
+  const session = await requireServerUserSession();
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return [];
+  }
+
   const supabase = await createServerSupabaseClient();
   if (!supabase) return [];
 

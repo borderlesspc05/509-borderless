@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requirePermission } from "@/lib/auth-guard";
-import { requireServerUserSession } from "@/lib/auth-server";
+import { assertPatientAccess } from "@/lib/patient-access";
 import { PERMISSIONS } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { PatientTherapeuticPlanRow } from "@/lib/supabase/database.types";
@@ -48,7 +48,11 @@ function revalidatePatientPaths(patientId: string) {
 export async function getTherapeuticPlanAction(
   patientId: string
 ): Promise<ActionResult<{ plan: TherapeuticPlanRecord | null }>> {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
   if (!supabase) {
@@ -88,8 +92,11 @@ export async function saveTherapeuticPlanAction({
   longTermGoals: string;
   notes?: string | null;
 }): Promise<ActionResult<{ plan: TherapeuticPlanRecord }>> {
-  const session = await requireServerUserSession();
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
   if (!supabase) {

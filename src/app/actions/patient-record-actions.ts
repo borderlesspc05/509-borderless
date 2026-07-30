@@ -2,6 +2,11 @@
 
 import { requirePermission } from "@/lib/auth-guard";
 import { requireServerUserSession } from "@/lib/auth-server";
+import {
+  assertPatientAccess,
+  sessionHasBroadPatientAccess,
+  syncPatientResponsibleProfessionals,
+} from "@/lib/patient-access";
 import { PERMISSIONS } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type {
@@ -50,12 +55,41 @@ export type PatientRecordData = {
 export async function listPatientsAction(): Promise<
   ActionResult<{ patients: PatientRow[] }>
 > {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
 
   const supabase = await createServerSupabaseClient();
 
   if (!supabase) {
     return { success: false, error: "Supabase não configurado." };
+  }
+
+  if (!sessionHasBroadPatientAccess(session)) {
+    const { data: assignments, error: assignmentsError } = await supabase
+      .from("professional_patient_assignments")
+      .select("patient_id")
+      .eq("professional_id", session.id);
+
+    if (assignmentsError) {
+      return { success: false, error: assignmentsError.message };
+    }
+
+    const patientIds = [...new Set((assignments ?? []).map((row) => row.patient_id))];
+
+    if (patientIds.length === 0) {
+      return { success: true, data: { patients: [] } };
+    }
+
+    const { data, error } = await supabase
+      .from("patients")
+      .select("*")
+      .in("id", patientIds)
+      .order("full_name");
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data: { patients: data ?? [] } };
   }
 
   const { data, error } = await supabase
@@ -73,7 +107,12 @@ export async function listPatientsAction(): Promise<
 export async function getPatientAction(
   patientId: string
 ): Promise<ActionResult<{ patient: PatientRow }>> {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
 
@@ -126,6 +165,7 @@ export type PatientFormInput = {
   healthPlan?: string;
   healthPlanIdentifier?: string;
   supportLevel?: string;
+  responsibleProfessionalIds?: string[];
 };
 
 export type UpdatePatientInput = PatientFormInput & {
@@ -179,6 +219,9 @@ function validatePatientFormInput(input: PatientFormInput) {
     healthPlan: normalizeOptionalText(input.healthPlan),
     healthPlanIdentifier: normalizeOptionalText(input.healthPlanIdentifier),
     supportLevel: normalizeOptionalText(input.supportLevel),
+    responsibleProfessionalIds: [
+      ...new Set((input.responsibleProfessionalIds ?? []).filter(Boolean)),
+    ],
   };
 }
 
@@ -219,7 +262,7 @@ function toPatientRecord(
 export async function createPatientAction(
   input: PatientFormInput
 ): Promise<ActionResult<{ patient: PatientRow }>> {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
 
   const validated = validatePatientFormInput(input);
 
@@ -252,13 +295,34 @@ export async function createPatientAction(
     };
   }
 
+  const responsibleIds = validated.responsibleProfessionalIds.includes(session.id)
+    ? validated.responsibleProfessionalIds
+    : [...validated.responsibleProfessionalIds, session.id];
+
+  const syncResult = await syncPatientResponsibleProfessionals(
+    data.id,
+    responsibleIds
+  );
+
+  if (!syncResult.ok) {
+    return {
+      success: false,
+      error: `Aprendiz criado, mas falhou ao vincular responsáveis: ${syncResult.error}`,
+    };
+  }
+
   return { success: true, data: { patient: data } };
 }
 
 export async function updatePatientAction(
   input: UpdatePatientInput
 ): Promise<ActionResult<{ patient: PatientRow }>> {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+
+  const access = await assertPatientAccess(input.patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const validated = validatePatientFormInput(input);
 
@@ -292,13 +356,31 @@ export async function updatePatientAction(
     };
   }
 
+  if (input.responsibleProfessionalIds !== undefined) {
+    const syncResult = await syncPatientResponsibleProfessionals(
+      input.patientId,
+      validated.responsibleProfessionalIds
+    );
+
+    if (!syncResult.ok) {
+      return {
+        success: false,
+        error: `Dados salvos, mas falhou ao atualizar responsáveis: ${syncResult.error}`,
+      };
+    }
+  }
+
   return { success: true, data: { patient: data } };
 }
 
 export async function togglePatientStatusAction(
   patientId: string
 ): Promise<ActionResult<{ patient: PatientRow }>> {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
 
@@ -349,7 +431,12 @@ export async function togglePatientStatusAction(
 export async function getPatientRecordAction(
   patientId: string
 ): Promise<ActionResult<PatientRecordData>> {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
 
@@ -519,6 +606,11 @@ export async function uploadPatientDocumentAction(
   formData: FormData
 ): Promise<ActionResult<{ document: PatientDocumentRow }>> {
   const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+
+  const access = await assertPatientAccess(input.patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const title = input.title.trim();
   const documentType = input.documentType.trim() || "anexo";

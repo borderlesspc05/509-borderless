@@ -23,6 +23,7 @@ import {
   formStateToActionInput,
 } from "@/components/patients/patient-form-sections";
 import { PatientBodyMapPanel } from "@/components/patients/patient-body-map-panel";
+import { PatientResponsibleProfessionalsField } from "@/components/patients/patient-responsible-professionals-field";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,13 +33,20 @@ import type { PatientRow } from "@/lib/supabase/database.types";
 
 type PatientEditPageViewProps = {
   patient: PatientRow;
+  initialResponsibleProfessionalIds?: string[];
 };
 
 
-export function PatientEditPageView({ patient }: PatientEditPageViewProps) {
+export function PatientEditPageView({
+  patient,
+  initialResponsibleProfessionalIds = [],
+}: PatientEditPageViewProps) {
   const [values, setValues] = useState(() => patientRowToFormState(patient));
   const [avatarUrl, setAvatarUrl] = useState(patient.avatar_url);
   const [isAvatarUploading, setIsAvatarUploading] = useState(false);
+  const [responsibleProfessionalIds, setResponsibleProfessionalIds] = useState(
+    initialResponsibleProfessionalIds
+  );
   const toast = useAppToast();
   const [defineAccess, setDefineAccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -106,6 +114,7 @@ export function PatientEditPageView({ patient }: PatientEditPageViewProps) {
       const result = await updatePatientAction({
         patientId: patient.id,
         ...formStateToActionInput(values),
+        responsibleProfessionalIds,
       });
 
       if (!result.success) {
@@ -203,6 +212,15 @@ export function PatientEditPageView({ patient }: PatientEditPageViewProps) {
                     patient.created_at
                   )}
                 </span>
+              </div>
+
+              <div className="mt-8 space-y-4 border-t border-border/60 pt-8">
+                <PatientResponsibleProfessionalsField
+                  patientId={patient.id}
+                  selectedIds={responsibleProfessionalIds}
+                  onChange={setResponsibleProfessionalIds}
+                  disabled={isPending}
+                />
               </div>
 
               <div className="mt-8 space-y-4 border-t border-border/60 pt-8">

@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
 import type { Database } from "@/lib/supabase/database.types";
+import { getAuthUserSafely } from "@/lib/supabase/auth-errors";
 import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase/env";
 import {
   canAccessRoute,
@@ -66,9 +67,7 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = await getAuthUserSafely(supabase);
 
   if (!user) {
     const loginUrl = request.nextUrl.clone();

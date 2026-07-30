@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 
 import { requirePermission } from "@/lib/auth-guard";
-import { requireServerUserSession } from "@/lib/auth-server";
 import type { BodyMarkType, BodyViewSide } from "@/lib/body-map-format";
+import { assertPatientAccess } from "@/lib/patient-access";
 import { PERMISSIONS } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type {
@@ -42,7 +42,11 @@ export async function listPatientBodyMarksAction(
   patientId: string,
   options?: { includeInactive?: boolean }
 ): Promise<ActionResult<{ marks: PatientBodyMarkRow[] }>> {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
   if (!supabase) {
@@ -72,8 +76,11 @@ export async function createPatientBodyMarkAction(
   patientId: string,
   input: BodyMarkInput
 ): Promise<ActionResult<{ mark: PatientBodyMarkRow }>> {
-  const session = await requireServerUserSession();
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
   if (!supabase) {
@@ -115,8 +122,11 @@ export async function createPatientBodyMarksBatchAction(
     return { success: true, data: { count: 0 } };
   }
 
-  const session = await requireServerUserSession();
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const access = await assertPatientAccess(patientId, session);
+  if (!access.ok) {
+    return { success: false, error: access.error };
+  }
 
   const supabase = await createServerSupabaseClient();
   if (!supabase) {

@@ -28,6 +28,7 @@ export type NavGroupItem = {
   href: string;
   permission: Permission;
   developed?: boolean;
+  masterOnly?: boolean;
 };
 
 export type NavGroup = {
@@ -71,6 +72,12 @@ export const mainNavEntries: NavEntry[] = [
         title: "Aprendizes",
         href: "/dashboard/pacientes",
         permission: PERMISSIONS.PATIENTS_VIEW,
+      },
+      {
+        title: "Prontuário consolidado",
+        href: "/dashboard/prontuario-master",
+        permission: PERMISSIONS.PATIENTS_VIEW,
+        masterOnly: true,
       },
       {
         title: "Programas",
@@ -215,9 +222,13 @@ export function filterNavEntriesForProfile(
         return hasPermission(profile, entry.permission, isMaster) ? entry : null;
       }
 
-      const visibleItems = entry.items.filter((item) =>
-        hasPermission(profile, item.permission, isMaster)
-      );
+      const visibleItems = entry.items.filter((item) => {
+        if (item.masterOnly && !isMaster) {
+          return false;
+        }
+
+        return hasPermission(profile, item.permission, isMaster);
+      });
 
       if (visibleItems.length === 0) {
         return null;

@@ -5,6 +5,7 @@ import type { User } from "@supabase/supabase-js";
 import type { UserProfile } from "@/lib/auth";
 import { ROLES, isRole, normalizeRole } from "@/lib/rbac";
 import { mapUserProfileRow, type AppUserSession } from "@/lib/user-profile";
+import { getAuthUserSafely } from "@/lib/supabase/auth-errors";
 import type { UserProfileRow } from "@/lib/supabase/database.types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -84,9 +85,7 @@ const resolveServerAuth = cache(async (): Promise<ResolvedServerAuth> => {
     return { status: "no-supabase" };
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = await getAuthUserSafely(supabase);
 
   if (!user) {
     return { status: "unauthenticated" };

@@ -44,6 +44,7 @@ import {
   formatDocumentTemplateDate,
   getDocumentTemplateCategoryLabel,
 } from "@/lib/document-template-format";
+import { getClinicalAreaLabel } from "@/lib/clinical-areas";
 import { PERMISSIONS } from "@/lib/rbac";
 import type { DocumentTemplateRow } from "@/lib/supabase/database.types";
 import { cn } from "@/lib/utils";
@@ -242,6 +243,7 @@ export function DocumentTemplateList({
               <TableRow>
                 <TableHead>Nome</TableHead>
                 <TableHead>Categoria</TableHead>
+                <TableHead>Áreas</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Atualizado em</TableHead>
                 <TableHead className="text-right">Ações</TableHead>
@@ -253,6 +255,18 @@ export function DocumentTemplateList({
                   <TableCell className="font-medium">{template.name}</TableCell>
                   <TableCell>
                     {getDocumentTemplateCategoryLabel(template.category)}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {(template.clinical_areas?.length
+                        ? template.clinical_areas
+                        : ["geral"]
+                      ).map((area) => (
+                        <Badge key={area} variant="outline" className="text-[0.65rem]">
+                          {getClinicalAreaLabel(area)}
+                        </Badge>
+                      ))}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Badge

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ClipboardList, PlusCircle, FileText } from "lucide-react";
 
 import { getAnamnesisListAction, type AnamnesisRecord } from "@/app/actions/anamnesis-actions";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useUserRole } from "@/hooks/use-user-role";
 import {
   ALTERACAO_MUSCULOESQUELETICA_OPTIONS,
   COMPORTAMENTO_OPTIONS,
@@ -19,12 +20,16 @@ import {
   getQualidadeLabel,
   type AnamnesisFisioterapiaFormData,
 } from "@/lib/anamnesis-fisioterapia";
+import {
+  ANAMNESIS_TYPE_OPTIONS,
+  getAnamnesisTypesForSession,
+} from "@/lib/anamnesis-types";
 import { formatPatientDateTime } from "@/lib/patient-format";
+import { normalizeRole, ROLES } from "@/lib/rbac";
 
-const ANAMNESIS_TYPE_LABELS: Record<string, string> = {
-  fisioterapia: "Fisioterapia",
-  terapia_ocupacional: "Terapia Ocupacional",
-};
+const ANAMNESIS_TYPE_LABELS: Record<string, string> = Object.fromEntries(
+  ANAMNESIS_TYPE_OPTIONS.map((option) => [option.value, option.label])
+);
 
 function selectedLabels(
   values: Record<string, boolean> | undefined,
@@ -96,11 +101,36 @@ function FisioterapiaSummary({ data }: { data: AnamnesisFisioterapiaFormData }) 
 }
 
 export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
+  const { isMaster, profile, professionalRole } = useUserRole();
+  const role = normalizeRole(profile);
+  const availableTypes = useMemo(
+    () =>
+      getAnamnesisTypesForSession({
+        professionalRole,
+        isMaster,
+        canManageAll: role === ROLES.ADMIN || role === ROLES.SUPERVISOR,
+      }),
+    [isMaster, professionalRole, role]
+  );
+
   const [anamneses, setAnamneses] = useState<AnamnesisRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedType, setSelectedType] = useState<string>("fisioterapia");
+  const [selectedType, setSelectedType] = useState<string>("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (availableTypes.length === 0) {
+      setSelectedType("");
+      return;
+    }
+
+    setSelectedType((current) =>
+      availableTypes.some((option) => option.value === current)
+        ? current
+        : availableTypes[0].value
+    );
+  }, [availableTypes]);
 
   const loadAnamneses = async () => {
     setIsLoading(true);
@@ -132,21 +162,45 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
                 Voltar
               </Button>
             </div>
-            <div className="mt-4 max-w-sm">
-              <Select value={selectedType} onValueChange={(val) => { if (val) setSelectedType(val); }}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione o tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="fisioterapia">Fisioterapia</SelectItem>
-                  <SelectItem value="terapia_ocupacional">Terapia Ocupacional</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            {availableTypes.length === 0 ? (
+              <p className="mt-4 text-sm text-muted-foreground">
+                Não há tipos de anamnese disponíveis para a sua área clínica.
+              </p>
+            ) : (
+              <div className="mt-4 max-w-sm">
+                <Select
+                  value={selectedType}
+                  onValueChange={(val) => {
+                    if (val) setSelectedType(val);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o tipo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableTypes.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </CardHeader>
           <CardContent>
-            {selectedType === "fisioterapia" && <AnamnesisFisioterapiaForm patientId={patientId} onSuccess={handleSuccess} />}
-            {selectedType === "terapia_ocupacional" && <AnamnesisTerapiaOcupacionalForm patientId={patientId} onSuccess={handleSuccess} />}
+            {selectedType === "fisioterapia" && (
+              <AnamnesisFisioterapiaForm
+                patientId={patientId}
+                onSuccess={handleSuccess}
+              />
+            )}
+            {selectedType === "terapia_ocupacional" && (
+              <AnamnesisTerapiaOcupacionalForm
+                patientId={patientId}
+                onSuccess={handleSuccess}
+              />
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -160,7 +214,12 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
                 </CardTitle>
                 <CardDescription>Histórico de anamneses estruturadas do paciente.</CardDescription>
               </div>
-              <Button size="sm" className="gap-2" onClick={() => setIsCreating(true)}>
+              <Button
+                size="sm"
+                className="gap-2"
+                onClick={() => setIsCreating(true)}
+                disabled={availableTypes.length === 0}
+              >
                 <PlusCircle className="size-4" /> Nova Anamnese
               </Button>
             </div>

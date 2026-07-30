@@ -114,6 +114,7 @@ export const ROUTE_PERMISSIONS: Record<string, Permission> = {
   "/prontuario": PERMISSIONS.PATIENTS_VIEW,
   "/paciente": PERMISSIONS.PATIENTS_VIEW,
   "/dashboard/pacientes": PERMISSIONS.PATIENTS_VIEW,
+  "/dashboard/prontuario-master": PERMISSIONS.PATIENTS_VIEW,
   "/dashboard/profissionais": PERMISSIONS.PROFESSIONALS_VIEW,
   "/dashboard/equipe-terapeutica": PERMISSIONS.PROFESSIONALS_VIEW,
   "/dashboard/avaliacoes": PERMISSIONS.ASSESSMENTS_VIEW,

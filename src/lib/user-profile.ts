@@ -11,6 +11,7 @@ export type AppUserSession = {
   profile: UserProfile;
   displayRole: string;
   isMaster: boolean;
+  professionalRole: string | null;
   professionalCouncil: string | null;
   patientId: string | null;
 };
@@ -60,6 +61,7 @@ export function mapUserProfileRow(
     profile: normalizedProfile,
     displayRole: getDisplayRole(normalizedProfile, profile.is_master),
     isMaster: profile.is_master,
+    professionalRole: profile.professional_role ?? null,
     professionalCouncil: profile.professional_council,
     patientId: profile.patient_id ?? null,
   };

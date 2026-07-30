@@ -17,6 +17,7 @@ import {
   PatientGeralSection,
   formStateToActionInput,
 } from "@/components/patients/patient-form-sections";
+import { PatientResponsibleProfessionalsField } from "@/components/patients/patient-responsible-professionals-field";
 import {
   PatientBodyMapPanel,
   type DraftBodyMark,
@@ -32,6 +33,9 @@ export function PatientCreatePageView() {
   const [values, setValues] = useState(emptyPatientFormState);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [draftBodyMarks, setDraftBodyMarks] = useState<DraftBodyMark[]>([]);
+  const [responsibleProfessionalIds, setResponsibleProfessionalIds] = useState<
+    string[]
+  >([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -47,7 +51,10 @@ export function PatientCreatePageView() {
     setError(null);
 
     startTransition(async () => {
-      const result = await createPatientAction(formStateToActionInput(values));
+      const result = await createPatientAction({
+        ...formStateToActionInput(values),
+        responsibleProfessionalIds,
+      });
 
       if (!result.success || !result.data?.patient) {
         const message = result.error ?? "Não foi possível cadastrar o aprendiz.";
@@ -199,6 +206,13 @@ export function PatientCreatePageView() {
                 onAvatarFileSelected={setAvatarFile}
                 requireFullName
               />
+              <div className="mt-8 border-t border-border/60 pt-8">
+                <PatientResponsibleProfessionalsField
+                  selectedIds={responsibleProfessionalIds}
+                  onChange={setResponsibleProfessionalIds}
+                  disabled={isPending}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="adicionais" className="mt-0 px-6 py-8 sm:px-8">

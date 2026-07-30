@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getPatientAction } from "@/app/actions/patient-record-actions";
+import { getPatientTeamAction } from "@/app/actions/professional-team-actions";
 import { AccessDeniedCard } from "@/components/auth/access-denied-card";
 import { PatientEditPageView } from "@/components/patients/patient-edit-page-view";
 import { requirePermission } from "@/lib/auth-guard";
@@ -29,7 +30,10 @@ export default async function PatientEditPage({ params }: PatientEditPageProps) 
   await requirePermission(PERMISSIONS.PATIENTS_VIEW);
 
   const { id } = await params;
-  const result = await getPatientAction(id);
+  const [result, teamResult] = await Promise.all([
+    getPatientAction(id),
+    getPatientTeamAction(id),
+  ]);
 
   if (!result.success) {
     if (result.error === "Paciente não encontrado.") {
@@ -44,5 +48,16 @@ export default async function PatientEditPage({ params }: PatientEditPageProps) 
     );
   }
 
-  return <PatientEditPageView patient={result.data!.patient} />;
+  const initialResponsibleProfessionalIds = teamResult.success
+    ? (teamResult.data?.professionals ?? [])
+        .filter((professional) => professional.isAssigned)
+        .map((professional) => professional.id)
+    : [];
+
+  return (
+    <PatientEditPageView
+      patient={result.data!.patient}
+      initialResponsibleProfessionalIds={initialResponsibleProfessionalIds}
+    />
+  );
 }
