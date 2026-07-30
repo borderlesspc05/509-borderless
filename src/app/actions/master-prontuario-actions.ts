@@ -3,18 +3,26 @@
 import { redirect } from "next/navigation";
 
 import { getAnamnesisListAction } from "@/app/actions/anamnesis-actions";
+import { listPatientBodyMarksAction } from "@/app/actions/body-map-actions";
 import {
   getPatientRecordAction,
   listPatientsAction,
   type PatientRecordData,
 } from "@/app/actions/patient-record-actions";
+import {
+  getPatientTeamAction,
+  type PatientTeamProfessional,
+} from "@/app/actions/professional-team-actions";
 import { getTherapeuticPlanAction } from "@/app/actions/therapeutic-plan-actions";
 import { requirePermission } from "@/lib/auth-guard";
 import { getAccessDeniedRedirectPath, PERMISSIONS } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { AnamnesisRecord } from "@/app/actions/anamnesis-actions";
 import type { TherapeuticPlanRecord } from "@/app/actions/therapeutic-plan-actions";
-import type { PatientRow } from "@/lib/supabase/database.types";
+import type {
+  PatientBodyMarkRow,
+  PatientRow,
+} from "@/lib/supabase/database.types";
 
 type ActionResult<T> = {
   success: boolean;
@@ -36,7 +44,8 @@ export type MasterProntuarioData = {
   record: PatientRecordData;
   anamneses: AnamnesisRecord[];
   therapeuticPlan: TherapeuticPlanRecord | null;
-  bodyMarksCount: number;
+  bodyMarks: PatientBodyMarkRow[];
+  team: PatientTeamProfessional[];
 };
 
 export async function listPatientsForMasterProntuarioAction(): Promise<
@@ -51,12 +60,14 @@ export async function getMasterProntuarioAction(
 ): Promise<ActionResult<MasterProntuarioData>> {
   await requireMasterSession();
 
-  const [recordResult, anamneses, planResult, supabase] = await Promise.all([
-    getPatientRecordAction(patientId),
-    getAnamnesisListAction(patientId),
-    getTherapeuticPlanAction(patientId),
-    createServerSupabaseClient(),
-  ]);
+  const [recordResult, anamneses, planResult, bodyMarksResult, teamResult] =
+    await Promise.all([
+      getPatientRecordAction(patientId),
+      getAnamnesisListAction(patientId),
+      getTherapeuticPlanAction(patientId),
+      listPatientBodyMarksAction(patientId),
+      getPatientTeamAction(patientId),
+    ]);
 
   if (!recordResult.success || !recordResult.data) {
     return {
@@ -65,15 +76,10 @@ export async function getMasterProntuarioAction(
     };
   }
 
-  let bodyMarksCount = 0;
-  if (supabase) {
-    const { count } = await supabase
-      .from("patient_body_marks")
-      .select("id", { count: "exact", head: true })
-      .eq("patient_id", patientId)
-      .eq("is_active", true);
-    bodyMarksCount = count ?? 0;
-  }
+  const assignedTeam =
+    teamResult.success && teamResult.data
+      ? teamResult.data.professionals.filter((item) => item.isAssigned)
+      : [];
 
   return {
     success: true,
@@ -83,7 +89,10 @@ export async function getMasterProntuarioAction(
       therapeuticPlan: planResult.success
         ? (planResult.data?.plan ?? null)
         : null,
-      bodyMarksCount,
+      bodyMarks: bodyMarksResult.success
+        ? (bodyMarksResult.data?.marks ?? [])
+        : [],
+      team: assignedTeam,
     },
   };
 }
@@ -102,7 +111,7 @@ export async function sendMasterProntuarioToFamilyAction(input: {
 
   const contentHtml = input.summaryHtml.trim();
   if (!contentHtml) {
-    return { success: false, error: "Resumo vazio para envio." };
+    return { success: false, error: "Documento vazio para envio." };
   }
 
   const supabase = await createServerSupabaseClient();
