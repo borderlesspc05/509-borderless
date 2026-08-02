@@ -193,14 +193,23 @@
   }
 
   .app-auth-shell {
-    @apply bg-muted;
+    @apply bg-background;
   }
 
   .app-auth-card {
-    @apply rounded-2xl border border-border/60 bg-card;
+    @apply rounded-xl border border-border/70 bg-card;
     box-shadow:
-      0 4px 16px rgb(0 0 0 / 0.08),
-      0 1px 3px rgb(0 0 0 / 0.04);
+      0 24px 60px color-mix(in oklch, var(--foreground) 10%, transparent),
+      0 2px 8px color-mix(in oklch, var(--foreground) 5%, transparent);
+    animation: auth-card-enter 420ms ease-out both;
+  }
+
+  .auth-brand-panel {
+    background-color: oklch(0.22 0.055 235);
+    background-image:
+      linear-gradient(oklch(1 0 0 / 4%) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(1 0 0 / 4%) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
 
   .app-page-header {
@@ -224,6 +233,23 @@
 
   .app-filter-chip-value {
     @apply font-semibold text-foreground;
+  }
+}
+
+@keyframes auth-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-auth-card {
+    animation: none;
   }
 }
 

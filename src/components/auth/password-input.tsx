@@ -27,7 +27,7 @@ export function PasswordInput({
       <Input
         id={id}
         type={isVisible ? "text" : "password"}
-        className={cn("h-11 pr-11", inputClassName)}
+        className={cn("h-12 bg-background px-3.5 pr-12", inputClassName)}
         {...props}
       />
       <Button

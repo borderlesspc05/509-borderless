@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
-import { AlertCircle, CheckCircle2, Crown } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle2, Crown, LoaderCircle } from "lucide-react";
 
 import {
   getBootstrapStatusAction,
@@ -122,17 +122,21 @@ export function RegisterForm() {
           <Button
             type="submit"
             form="register-form"
-            className="h-11 w-full"
+            className="h-12 w-full text-[0.95rem] font-semibold shadow-[0_8px_20px_color-mix(in_oklch,var(--primary)_22%,transparent)]"
             size="lg"
             disabled={isPending || hasMaster === null}
           >
-            {isPending ? "Criando conta..." : "Criar conta master"}
+            {isPending ? (
+              <><LoaderCircle className="size-4 animate-spin" aria-hidden />Criando conta...</>
+            ) : (
+              <>Criar conta master <ArrowRight className="size-4" aria-hidden /></>
+            )}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             Já possui conta?{" "}
             <Link
               href="/login"
-              className="font-medium text-primary hover:underline"
+              className="font-semibold text-primary underline-offset-4 hover:underline"
             >
               Entrar
             </Link>
@@ -140,7 +144,7 @@ export function RegisterForm() {
         </>
       }
     >
-      <form id="register-form" className="space-y-4" onSubmit={handleSubmit}>
+      <form id="register-form" className="space-y-5" onSubmit={handleSubmit}>
         {isBootstrap ? (
           <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm">
             <div className="mb-2 flex items-center gap-2 font-medium text-primary">
@@ -178,7 +182,7 @@ export function RegisterForm() {
             autoComplete="name"
             required
             disabled={isPending}
-            className="h-11"
+            className="h-12 bg-background px-3.5"
           />
         </div>
 
@@ -193,7 +197,7 @@ export function RegisterForm() {
             inputMode="email"
             required
             disabled={isPending}
-            className="h-11"
+            className="h-12 bg-background px-3.5"
           />
         </div>
 
