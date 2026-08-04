@@ -212,6 +212,15 @@
     background-size: 48px 48px;
   }
 
+  .dashboard-welcome-panel {
+    background-color: oklch(0.22 0.055 235);
+    background-image:
+      linear-gradient(oklch(1 0 0 / 4%) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(1 0 0 / 4%) 1px, transparent 1px);
+    background-size: 48px 48px;
+    box-shadow: 0 16px 32px color-mix(in oklch, oklch(0.22 0.055 235) 18%, transparent);
+  }
+
   .app-page-header {
     @apply rounded-2xl border border-border/70 bg-card px-5 py-4 sm:px-6 sm:py-5;
     box-shadow:
