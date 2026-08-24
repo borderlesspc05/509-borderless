@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   AlertCircle,
   ArrowLeft,
@@ -20,6 +21,7 @@ import {
   UserRound,
   Users,
   ClipboardList,
+  Apple,
 } from "lucide-react";
 
 import {
@@ -36,6 +38,7 @@ import {
   buildDocumentTemplateVariables,
 } from "@/components/clinical-evolution/rich-text-editor";
 import { HomeActivitiesPanel } from "@/components/home-activities/home-activities-panel";
+import { PatientNutritionTab } from "@/components/nutrition/patient-nutrition-tab";
 import { PatientAnamnesesTab } from "@/components/patient-record/patient-anamneses-tab";
 import { PatientTherapeuticPlanPanel } from "@/components/patient-record/patient-therapeutic-plan-panel";
 import { PatientBodyMapPanel } from "@/components/patients/patient-body-map-panel";
@@ -134,6 +137,8 @@ function EvolutionStatusBadge({ status }: { status: ClinicalEvolutionRecordRow["
 
 export function PatientRecordView({ record }: PatientRecordViewProps) {
   const { patient } = record;
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get("tab") ?? "historico";
   const { hasPermission, userName, displayRole, professionalCouncil } =
     useUserRole();
   const canManageEvolution = hasPermission(PERMISSIONS.CLINICAL_EVOLUTION_MANAGE);
@@ -352,13 +357,17 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
         </div>
       </div>
 
-      <Tabs defaultValue="historico" className="w-full gap-4">
-        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 p-1 sm:w-fit">
+      <Tabs defaultValue={initialTab} className="w-full gap-4">
+        <TabsList className="mb-1 h-auto w-full max-w-full flex-nowrap justify-start gap-1 overflow-x-auto p-1 [&_[data-slot=tabs-trigger]]:shrink-0 [&_[data-slot=tabs-trigger]]:flex-none">
           <TabsTrigger value="historico">Histórico</TabsTrigger>
           <TabsTrigger value="cadastro">Dados Cadastrais</TabsTrigger>
           <TabsTrigger value="atendimentos">Histórico de Atendimentos</TabsTrigger>
           <TabsTrigger value="evolucoes">Evoluções</TabsTrigger>
           <TabsTrigger value="anamneses">Anamneses</TabsTrigger>
+          <TabsTrigger value="nutricao" className="gap-1.5">
+            <Apple className="size-3.5" />
+            Nutrição
+          </TabsTrigger>
           <TabsTrigger value="mapa-corporal">Mapa corporal</TabsTrigger>
           <TabsTrigger value="planejamento">Planejamento</TabsTrigger>
           <TabsTrigger value="relatorios">Relatórios</TabsTrigger>
@@ -715,6 +724,16 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
 
         <TabsContent value="anamneses">
           <PatientAnamnesesTab patientId={patient.id} />
+        </TabsContent>
+
+        <TabsContent value="nutricao">
+          <PatientNutritionTab
+            patientId={patient.id}
+            patientName={patient.full_name}
+            patientBirthDate={patient.birth_date}
+            professionalName={userName}
+            professionalRole={displayRole}
+          />
         </TabsContent>
 
         <TabsContent value="mapa-corporal">

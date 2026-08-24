@@ -17,6 +17,11 @@ export const ANAMNESIS_TYPE_OPTIONS = [
       "terapia_ocupacional",
     ] as const satisfies readonly ClinicalArea[],
   },
+  {
+    value: "nutricao",
+    label: "Nutrição",
+    clinicalAreas: ["nutricao"] as const satisfies readonly ClinicalArea[],
+  },
 ] as const;
 
 export function getAnamnesisTypesForSession(input: {

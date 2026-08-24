@@ -102,6 +102,11 @@ export const mainNavEntries: NavEntry[] = [
         permission: PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
       },
       {
+        title: "Nutrição",
+        href: "/dashboard/nutricao",
+        permission: PERMISSIONS.PATIENTS_VIEW,
+      },
+      {
         title: "Avaliações",
         href: "/dashboard/avaliacoes/aplicar",
         permission: PERMISSIONS.ASSESSMENTS_VIEW,

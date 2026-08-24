@@ -66,7 +66,7 @@ export function DashboardShell({
         <PatientWaitingBanner />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="page-content">{children}</div>
+          <div className="page-content pb-24">{children}</div>
         </main>
 
         {needsTermsAcceptance ? (

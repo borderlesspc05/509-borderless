@@ -7,6 +7,7 @@ export const CLINICAL_AREAS = [
   "terapia_ocupacional",
   "musicoterapia",
   "psicopedagogia",
+  "nutricao",
   "aba",
   "geral",
 ] as const;
@@ -20,6 +21,7 @@ export const CLINICAL_AREA_LABELS: Record<ClinicalArea, string> = {
   terapia_ocupacional: "Terapia Ocupacional",
   musicoterapia: "Musicoterapia",
   psicopedagogia: "Psicopedagogia",
+  nutricao: "Nutrição",
   aba: "ABA",
   geral: "Geral / compartilhado",
 };
@@ -41,6 +43,7 @@ const ROLE_TO_AREAS: Record<ProfessionalRole, readonly ClinicalArea[]> = {
   Neuropsicólogo: ["psicologia", "geral"],
   Psicopedagoga: ["psicopedagogia", "geral"],
   Fisioterapeuta: ["fisioterapia", "geral"],
+  Nutricionista: ["nutricao", "geral"],
 };
 
 export function isClinicalArea(value: string): value is ClinicalArea {

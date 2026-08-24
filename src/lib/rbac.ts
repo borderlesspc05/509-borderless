@@ -124,6 +124,7 @@ export const ROUTE_PERMISSIONS: Record<string, Permission> = {
   "/dashboard/orientacoes-familia": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
   "/agenda-convencional": PERMISSIONS.AGENDA_VIEW,
   "/dashboard/evolucao-convencional": PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
+  "/dashboard/nutricao": PERMISSIONS.PATIENTS_VIEW,
   "/dashboard/modelos": PERMISSIONS.DOCUMENT_TEMPLATES_VIEW,
   "/dashboard/relatorios": PERMISSIONS.REPORTS_VIEW,
   "/dashboard/relatorios/treinamento-ia": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,

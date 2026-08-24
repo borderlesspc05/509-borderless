@@ -47,14 +47,16 @@ export function AiModuleCopilot() {
     <>
       <Button
         type="button"
+        size="icon-lg"
+        aria-label={`Abrir assistente de IA — ${agent.moduleLabel}`}
+        title={`IA · ${agent.moduleLabel}`}
         className={cn(
-          "fixed bottom-5 right-5 z-40 h-11 gap-2 rounded-full px-4 shadow-lg",
+          "fixed bottom-5 right-5 z-40 size-12 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95",
           open && "pointer-events-none opacity-0"
         )}
         onClick={() => setOpen(true)}
       >
-        <Sparkles className="size-4" aria-hidden />
-        IA · {agent.moduleLabel}
+        <Sparkles className="size-5" aria-hidden />
       </Button>
 
       <AiAssistantPanel
