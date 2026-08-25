@@ -9,7 +9,7 @@ import {
   type ClinicalArea,
 } from "@/lib/clinical-areas";
 import type { DocumentTemplateCategory } from "@/lib/document-template-format";
-import { normalizeRole, PERMISSIONS, ROLES } from "@/lib/rbac";
+import { PERMISSIONS, canSeeAllClinicalAreas } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { DocumentTemplateRow } from "@/lib/supabase/database.types";
 
@@ -23,9 +23,7 @@ function sessionCanSeeAllAreas(session: {
   isMaster: boolean;
   profile: string;
 }) {
-  if (session.isMaster) return true;
-  const role = normalizeRole(session.profile);
-  return role === ROLES.ADMIN || role === ROLES.SUPERVISOR;
+  return canSeeAllClinicalAreas(session.profile, session.isMaster);
 }
 
 export type SaveDocumentTemplateInput = {

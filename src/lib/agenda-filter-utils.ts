@@ -73,19 +73,14 @@ export const CLINIC_TIME_SLOTS = [
   { time: "16:00", endTime: "17:00" },
 ] as const;
 
-export const AGENDA_STATUS_FILTER_OPTIONS: Array<{
-  value: AppointmentStatus;
-  label: string;
-}> = [
-  { value: "agendado", label: "Agendado" },
-  { value: "confirmado", label: "Confirmado" },
-  { value: "em_espera", label: "Em espera" },
-  { value: "chamado", label: "Finalizado" },
-  { value: "cancelado", label: "Cancelado" },
-];
+export { APPOINTMENT_STATUS_OPTIONS as AGENDA_STATUS_FILTER_OPTIONS } from "@/lib/appointment-status";
 
 function isActiveAppointment(appointment: DailyAppointment) {
-  return appointment.status !== "cancelado";
+  return (
+    appointment.status !== "cancelado" &&
+    appointment.status !== "faltante" &&
+    appointment.status !== "reagendado"
+  );
 }
 
 function isSlotOccupied(

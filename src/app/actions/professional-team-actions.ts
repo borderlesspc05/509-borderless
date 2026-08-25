@@ -1,7 +1,10 @@
 "use server";
 
 import { requirePermission } from "@/lib/auth-guard";
-import { syncPatientResponsibleProfessionals } from "@/lib/patient-access";
+import {
+  syncPatientResponsibleProfessionals,
+  syncProfessionalCaseload,
+} from "@/lib/patient-access";
 import { getProfileLabel } from "@/lib/user-profile";
 import { normalizeRole, PERMISSIONS } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -17,6 +20,12 @@ export type PatientTeamProfessional = {
   professionalRole: string | null;
   profileLabel: string;
   professionalCouncil: string | null;
+  isAssigned: boolean;
+};
+
+export type ProfessionalCaseloadPatient = {
+  id: string;
+  fullName: string;
   isAssigned: boolean;
 };
 
@@ -40,10 +49,17 @@ function mapPatientTeamProfessional(
 }
 
 async function listActiveClinicalProfessionals(): Promise<
-  | { ok: true; data: Pick<
-      UserProfileRow,
-      "id" | "full_name" | "professional_role" | "professional_council" | "profile"
-    >[] }
+  | {
+      ok: true;
+      data: Pick<
+        UserProfileRow,
+        | "id"
+        | "full_name"
+        | "professional_role"
+        | "professional_council"
+        | "profile"
+      >[];
+    }
   | { ok: false; error: string }
 > {
   const supabase = await createServerSupabaseClient();
@@ -58,6 +74,7 @@ async function listActiveClinicalProfessionals(): Promise<
       "id, full_name, professional_role, professional_council, profile, status"
     )
     .neq("profile", "RECEPCAO")
+    .neq("profile", "FAMILIA")
     .eq("status", "active")
     .order("full_name");
 
@@ -156,8 +173,85 @@ export async function savePatientTeamAction(input: {
   return {
     success: true,
     data: {
-      assignedCount: [...new Set(input.professionalIds.filter(Boolean))]
-        .length,
+      assignedCount: [...new Set(input.professionalIds.filter(Boolean))].length,
+    },
+  };
+}
+
+export async function getProfessionalCaseloadAction(
+  professionalId: string
+): Promise<
+  ActionResult<{
+    patients: ProfessionalCaseloadPatient[];
+    assignedCount: number;
+  }>
+> {
+  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+
+  const supabase = await createServerSupabaseClient();
+
+  if (!supabase) {
+    return { success: false, error: "Supabase não configurado." };
+  }
+
+  const [patientsResult, assignmentsResult] = await Promise.all([
+    supabase
+      .from("patients")
+      .select("id, full_name, status")
+      .eq("status", "active")
+      .order("full_name"),
+    supabase
+      .from("professional_patient_assignments")
+      .select("patient_id")
+      .eq("professional_id", professionalId),
+  ]);
+
+  if (patientsResult.error) {
+    return { success: false, error: patientsResult.error.message };
+  }
+
+  if (assignmentsResult.error) {
+    return { success: false, error: assignmentsResult.error.message };
+  }
+
+  const assignedPatientIds = new Set(
+    (assignmentsResult.data ?? []).map((row) => row.patient_id)
+  );
+
+  const patients = (patientsResult.data ?? []).map((row) => ({
+    id: row.id,
+    fullName: row.full_name,
+    isAssigned: assignedPatientIds.has(row.id),
+  }));
+
+  return {
+    success: true,
+    data: {
+      patients,
+      assignedCount: assignedPatientIds.size,
+    },
+  };
+}
+
+export async function saveProfessionalCaseloadAction(input: {
+  professionalId: string;
+  patientIds: string[];
+}): Promise<ActionResult<{ assignedCount: number }>> {
+  await requirePermission(PERMISSIONS.TEAM_MANAGE);
+
+  const syncResult = await syncProfessionalCaseload(
+    input.professionalId,
+    input.patientIds
+  );
+
+  if (!syncResult.ok) {
+    return { success: false, error: syncResult.error };
+  }
+
+  return {
+    success: true,
+    data: {
+      assignedCount: [...new Set(input.patientIds.filter(Boolean))].length,
     },
   };
 }

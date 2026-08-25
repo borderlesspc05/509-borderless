@@ -15,6 +15,8 @@ export type Database = {
           full_name: string;
           profile:
             | "ADMIN"
+            | "COLABORADOR"
+            | "COORDENADOR"
             | "SUPERVISOR"
             | "RECEPCAO"
             | "AT1"
@@ -37,6 +39,8 @@ export type Database = {
           full_name: string;
           profile:
             | "ADMIN"
+            | "COLABORADOR"
+            | "COORDENADOR"
             | "SUPERVISOR"
             | "RECEPCAO"
             | "AT1"
@@ -59,6 +63,8 @@ export type Database = {
           full_name?: string;
           profile?:
             | "ADMIN"
+            | "COLABORADOR"
+            | "COORDENADOR"
             | "SUPERVISOR"
             | "RECEPCAO"
             | "AT1"
@@ -821,7 +827,16 @@ export type Database = {
           event_date: string;
           start_time: string;
           end_time: string;
-          status: "confirmado" | "agendado" | "em_espera" | "chamado" | "cancelado";
+          status:
+            | "agendado"
+            | "em_espera"
+            | "confirmado"
+            | "atendido"
+            | "faltante"
+            | "cancelado"
+            | "encaixe"
+            | "reagendado"
+            | "chamado";
           valor_sessao: number | null;
           payment_status: "pendente" | "pago" | "cancelado";
           payment_link_url: string | null;
@@ -850,7 +865,16 @@ export type Database = {
           event_date: string;
           start_time: string;
           end_time: string;
-          status?: "confirmado" | "agendado" | "em_espera" | "chamado" | "cancelado";
+          status?:
+            | "agendado"
+            | "em_espera"
+            | "confirmado"
+            | "atendido"
+            | "faltante"
+            | "cancelado"
+            | "encaixe"
+            | "reagendado"
+            | "chamado";
           valor_sessao?: number | null;
           payment_status?: "pendente" | "pago" | "cancelado";
           payment_link_url?: string | null;
@@ -879,7 +903,16 @@ export type Database = {
           event_date?: string;
           start_time?: string;
           end_time?: string;
-          status?: "confirmado" | "agendado" | "em_espera" | "chamado" | "cancelado";
+          status?:
+            | "agendado"
+            | "em_espera"
+            | "confirmado"
+            | "atendido"
+            | "faltante"
+            | "cancelado"
+            | "encaixe"
+            | "reagendado"
+            | "chamado";
           valor_sessao?: number | null;
           payment_status?: "pendente" | "pago" | "cancelado";
           payment_link_url?: string | null;

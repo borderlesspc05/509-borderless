@@ -32,6 +32,7 @@ import {
   type AgendaPersonFilters,
 } from "@/lib/agenda-individual-filter";
 import type { DailyAppointment } from "@/lib/agenda-types";
+import { APPOINTMENT_STATUS_OPTIONS } from "@/lib/appointment-status";
 import {
   formatMonthYear,
   getCalendarDays,
@@ -398,22 +399,12 @@ export function AgendaCalendar({ careType = "ABA" }: AgendaCalendarProps) {
 
       <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground sm:text-sm">
         <span className="font-medium text-foreground">Legenda:</span>
-        <span className="inline-flex items-center gap-1.5">
-          <AppointmentDayIcon status="confirmado" />
-          Confirmado
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <AppointmentDayIcon status="agendado" />
-          Agendado
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <AppointmentDayIcon status="em_espera" />
-          Em espera
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <AppointmentDayIcon status="cancelado" />
-          Cancelado
-        </span>
+        {APPOINTMENT_STATUS_OPTIONS.map((option) => (
+          <span key={option.value} className="inline-flex items-center gap-1.5">
+            <AppointmentDayIcon status={option.value} />
+            {option.label}
+          </span>
+        ))}
       </div>
 
       <DayAppointmentsDialog

@@ -25,7 +25,7 @@ import {
   getAnamnesisTypesForSession,
 } from "@/lib/anamnesis-types";
 import { formatPatientDateTime } from "@/lib/patient-format";
-import { normalizeRole, ROLES } from "@/lib/rbac";
+import { canSeeAllClinicalAreas, normalizeRole } from "@/lib/rbac";
 
 const ANAMNESIS_TYPE_LABELS: Record<string, string> = Object.fromEntries(
   ANAMNESIS_TYPE_OPTIONS.map((option) => [option.value, option.label])
@@ -108,7 +108,7 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
       getAnamnesisTypesForSession({
         professionalRole,
         isMaster,
-        canManageAll: role === ROLES.ADMIN || role === ROLES.SUPERVISOR,
+        canManageAll: canSeeAllClinicalAreas(role, isMaster),
       }),
     [isMaster, professionalRole, role]
   );

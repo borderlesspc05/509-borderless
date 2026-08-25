@@ -1,9 +1,13 @@
 export type AppointmentStatus =
-  | "confirmado"
   | "agendado"
   | "em_espera"
-  | "chamado"
-  | "cancelado";
+  | "confirmado"
+  | "atendido"
+  | "faltante"
+  | "cancelado"
+  | "encaixe"
+  | "reagendado"
+  | "chamado";
 
 export type PaymentStatus = "pendente" | "pago" | "cancelado";
 

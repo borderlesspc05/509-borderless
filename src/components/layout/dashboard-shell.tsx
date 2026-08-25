@@ -39,18 +39,18 @@ export function DashboardShell({
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   return (
-    <div className="flex min-h-dvh bg-background lg:flex-row">
-      <aside className="hidden w-[17.5rem] shrink-0 border-r border-sidebar-border bg-sidebar shadow-[2px_0_12px_rgb(0_0_0_/_0.04)] lg:flex lg:flex-col">
-        <div className="flex h-16 items-center border-b border-sidebar-border px-5">
+    <div className="flex h-dvh overflow-hidden bg-background lg:flex-row">
+      <aside className="hidden h-dvh w-[17.5rem] shrink-0 border-r border-sidebar-border bg-sidebar shadow-[2px_0_12px_rgb(0_0_0_/_0.04)] lg:sticky lg:top-0 lg:flex lg:flex-col">
+        <div className="flex h-16 shrink-0 items-center border-b border-sidebar-border px-5">
           <AppLogo linkToHome variant="compact" />
         </div>
-        <div className="flex-1 overflow-y-auto py-2">
+        <div className="min-h-0 flex-1 overflow-y-auto py-2">
           <Suspense fallback={null}>
             <DashboardNav />
           </Suspense>
         </div>
         <Separator />
-        <div className="space-y-3 px-4 py-5">
+        <div className="shrink-0 space-y-3 px-4 py-5">
           <LogoutButton />
           <p className="text-xs leading-relaxed text-muted-foreground">
             Soluções em Saúde para equipes multidisciplinares.
@@ -58,14 +58,14 @@ export function DashboardShell({
         </div>
       </aside>
 
-      <div className="flex min-h-dvh min-w-0 flex-1 flex-col">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <DashboardHeader onMenuClick={() => setIsMobileNavOpen(true)} />
         <Suspense fallback={null}>
           <AccessDeniedBanner />
         </Suspense>
         <PatientWaitingBanner />
 
-        <main className="flex-1 overflow-y-auto">
+        <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
           <div className="page-content pb-24">{children}</div>
         </main>
 

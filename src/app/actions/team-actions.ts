@@ -43,7 +43,7 @@ export type CreateTeamMemberInput = {
 
 function isClinicalProfile(profile: UserProfile) {
   const role = normalizeRole(profile);
-  return role === "AT1" || role === "AT2" || role === "SUPERVISOR";
+  return role === "AT1" || role === "AT2" || role === "SUPERVISOR" || role === "COORDENADOR";
 }
 
 function mapTeamMember(

@@ -101,6 +101,7 @@ export function ChatProvider({ children, userId }: ChatProviderProps) {
 
   const activeConversationIdRef = useRef<string | null>(null);
   const conversationIdsRef = useRef<Set<string>>(new Set());
+  const refreshConversationsTimerRef = useRef<number | null>(null);
 
   const refreshConversations = useCallback(async () => {
     const result = await listConversationsAction();
@@ -112,6 +113,17 @@ export function ChatProvider({ children, userId }: ChatProviderProps) {
       );
     }
   }, []);
+
+  const scheduleRefreshConversations = useCallback(() => {
+    if (refreshConversationsTimerRef.current != null) {
+      window.clearTimeout(refreshConversationsTimerRef.current);
+    }
+
+    refreshConversationsTimerRef.current = window.setTimeout(() => {
+      refreshConversationsTimerRef.current = null;
+      void refreshConversations();
+    }, 400);
+  }, [refreshConversations]);
 
   const refreshUsers = useCallback(async () => {
     setIsLoadingUsers(true);
@@ -361,16 +373,20 @@ export function ChatProvider({ children, userId }: ChatProviderProps) {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "chat_conversations" },
         () => {
-          void refreshConversations();
+          scheduleRefreshConversations();
         }
       )
       .subscribe();
 
     return () => {
+      if (refreshConversationsTimerRef.current != null) {
+        window.clearTimeout(refreshConversationsTimerRef.current);
+        refreshConversationsTimerRef.current = null;
+      }
       void supabase.removeChannel(messagesChannel);
       void supabase.removeChannel(conversationsChannel);
     };
-  }, [userId, appendMessage, refreshConversations]);
+  }, [userId, appendMessage, refreshConversations, scheduleRefreshConversations]);
 
   const totalUnreadCount = useMemo(
     () => conversations.reduce((sum, item) => sum + item.unreadCount, 0),

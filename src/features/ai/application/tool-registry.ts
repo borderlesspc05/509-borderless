@@ -115,7 +115,7 @@ export const AI_TOOL_REGISTRY: Record<string, AiToolDefinition> = {
     simulate: () =>
       buildTrace(
         "explain_appointment_status",
-        "Retornaria definições de agendado, confirmado, em espera e chamado."
+        "Retornaria definições de Agendado, Em espera, Confirmado, Atendido, Faltante, Cancelado, Encaixe e Reagendado."
       ),
   },
   list_assessment_templates: {

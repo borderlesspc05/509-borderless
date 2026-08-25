@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { GitCompareArrows, LineChart as LineChartIcon, TrendingDown, TrendingUp } from "lucide-react";
 
@@ -158,6 +159,24 @@ export function ClinicalReportsPageView() {
           { label: "Relatórios" },
         ]}
       />
+
+      <section className="app-surface-card flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+        <div>
+          <p className="text-sm font-medium text-foreground">
+            Biblioteca de modelos
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Modelos de relatório e documentos usados na evolução e exportações.
+          </p>
+        </div>
+        <Button
+          nativeButton={false}
+          variant="outline"
+          render={<Link href="/dashboard/modelos" />}
+        >
+          Abrir biblioteca de modelos
+        </Button>
+      </section>
 
       <Card className="app-surface-card">
         <CardHeader className="border-b border-border/60 pb-4">

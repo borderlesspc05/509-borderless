@@ -152,3 +152,98 @@ export async function listClinicalEvolutionDraftsAction(
     drafts: data ?? [],
   };
 }
+
+export type ListClinicalEvolutionsInput = {
+  professionalName?: string;
+  patientId?: string;
+  fromDate?: string;
+  toDate?: string;
+  status?: "draft" | "finalized" | "all";
+  limit?: number;
+};
+
+export type ListClinicalEvolutionsResult = {
+  success: boolean;
+  error?: string;
+  records: ClinicalEvolutionRecordRow[];
+  professionals: string[];
+};
+
+export async function listClinicalEvolutionsAction(
+  input: ListClinicalEvolutionsInput = {}
+): Promise<ListClinicalEvolutionsResult> {
+  await requirePermission(PERMISSIONS.CLINICAL_EVOLUTION_VIEW);
+
+  const supabase = await createServerSupabaseClient();
+
+  if (!supabase) {
+    return {
+      success: false,
+      error: "Supabase não configurado.",
+      records: [],
+      professionals: [],
+    };
+  }
+
+  let query = supabase
+    .from("clinical_evolution_records")
+    .select("*")
+    .order("session_date", { ascending: false })
+    .order("updated_at", { ascending: false })
+    .limit(input.limit ?? 40);
+
+  if (input.professionalName?.trim()) {
+    query = query.ilike(
+      "professional_name",
+      `%${input.professionalName.trim()}%`
+    );
+  }
+
+  if (input.patientId) {
+    query = query.eq("patient_id", input.patientId);
+  }
+
+  if (input.fromDate) {
+    query = query.gte("session_date", input.fromDate);
+  }
+
+  if (input.toDate) {
+    query = query.lte("session_date", input.toDate);
+  }
+
+  if (input.status && input.status !== "all") {
+    query = query.eq("status", input.status);
+  }
+
+  const [recordsResult, professionalsResult] = await Promise.all([
+    query,
+    supabase
+      .from("clinical_evolution_records")
+      .select("professional_name")
+      .order("professional_name")
+      .limit(500),
+  ]);
+
+  if (recordsResult.error) {
+    return {
+      success: false,
+      error: recordsResult.error.message,
+      records: [],
+      professionals: [],
+    };
+  }
+
+  const professionals = [
+    ...new Set(
+      (professionalsResult.data ?? [])
+        .map((row) => row.professional_name)
+        .filter(Boolean)
+    ),
+  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+  return {
+    success: true,
+    records: recordsResult.data ?? [],
+    professionals,
+  };
+}

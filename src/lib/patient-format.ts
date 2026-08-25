@@ -143,10 +143,4 @@ export function formatPatientRegistrationStatus(
   return `Aprendiz ${statusLabel}, cadastrado em ${registeredAt}`;
 }
 
-export const appointmentStatusLabels = {
-  confirmado: "Confirmado",
-  agendado: "Agendado",
-  em_espera: "Em espera",
-  chamado: "Chamado",
-  cancelado: "Cancelado",
-} as const;
+export { appointmentStatusLabels } from "@/lib/appointment-status";

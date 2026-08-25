@@ -51,7 +51,7 @@ export type CreateAppointmentInput = {
 
 export type UpdateAppointmentInput = CreateAppointmentInput & {
   appointmentId: string;
-  status?: "confirmado" | "agendado" | "em_espera" | "chamado" | "cancelado";
+  status?: import("@/lib/agenda-types").AppointmentStatus;
 };
 
 export async function searchAvailableProfessionalsAction(

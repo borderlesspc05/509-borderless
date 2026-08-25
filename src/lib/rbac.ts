@@ -2,6 +2,8 @@ import type { UserProfile } from "@/lib/auth";
 
 export const ROLES = {
   ADMIN: "ADMIN",
+  COLABORADOR: "COLABORADOR",
+  COORDENADOR: "COORDENADOR",
   SUPERVISOR: "SUPERVISOR",
   RECEPCAO: "RECEPCAO",
   AT1: "AT1",
@@ -40,6 +42,9 @@ export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
 
 const LEGACY_ROLE_MAP: Record<string, Role> = {
   administracao: ROLES.ADMIN,
+  administrador: ROLES.ADMIN,
+  colaborador: ROLES.COLABORADOR,
+  coordenador: ROLES.COORDENADOR,
   supervisor: ROLES.SUPERVISOR,
   recepcao: ROLES.RECEPCAO,
   at: ROLES.AT1,
@@ -61,13 +66,23 @@ const CLINICAL_EVOLUTION_EDITOR_PERMISSIONS = [
   PERMISSIONS.FINANCE_MANAGE,
 ] as const satisfies readonly Permission[];
 
+/** Permissões de administrador, exceto atendimento convencional. */
+const COLABORADOR_PERMISSIONS = Object.values(PERMISSIONS).filter(
+  (permission) =>
+    permission !== PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW &&
+    permission !== PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE
+);
+
 const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
+  // Recepção: cadastrar/editar aprendizes + agendar na agenda do profissional
   [ROLES.RECEPCAO]: [
     PERMISSIONS.AGENDA_VIEW,
     PERMISSIONS.AGENDA_MANAGE,
+    PERMISSIONS.PATIENTS_VIEW,
     PERMISSIONS.INTERNAL_MESSAGING,
   ],
   [ROLES.FAMILIA]: [PERMISSIONS.FAMILY_PORTAL_VIEW],
+  // AT: registra (evolução / atendimento)
   [ROLES.AT2]: [...BASE_THERAPIST_PERMISSIONS],
   [ROLES.AT1]: [
     ...BASE_THERAPIST_PERMISSIONS,
@@ -75,6 +90,7 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
     PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE,
   ],
+  // Supervisor: profissionais formados (psicólogo, T.O., etc.)
   [ROLES.SUPERVISOR]: [
     ...BASE_THERAPIST_PERMISSIONS,
     ...CLINICAL_EVOLUTION_EDITOR_PERMISSIONS,
@@ -85,15 +101,36 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
     PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE,
   ],
+  // Coordenador: mesmo escopo clínico do supervisor, limitado à própria área
+  [ROLES.COORDENADOR]: [
+    ...BASE_THERAPIST_PERMISSIONS,
+    ...CLINICAL_EVOLUTION_EDITOR_PERMISSIONS,
+    PERMISSIONS.AGENDA_MANAGE,
+    PERMISSIONS.AGENDA_SEARCH,
+    PERMISSIONS.PROFESSIONALS_VIEW,
+    PERMISSIONS.REPORTS_VIEW,
+    PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
+    PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE,
+  ],
+  // Colaborador: mesmos acessos do admin, sem módulo convencional
+  [ROLES.COLABORADOR]: COLABORADOR_PERMISSIONS,
+  // Administrador: acesso geral
   [ROLES.ADMIN]: Object.values(PERMISSIONS),
 };
 
-export const CLINICAL_ROLES = [ROLES.AT1, ROLES.AT2, ROLES.SUPERVISOR] as const;
+export const CLINICAL_ROLES = [
+  ROLES.AT1,
+  ROLES.AT2,
+  ROLES.SUPERVISOR,
+  ROLES.COORDENADOR,
+] as const;
 
 export const PROFESSIONAL_ROLES = [
   ROLES.AT1,
   ROLES.AT2,
   ROLES.SUPERVISOR,
+  ROLES.COORDENADOR,
+  ROLES.COLABORADOR,
   ROLES.ADMIN,
 ] as const;
 
@@ -101,7 +138,14 @@ export const RECEPCAO_HOME_PATH = "/agenda";
 
 export const FAMILIA_HOME_PATH = "/portal-familia";
 
-export const RECEPCAO_ALLOWED_PATHS = [RECEPCAO_HOME_PATH, "/chat"] as const;
+/** Prefixos liberados para o perfil Recepção (cadastro de aprendizes + agenda). */
+export const RECEPCAO_ALLOWED_PATH_PREFIXES = [
+  "/agenda",
+  "/chat",
+  "/dashboard/pacientes",
+  "/paciente",
+  "/painel-chamada",
+] as const;
 
 export const FAMILIA_ALLOWED_PATHS = [FAMILIA_HOME_PATH] as const;
 
@@ -122,7 +166,7 @@ export const ROUTE_PERMISSIONS: Record<string, Permission> = {
   "/evolucao": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
   "/dashboard/evolucao": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
   "/dashboard/orientacoes-familia": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
-  "/agenda-convencional": PERMISSIONS.AGENDA_VIEW,
+  "/agenda-convencional": PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
   "/dashboard/evolucao-convencional": PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
   "/dashboard/nutricao": PERMISSIONS.PATIENTS_VIEW,
   "/dashboard/modelos": PERMISSIONS.DOCUMENT_TEMPLATES_VIEW,
@@ -139,14 +183,35 @@ export const ROUTE_PERMISSIONS: Record<string, Permission> = {
 
 export const CLINICAL_EVOLUTION_EDITOR_ROLES = [
   ROLES.ADMIN,
+  ROLES.COLABORADOR,
+  ROLES.COORDENADOR,
   ROLES.SUPERVISOR,
   ROLES.AT1,
 ] as const satisfies readonly Role[];
 
 export const REPORTS_SUPERVISOR_ROLES = [
   ROLES.ADMIN,
+  ROLES.COLABORADOR,
+  ROLES.COORDENADOR,
   ROLES.SUPERVISOR,
 ] as const satisfies readonly Role[];
+
+/** Admin, Colaborador e Supervisor veem todas as áreas; Coordenador fica restrito à sua. */
+export function canSeeAllClinicalAreas(
+  profile: UserProfile | string,
+  isMaster = false
+) {
+  if (isMaster) {
+    return true;
+  }
+
+  const role = normalizeRole(profile);
+  return (
+    role === ROLES.ADMIN ||
+    role === ROLES.COLABORADOR ||
+    role === ROLES.SUPERVISOR
+  );
+}
 
 export function canAccessClinicalReports(
   profile: UserProfile | string,
@@ -168,7 +233,8 @@ export function canManageClinicSettings(
     return true;
   }
 
-  return normalizeRole(profile) === ROLES.ADMIN;
+  const role = normalizeRole(profile);
+  return role === ROLES.ADMIN || role === ROLES.COLABORADOR;
 }
 
 function normalizePathname(pathname: string) {
@@ -218,7 +284,10 @@ export function getPermissionsForRole(
 export function isReceptionAllowedPath(pathname: string) {
   const normalizedPath = normalizePathname(pathname);
 
-  return (RECEPCAO_ALLOWED_PATHS as readonly string[]).includes(normalizedPath);
+  return (RECEPCAO_ALLOWED_PATH_PREFIXES as readonly string[]).some(
+    (route) =>
+      normalizedPath === route || normalizedPath.startsWith(`${route}/`)
+  );
 }
 
 export function isFamilyAllowedPath(pathname: string) {

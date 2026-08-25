@@ -7,11 +7,18 @@ import { PERMISSIONS } from "@/lib/rbac";
 
 export const metadata: Metadata = {
   title: "Programas",
-  description: "Catálogo de programas ABA.",
+  description: "Catálogo de programas ABA e programações de aprendizes.",
 };
 
-export default async function ProgramasPage() {
+type ProgramasPageProps = {
+  searchParams?: Promise<{ tipo?: string }>;
+};
+
+export default async function ProgramasPage({ searchParams }: ProgramasPageProps) {
   await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+
+  const params = searchParams ? await searchParams : undefined;
+  const focusLearnerPrograms = params?.tipo === "learner";
 
   const result = await listProgramsAction();
 
@@ -19,6 +26,7 @@ export default async function ProgramasPage() {
     <ProgramsPageView
       programs={result.success ? (result.data?.programs ?? []) : []}
       error={result.success ? undefined : result.error}
+      focusLearnerPrograms={focusLearnerPrograms}
     />
   );
 }

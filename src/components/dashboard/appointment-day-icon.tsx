@@ -1,43 +1,69 @@
 import {
   CalendarClock,
+  CalendarRange,
   CircleCheck,
+  CircleDashed,
   CircleX,
-  Megaphone,
   Hourglass,
+  Megaphone,
+  UserCheck,
+  UserX,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { AppointmentStatus } from "@/lib/agenda-types";
+import { appointmentStatusLabels } from "@/lib/appointment-status";
 
 const statusIconConfig: Record<
   AppointmentStatus,
   { icon: LucideIcon; className: string; label: string }
 > = {
-  confirmado: {
-    icon: CircleCheck,
-    className: "text-clinical-success",
-    label: "Confirmado",
-  },
   agendado: {
     icon: CalendarClock,
     className: "text-primary",
-    label: "Agendado",
+    label: appointmentStatusLabels.agendado,
   },
   em_espera: {
     icon: Hourglass,
     className: "text-[oklch(0.48_0.12_75)]",
-    label: "Em espera",
+    label: appointmentStatusLabels.em_espera,
   },
-  chamado: {
-    icon: Megaphone,
-    className: "text-primary",
-    label: "Chamado",
+  confirmado: {
+    icon: CircleCheck,
+    className: "text-clinical-success",
+    label: appointmentStatusLabels.confirmado,
+  },
+  atendido: {
+    icon: UserCheck,
+    className: "text-clinical-success",
+    label: appointmentStatusLabels.atendido,
+  },
+  faltante: {
+    icon: UserX,
+    className: "text-destructive",
+    label: appointmentStatusLabels.faltante,
   },
   cancelado: {
     icon: CircleX,
     className: "text-destructive",
-    label: "Cancelado",
+    label: appointmentStatusLabels.cancelado,
+  },
+  encaixe: {
+    icon: Zap,
+    className: "text-violet-600",
+    label: appointmentStatusLabels.encaixe,
+  },
+  reagendado: {
+    icon: CalendarRange,
+    className: "text-sky-600",
+    label: appointmentStatusLabels.reagendado,
+  },
+  chamado: {
+    icon: Megaphone,
+    className: "text-primary",
+    label: appointmentStatusLabels.chamado,
   },
 };
 
@@ -50,7 +76,11 @@ export function AppointmentDayIcon({
   status,
   className,
 }: AppointmentDayIconProps) {
-  const config = statusIconConfig[status];
+  const config = statusIconConfig[status] ?? {
+    icon: CircleDashed,
+    className: "text-muted-foreground",
+    label: status,
+  };
   const Icon = config.icon;
 
   return (

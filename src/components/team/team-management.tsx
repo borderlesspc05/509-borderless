@@ -58,7 +58,8 @@ function isClinicalProfile(profile: UserProfile) {
   return (
     profile === ROLES.AT1 ||
     profile === ROLES.AT2 ||
-    profile === ROLES.SUPERVISOR
+    profile === ROLES.SUPERVISOR ||
+    profile === ROLES.COORDENADOR
   );
 }
 

@@ -1,4 +1,5 @@
 import type { AppointmentStatus, DailyAppointment } from "@/lib/agenda-types";
+import { appointmentStatusLabels } from "@/lib/appointment-status";
 
 export type AuditActor = {
   userName: string;
@@ -15,13 +16,7 @@ export type CreateAuditLogInput = {
   metadata?: Record<string, unknown>;
 };
 
-const STATUS_LABELS: Record<AppointmentStatus, string> = {
-  agendado: "Agendado",
-  confirmado: "Confirmado",
-  em_espera: "Em espera",
-  chamado: "Chamado",
-  cancelado: "Cancelado",
-};
+const STATUS_LABELS = appointmentStatusLabels;
 
 export function formatAgendaContext(
   professional: string,

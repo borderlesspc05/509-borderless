@@ -1,6 +1,6 @@
 import type { UserProfile } from "@/lib/auth";
 import { userProfileOptions } from "@/lib/auth";
-import { normalizeRole } from "@/lib/rbac";
+import { isRole, normalizeRole, ROLES } from "@/lib/rbac";
 import type { UserProfileRow } from "@/lib/supabase/database.types";
 
 export type AppUserSession = {
@@ -45,13 +45,40 @@ export function getDisplayRole(profile: UserProfile, isMaster: boolean) {
   return getProfileLabel(profile);
 }
 
+/**
+ * Resolve o perfil efetivo. Se o check do banco ainda não aceita COLABORADOR/
+ * COORDENADOR, o Auth metadata mantém o perfil pretendido.
+ */
+export function resolveEffectiveProfile(
+  dbProfile: string,
+  authMetadata?: Record<string, unknown> | null
+): UserProfile {
+  const metaProfile = authMetadata?.profile;
+  if (
+    typeof metaProfile === "string" &&
+    isRole(metaProfile) &&
+    (metaProfile === ROLES.COLABORADOR || metaProfile === ROLES.COORDENADOR) &&
+    dbProfile !== metaProfile
+  ) {
+    return metaProfile;
+  }
+
+  return normalizeRole(dbProfile);
+}
+
 export function mapUserProfileRow(
-  authUser: { id: string; email?: string },
+  authUser: {
+    id: string;
+    email?: string;
+    user_metadata?: Record<string, unknown> | null;
+  },
   profile: UserProfileRow
 ): AppUserSession {
   const fullName = profile.full_name;
-
-  const normalizedProfile = normalizeRole(profile.profile);
+  const normalizedProfile = resolveEffectiveProfile(
+    profile.profile,
+    authUser.user_metadata
+  );
 
   return {
     id: authUser.id,

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useUserRole } from "@/hooks/use-user-role";
 import { getApplicableAssessmentsForSession } from "@/lib/assessment-apply-routes";
-import { normalizeRole, ROLES } from "@/lib/rbac";
+import { canSeeAllClinicalAreas, normalizeRole } from "@/lib/rbac";
 
 export function AvaliacoesAplicarPageView() {
   const { isMaster, profile, professionalRole } = useUserRole();
@@ -17,7 +17,7 @@ export function AvaliacoesAplicarPageView() {
   const instruments = getApplicableAssessmentsForSession({
     professionalRole,
     isMaster,
-    canManageAll: role === ROLES.ADMIN || role === ROLES.SUPERVISOR,
+    canManageAll: canSeeAllClinicalAreas(role, isMaster),
   });
 
   return (

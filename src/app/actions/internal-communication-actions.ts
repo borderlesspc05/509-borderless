@@ -33,7 +33,7 @@ export type SyncAgendaStatusInput = {
   eventDate: string;
   startTime: string;
   endTime: string;
-  status: "confirmado" | "agendado" | "em_espera" | "chamado" | "cancelado";
+  status: import("@/lib/agenda-types").AppointmentStatus;
 };
 
 async function resolveProfessionalUserId(

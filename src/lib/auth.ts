@@ -3,28 +3,38 @@ import { ROLES, type Role } from "@/lib/rbac";
 export const userProfileOptions = [
   {
     value: ROLES.ADMIN,
-    label: "Administração",
-    description: "Gestão geral da clínica",
+    label: "Administrador",
+    description: "Acesso geral à clínica",
+  },
+  {
+    value: ROLES.COLABORADOR,
+    label: "Colaborador",
+    description: "Mesmos acessos do admin, sem atendimento convencional",
+  },
+  {
+    value: ROLES.COORDENADOR,
+    label: "Coordenador",
+    description: "Acesso clínico restrito à própria área",
   },
   {
     value: ROLES.SUPERVISOR,
-    label: "Supervisor clínico",
-    description: "Supervisão clínica e programas ABA",
+    label: "Supervisor",
+    description: "Profissionais formados (psicólogo, T.O., etc.)",
   },
   {
     value: ROLES.AT1,
-    label: "AT 1",
-    description: "Assistente terapêutico — nível 1",
+    label: "AT",
+    description: "Registra evoluções e atendimentos",
   },
   {
     value: ROLES.AT2,
     label: "AT 2",
-    description: "Assistente terapêutico — nível 2",
+    description: "Assistente terapêutico — acesso clínico básico",
   },
   {
     value: ROLES.RECEPCAO,
     label: "Recepção",
-    description: "Agendamento e atendimento inicial",
+    description: "Cadastrar/editar aprendizes e agendar na agenda",
   },
   {
     value: ROLES.FAMILIA,

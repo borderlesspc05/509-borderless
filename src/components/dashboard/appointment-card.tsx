@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTouchScrollGuard } from "@/hooks/use-touch-scroll-guard";
 import { setDraggedAppointmentId } from "@/lib/appointment-move-utils";
+import { APPOINTMENT_STATUS_OPTIONS } from "@/lib/appointment-status";
 import { cn } from "@/lib/utils";
 import { formatQueueNumber } from "@/lib/reception-panel";
 import type {
@@ -31,16 +32,12 @@ import type {
   DailyAppointment,
 } from "@/lib/agenda-types";
 
-const statusOptions: {
-  value: AppointmentStatus;
-  label: string;
-  variant?: "destructive";
-}[] = [
-  { value: "agendado", label: "Agendado" },
-  { value: "confirmado", label: "Confirmado" },
-  { value: "em_espera", label: "Em espera" },
-  { value: "cancelado", label: "Cancelado", variant: "destructive" },
-];
+const statusOptions = APPOINTMENT_STATUS_OPTIONS.map((option) => ({
+  ...option,
+  variant: option.value === "cancelado" || option.value === "faltante"
+    ? ("destructive" as const)
+    : undefined,
+}));
 
 type AppointmentCardProps = {
   appointment: DailyAppointment;

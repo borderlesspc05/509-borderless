@@ -7,14 +7,15 @@
 --
 -- SENHA DE TODOS OS USUÁRIOS DEMO: Demo@1234
 --
--- | E-mail                    | Perfil     | Nome                         |
--- |---------------------------|------------|------------------------------|
--- | admin@clinica.demo        | ADMIN      | Dr. Ricardo Almeida          |
--- | supervisor@clinica.demo   | SUPERVISOR | Dra. Carla Nogueira          |
--- | at1@clinica.demo          | AT1        | Ana Paula Santos (Psicóloga) |
--- | at2@clinica.demo          | AT2        | Bruno Lima (AT)              |
--- | recepcao@clinica.demo     | RECEPCAO   | Mariana Costa                |
--- | familia@clinica.demo      | FAMILIA    | Patrícia Mendes (Lucas)      |
+-- | E-mail                    | Perfil       | Nome                         |
+-- |---------------------------|--------------|------------------------------|
+-- | admin@clinica.demo        | ADMIN        | Dr. Ricardo Almeida          |
+-- | coordenador@clinica.demo  | COORDENADOR  | Fernanda Oliveira (ABA)      |
+-- | supervisor@clinica.demo   | SUPERVISOR   | Dra. Carla Nogueira          |
+-- | at1@clinica.demo          | AT1          | Ana Paula Santos (Psicóloga) |
+-- | at2@clinica.demo          | AT2          | Bruno Lima (AT)              |
+-- | recepcao@clinica.demo     | RECEPCAO     | Mariana Costa                |
+-- | familia@clinica.demo      | FAMILIA      | Patrícia Mendes (Lucas)      |
 -- =============================================================================
 
 begin;
@@ -143,7 +144,7 @@ alter table public.user_profiles
 
 alter table public.user_profiles
   add constraint user_profiles_profile_check
-  check (profile in ('ADMIN', 'SUPERVISOR', 'RECEPCAO', 'AT1', 'AT2', 'FAMILIA'));
+  check (profile in ('ADMIN', 'COORDENADOR', 'SUPERVISOR', 'RECEPCAO', 'AT1', 'AT2', 'FAMILIA'));
 
 alter table public.user_profiles
   drop constraint if exists user_profiles_familia_patient_check;
@@ -450,6 +451,7 @@ do $$
 declare
   demo_users constant jsonb := '[
     {"id":"e1000001-0000-4000-8000-000000000001","email":"admin@clinica.demo","name":"Dr. Ricardo Almeida","profile":"ADMIN"},
+    {"id":"e1000007-0000-4000-8000-000000000007","email":"coordenador@clinica.demo","name":"Fernanda Oliveira","profile":"COORDENADOR"},
     {"id":"e1000002-0000-4000-8000-000000000002","email":"supervisor@clinica.demo","name":"Dra. Carla Nogueira","profile":"SUPERVISOR"},
     {"id":"e1000003-0000-4000-8000-000000000003","email":"at1@clinica.demo","name":"Ana Paula Santos","profile":"AT1"},
     {"id":"e1000004-0000-4000-8000-000000000004","email":"at2@clinica.demo","name":"Bruno Lima","profile":"AT2"},
@@ -555,6 +557,17 @@ values
     null
   ),
   (
+    'e1000007-0000-4000-8000-000000000007',
+    'Fernanda Oliveira',
+    'COORDENADOR',
+    false,
+    'Coordenador',
+    'CRP 12/77889',
+    '67890123456',
+    'active',
+    null
+  ),
+  (
     'e1000002-0000-4000-8000-000000000002',
     'Dra. Carla Nogueira',
     'SUPERVISOR',
@@ -622,6 +635,7 @@ on conflict (id) do update set
 insert into public.user_presence (user_id, last_seen_at)
 values
   ('e1000001-0000-4000-8000-000000000001', now()),
+  ('e1000007-0000-4000-8000-000000000007', now() - interval '1 minute'),
   ('e1000002-0000-4000-8000-000000000002', now() - interval '2 minutes'),
   ('e1000003-0000-4000-8000-000000000003', now() - interval '5 minutes'),
   ('e1000004-0000-4000-8000-000000000004', now() - interval '15 minutes')
@@ -701,6 +715,14 @@ on conflict (id) do update set
   cpf = excluded.cpf,
   notes = excluded.notes,
   updated_at = now();
+
+-- Caseload do Coordenador ABA (acesso restrito à própria área via vínculos)
+insert into public.professional_patient_assignments (professional_id, patient_id)
+values
+  ('e1000007-0000-4000-8000-000000000007', 'a0000001-0000-4000-8000-000000000001'),
+  ('e1000007-0000-4000-8000-000000000007', 'a0000002-0000-4000-8000-000000000002'),
+  ('e1000007-0000-4000-8000-000000000007', 'a0000005-0000-4000-8000-000000000005')
+on conflict (professional_id, patient_id) do nothing;
 
 -- ---------------------------------------------------------------------------
 -- 5. Template VB-MAPP (avaliações) com níveis, habilidades e pontuações
@@ -1281,10 +1303,12 @@ commit;
 -- =============================================================================
 -- Login: admin@clinica.demo / Demo@1234
 --
+-- Coordenador ABA    → coordenador@clinica.demo / Demo@1234
+--                      (vê só aprendizes vinculados + área ABA)
 -- Dashboard          → /dashboard (métricas dos últimos 30 dias)
 -- Aprendizes         → /prontuario (5 aprendizes cadastrados)
 -- Prontuário         → /paciente/a0000001-.../prontuario (Lucas)
--- Profissionais      → /dashboard/profissionais (5 usuários demo)
+-- Profissionais      → /dashboard/profissionais (usuários demo)
 -- Avaliações         → /dashboard/avaliacoes (VB-MAPP + templates migration)
 -- Evolução Clínica   → /evolucao (login como at1@clinica.demo)
 -- Modelos            → /dashboard/modelos (Unimed/pareceres da migration)

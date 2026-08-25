@@ -7,11 +7,13 @@ import {
   FileDown,
   Loader2,
   Save,
+  Search,
 } from "lucide-react";
 
 import {
   loadClinicalEvolutionAction,
   listClinicalEvolutionDraftsAction,
+  listClinicalEvolutionsAction,
   saveClinicalEvolutionAction,
 } from "@/app/actions/clinical-evolution-actions";
 import { useAppToast } from "@/hooks/use-app-toast";
@@ -75,6 +77,15 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
   const [sessionDate, setSessionDate] = useState(toDateKey(new Date()));
   const [contentHtml, setContentHtml] = useState("");
   const [drafts, setDrafts] = useState<ClinicalEvolutionRecordRow[]>([]);
+  const [searchProfessional, setSearchProfessional] = useState("all");
+  const [searchPatientId, setSearchPatientId] = useState("all");
+  const [searchFrom, setSearchFrom] = useState("");
+  const [searchTo, setSearchTo] = useState("");
+  const [searchResults, setSearchResults] = useState<ClinicalEvolutionRecordRow[]>(
+    []
+  );
+  const [professionalOptions, setProfessionalOptions] = useState<string[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [isLoadingDraft, setIsLoadingDraft] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -139,6 +150,48 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
   useEffect(() => {
     void loadCurrentRecord();
   }, [loadCurrentRecord]);
+
+  useEffect(() => {
+    void listClinicalEvolutionsAction({ limit: 1 }).then((result) => {
+      if (result.success) {
+        setProfessionalOptions(result.professionals);
+      }
+    });
+  }, []);
+
+  async function handleSearchEvolutions() {
+    setIsSearching(true);
+    const result = await listClinicalEvolutionsAction({
+      professionalName:
+        searchProfessional === "all" ? undefined : searchProfessional,
+      patientId: searchPatientId === "all" ? undefined : searchPatientId,
+      fromDate: searchFrom || undefined,
+      toDate: searchTo || undefined,
+      status: "all",
+      limit: 40,
+    });
+    setIsSearching(false);
+
+    if (!result.success) {
+      toast.error({
+        title: "Falha na busca",
+        description: result.error ?? "Não foi possível buscar evoluções.",
+      });
+      return;
+    }
+
+    setSearchResults(result.records);
+    if (result.professionals.length > 0) {
+      setProfessionalOptions(result.professionals);
+    }
+  }
+
+  function openSearchResult(record: ClinicalEvolutionRecordRow) {
+    setPatientId(record.patient_id);
+    setSessionDate(record.session_date);
+    setContentHtml(record.content_html);
+    setLastSavedAt(record.updated_at);
+  }
 
   async function handleSaveDraft() {
     if (!selectedPatient || !canManageClinicalEvolution) {
@@ -259,6 +312,143 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
 
   return (
     <div className="space-y-6">
+      <section className="app-surface-card space-y-4 p-4">
+        <div className="space-y-1">
+          <h2 className="text-sm font-semibold">Buscar evoluções</h2>
+          <p className="text-sm text-muted-foreground">
+            Filtre por profissional, aprendiz e período para localizar registros
+            já feitos.
+          </p>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-4">
+          <div className="space-y-2">
+            <Label htmlFor="evolution-search-professional">Profissional</Label>
+            <Select
+              value={searchProfessional}
+              onValueChange={(value) =>
+                setSearchProfessional((value as string) ?? "all")
+              }
+            >
+              <SelectTrigger
+                id="evolution-search-professional"
+                className="h-11 w-full"
+              >
+                <SelectValue placeholder="Todos os profissionais" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">Todos os profissionais</SelectItem>
+                  {professionalOptions.map((name) => (
+                    <SelectItem key={name} value={name}>
+                      {name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="evolution-search-patient">Aprendiz</Label>
+            <Select
+              value={searchPatientId}
+              items={[
+                { label: "Todos os aprendizes", value: "all" },
+                ...patientSelectItems,
+              ]}
+              onValueChange={(value) =>
+                setSearchPatientId((value as string) ?? "all")
+              }
+            >
+              <SelectTrigger
+                id="evolution-search-patient"
+                className="h-11 w-full"
+              >
+                <SelectValue placeholder="Todos os aprendizes" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">Todos os aprendizes</SelectItem>
+                  {activePatients.map((patient) => (
+                    <SelectItem key={patient.id} value={patient.id}>
+                      {patient.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="evolution-search-from">De</Label>
+            <Input
+              id="evolution-search-from"
+              type="date"
+              value={searchFrom}
+              onChange={(event) => setSearchFrom(event.target.value)}
+              className="h-11"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="evolution-search-to">Até</Label>
+            <Input
+              id="evolution-search-to"
+              type="date"
+              value={searchTo}
+              onChange={(event) => setSearchTo(event.target.value)}
+              className="h-11"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            className="h-11 gap-2"
+            onClick={() => void handleSearchEvolutions()}
+            disabled={isSearching}
+          >
+            {isSearching ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden />
+            ) : (
+              <Search className="size-4" aria-hidden />
+            )}
+            Buscar
+          </Button>
+          {searchResults.length > 0 ? (
+            <Badge variant="secondary">{searchResults.length} resultado(s)</Badge>
+          ) : null}
+        </div>
+
+        {searchResults.length > 0 ? (
+          <ul className="grid gap-2">
+            {searchResults.map((record) => (
+              <li key={record.id}>
+                <button
+                  type="button"
+                  onClick={() => openSearchResult(record)}
+                  className="flex w-full flex-col items-start gap-0.5 rounded-xl border border-border/70 px-3.5 py-3 text-left transition-colors hover:border-primary/30 hover:bg-primary/5"
+                >
+                  <span className="text-sm font-medium text-foreground">
+                    {record.patient_name} · {record.session_date}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {record.professional_name}
+                    {record.professional_role
+                      ? ` · ${record.professional_role}`
+                      : ""}{" "}
+                    · {record.status === "draft" ? "Rascunho" : "Finalizado"}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+
       <section className="app-surface-card grid gap-4 p-4 lg:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="evolution-patient">Paciente</Label>

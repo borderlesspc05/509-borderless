@@ -13,7 +13,13 @@ import {
 
 import { isAssessmentApplyPath } from "@/lib/assessment-apply-routes";
 import type { UserProfile } from "@/lib/auth";
-import { hasPermission, PERMISSIONS, type Permission } from "@/lib/rbac";
+import {
+  hasPermission,
+  isReceptionAllowedPath,
+  isReceptionOnlyRole,
+  PERMISSIONS,
+  type Permission,
+} from "@/lib/rbac";
 
 export type NavLink = {
   kind: "link";
@@ -74,6 +80,11 @@ export const mainNavEntries: NavEntry[] = [
         permission: PERMISSIONS.PATIENTS_VIEW,
       },
       {
+        title: "Avaliações e testes",
+        href: "/dashboard/avaliacoes",
+        permission: PERMISSIONS.ASSESSMENTS_VIEW,
+      },
+      {
         title: "Prontuário consolidado",
         href: "/dashboard/prontuario-master",
         permission: PERMISSIONS.PATIENTS_VIEW,
@@ -102,12 +113,17 @@ export const mainNavEntries: NavEntry[] = [
         permission: PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
       },
       {
+        title: "Programações",
+        href: "/dashboard/programas?tipo=learner",
+        permission: PERMISSIONS.ASSESSMENTS_VIEW,
+      },
+      {
         title: "Nutrição",
         href: "/dashboard/nutricao",
         permission: PERMISSIONS.PATIENTS_VIEW,
       },
       {
-        title: "Avaliações",
+        title: "Aplicar avaliações",
         href: "/dashboard/avaliacoes/aplicar",
         permission: PERMISSIONS.ASSESSMENTS_VIEW,
       },
@@ -123,8 +139,6 @@ export const mainNavEntries: NavEntry[] = [
         href: "/dashboard/orientacoes-familia",
         permission: PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
       },
-      
-      
     ],
   },
   {
@@ -138,15 +152,15 @@ export const mainNavEntries: NavEntry[] = [
         permission: PERMISSIONS.REPORTS_VIEW,
       },
       {
+        title: "Biblioteca de Modelos",
+        href: "/dashboard/modelos",
+        permission: PERMISSIONS.DOCUMENT_TEMPLATES_VIEW,
+      },
+      {
         title: "Treinamento IA — Relatórios",
         href: "/dashboard/relatorios/treinamento-ia",
         permission: PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
       },
-      
-      
-      
-      
-      
     ],
   },
   {
@@ -162,15 +176,13 @@ export const mainNavEntries: NavEntry[] = [
       {
         title: "Agenda Convencional",
         href: "/agenda-convencional",
-        permission: PERMISSIONS.AGENDA_VIEW,
+        permission: PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
       },
       {
         title: "Busca de Agenda",
         href: "/dashboard/busca-agenda",
         permission: PERMISSIONS.AGENDA_SEARCH,
       },
-      
-      
       {
         title: "Configurações",
         href: "/agenda/configuracoes",
@@ -180,11 +192,6 @@ export const mainNavEntries: NavEntry[] = [
         title: "Monitor",
         href: "/painel-chamada",
         permission: PERMISSIONS.AGENDA_VIEW,
-      },
-      {
-        title: "Biblioteca de Modelos",
-        href: "/dashboard/modelos",
-        permission: PERMISSIONS.DOCUMENT_TEMPLATES_VIEW,
       },
     ],
   },
@@ -221,10 +228,20 @@ export function filterNavEntriesForProfile(
   profile: UserProfile,
   isMaster = false
 ): NavEntry[] {
+  const receptionOnly = !isMaster && isReceptionOnlyRole(profile);
+
   return mainNavEntries
     .map((entry) => {
       if (entry.kind === "link") {
-        return hasPermission(profile, entry.permission, isMaster) ? entry : null;
+        if (!hasPermission(profile, entry.permission, isMaster)) {
+          return null;
+        }
+
+        if (receptionOnly && !isReceptionAllowedPath(entry.href)) {
+          return null;
+        }
+
+        return entry;
       }
 
       const visibleItems = entry.items.filter((item) => {
@@ -232,7 +249,15 @@ export function filterNavEntriesForProfile(
           return false;
         }
 
-        return hasPermission(profile, item.permission, isMaster);
+        if (!hasPermission(profile, item.permission, isMaster)) {
+          return false;
+        }
+
+        if (receptionOnly && !isReceptionAllowedPath(item.href)) {
+          return false;
+        }
+
+        return true;
       });
 
       if (visibleItems.length === 0) {
@@ -280,9 +305,26 @@ export function isNavHrefActive(pathname: string, href: string) {
 
   const hrefPath = href.split("?")[0] ?? href;
 
+  // Cadastro → Avaliações e testes (CRUD), sem o hub de aplicação
+  if (hrefPath === "/dashboard/avaliacoes") {
+    return (
+      pathname === "/dashboard/avaliacoes" ||
+      pathname.startsWith("/dashboard/avaliacoes/novo") ||
+      /\/dashboard\/avaliacoes\/[^/]+\/editar/.test(pathname)
+    );
+  }
+
   // Evolução → Avaliações: hub e instrumentos de aplicação
   if (hrefPath === "/dashboard/avaliacoes/aplicar") {
     return isAssessmentApplyPath(pathname);
+  }
+
+  // Cadastro → Programas vs Evolução → Programações (mesmo path base)
+  if (hrefPath === "/dashboard/programas") {
+    return (
+      pathname === "/dashboard/programas" ||
+      pathname.startsWith("/dashboard/programas/")
+    );
   }
 
   // Cadastro → Profissionais / Equipe terapêutica compartilham a rota base

@@ -142,6 +142,9 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
   const { hasPermission, userName, displayRole, professionalCouncil } =
     useUserRole();
   const canManageEvolution = hasPermission(PERMISSIONS.CLINICAL_EVOLUTION_MANAGE);
+  const canViewConventional = hasPermission(
+    PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW
+  );
 
   const toast = useAppToast();
   const [sessionDate, setSessionDate] = useState(toDateKey(new Date()));
@@ -673,53 +676,55 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Evolução convencional</CardTitle>
-              <CardDescription>
-                Registros de evolução convencional vinculados a este aprendiz.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {record.conventionalEvolutions.length === 0 ? (
-                <EmptyState message="Nenhuma evolução convencional registrada." />
-              ) : (
-                <div className="space-y-3">
-                  {record.conventionalEvolutions.map((evolution) => (
-                    <div
-                      key={evolution.id}
-                      className="flex flex-col gap-2 rounded-xl border border-border/80 bg-card p-4 sm:flex-row sm:items-center sm:justify-between"
-                    >
-                      <div className="space-y-1">
-                        <p className="font-medium">
-                          Sessão de {formatPatientDate(evolution.session_date)}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {evolution.professional_name} ·{" "}
-                          {evolution.professional_role}
-                        </p>
+          {canViewConventional ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Evolução convencional</CardTitle>
+                <CardDescription>
+                  Registros de evolução convencional vinculados a este aprendiz.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {record.conventionalEvolutions.length === 0 ? (
+                  <EmptyState message="Nenhuma evolução convencional registrada." />
+                ) : (
+                  <div className="space-y-3">
+                    {record.conventionalEvolutions.map((evolution) => (
+                      <div
+                        key={evolution.id}
+                        className="flex flex-col gap-2 rounded-xl border border-border/80 bg-card p-4 sm:flex-row sm:items-center sm:justify-between"
+                      >
+                        <div className="space-y-1">
+                          <p className="font-medium">
+                            Sessão de {formatPatientDate(evolution.session_date)}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {evolution.professional_name} ·{" "}
+                            {evolution.professional_role}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <EvolutionStatusBadge status={evolution.status} />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 gap-1.5"
+                            nativeButton={false}
+                            render={
+                              <Link href="/dashboard/evolucao-convencional" />
+                            }
+                          >
+                            Abrir
+                            <ExternalLink className="size-3.5" aria-hidden />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <EvolutionStatusBadge status={evolution.status} />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 gap-1.5"
-                          nativeButton={false}
-                          render={
-                            <Link href="/dashboard/evolucao-convencional" />
-                          }
-                        >
-                          Abrir
-                          <ExternalLink className="size-3.5" aria-hidden />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : null}
         </TabsContent>
 
         <TabsContent value="anamneses">
@@ -800,43 +805,45 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="size-5 text-primary" />
-                Evoluções convencionais finalizadas
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {finalizedConventional.length === 0 ? (
-                <EmptyState message="Nenhuma evolução convencional finalizada." />
-              ) : (
-                <div className="space-y-4">
-                  {finalizedConventional.map((evolution) => (
-                    <article
-                      key={evolution.id}
-                      className="rounded-xl border border-border/80 p-4"
-                    >
-                      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                        <p className="font-medium">
-                          {formatPatientDate(evolution.session_date)}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {evolution.professional_name}
-                        </p>
-                      </div>
-                      <div
-                        className="prose prose-sm max-w-none text-sm leading-relaxed dark:prose-invert"
-                        dangerouslySetInnerHTML={{
-                          __html: evolution.content_html,
-                        }}
-                      />
-                    </article>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          {canViewConventional ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="size-5 text-primary" />
+                  Evoluções convencionais finalizadas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {finalizedConventional.length === 0 ? (
+                  <EmptyState message="Nenhuma evolução convencional finalizada." />
+                ) : (
+                  <div className="space-y-4">
+                    {finalizedConventional.map((evolution) => (
+                      <article
+                        key={evolution.id}
+                        className="rounded-xl border border-border/80 p-4"
+                      >
+                        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                          <p className="font-medium">
+                            {formatPatientDate(evolution.session_date)}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {evolution.professional_name}
+                          </p>
+                        </div>
+                        <div
+                          className="prose prose-sm max-w-none text-sm leading-relaxed dark:prose-invert"
+                          dangerouslySetInnerHTML={{
+                            __html: evolution.content_html,
+                          }}
+                        />
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : null}
 
           <Card>
             <CardHeader>
