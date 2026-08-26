@@ -8,7 +8,10 @@ import { PageContainer } from "@/components/layout/page-container";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useUserRole } from "@/hooks/use-user-role";
-import { getApplicableAssessmentsForSession } from "@/lib/assessment-apply-routes";
+import {
+  getApplicableAssessmentsForSession,
+  groupAssessmentsByClinicalArea,
+} from "@/lib/assessment-apply-routes";
 import { canSeeAllClinicalAreas, normalizeRole } from "@/lib/rbac";
 
 export function AvaliacoesAplicarPageView() {
@@ -19,6 +22,7 @@ export function AvaliacoesAplicarPageView() {
     isMaster,
     canManageAll: canSeeAllClinicalAreas(role, isMaster),
   });
+  const groups = groupAssessmentsByClinicalArea(instruments);
 
   return (
     <PageContainer size="wide" className="space-y-6">
@@ -32,46 +36,62 @@ export function AvaliacoesAplicarPageView() {
       />
 
       <p className="max-w-2xl text-sm text-muted-foreground">
-        Instrumentos disponíveis para a sua área clínica. Selecione um para
-        avaliar o paciente.
+        Instrumentos organizados por área clínica. Selecione um para avaliar o
+        paciente.
       </p>
 
-      {instruments.length === 0 ? (
+      {groups.length === 0 ? (
         <EmptyState
           icon={ClipboardList}
           title="Nenhum instrumento para a sua área"
           description="Peça ao administrador para liberar avaliações da sua especialidade."
         />
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {instruments.map((instrument) => (
-            <article
-              key={instrument.name}
-              className="app-surface-card flex flex-col overflow-hidden"
-            >
-              <div className="flex flex-1 flex-col gap-3 p-5">
-                <div className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <ClipboardList className="size-5" aria-hidden />
-                </div>
-                <div className="space-y-1">
-                  <h2 className="text-base font-semibold text-foreground">
-                    {instrument.buttonLabel}
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    {instrument.description}
-                  </p>
-                </div>
+        <div className="space-y-8">
+          {groups.map((group) => (
+            <section key={group.area} className="space-y-4">
+              <div className="space-y-1 border-b border-border/70 pb-2">
+                <h2 className="text-lg font-semibold text-foreground">
+                  {group.label}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {group.items.length} instrumento
+                  {group.items.length === 1 ? "" : "s"} disponível
+                  {group.items.length === 1 ? "" : "is"}
+                </p>
               </div>
-              <div className="border-t border-border/60 bg-muted/20 p-3">
-                <Button
-                  className="w-full"
-                  nativeButton={false}
-                  render={<Link href={instrument.href} />}
-                >
-                  Avaliar paciente
-                </Button>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {group.items.map((instrument) => (
+                  <article
+                    key={instrument.name}
+                    className="app-surface-card flex flex-col overflow-hidden"
+                  >
+                    <div className="flex flex-1 flex-col gap-3 p-5">
+                      <div className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <ClipboardList className="size-5" aria-hidden />
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-base font-semibold text-foreground">
+                          {instrument.buttonLabel}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {instrument.description}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="border-t border-border/60 bg-muted/20 p-3">
+                      <Button
+                        className="w-full"
+                        nativeButton={false}
+                        render={<Link href={instrument.href} />}
+                      >
+                        Avaliar paciente
+                      </Button>
+                    </div>
+                  </article>
+                ))}
               </div>
-            </article>
+            </section>
           ))}
         </div>
       )}

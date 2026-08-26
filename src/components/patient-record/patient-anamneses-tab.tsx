@@ -5,6 +5,7 @@ import { ClipboardList, PlusCircle, FileText } from "lucide-react";
 
 import { getAnamnesisListAction, type AnamnesisRecord } from "@/app/actions/anamnesis-actions";
 import { AnamnesisFisioterapiaForm } from "@/components/clinical-reports/anamnesis-fisioterapia-form";
+import { AnamnesisFonoaudiologiaForm } from "@/components/clinical-reports/anamnesis-fonoaudiologia-form";
 import { AnamnesisTerapiaOcupacionalForm } from "@/components/clinical-reports/anamnesis-terapia-ocupacional-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +21,12 @@ import {
   getQualidadeLabel,
   type AnamnesisFisioterapiaFormData,
 } from "@/lib/anamnesis-fisioterapia";
+import {
+  FONO_COMUNICACAO_OPTIONS,
+  FONO_FALA_OPTIONS,
+  FONO_QUEIXAS_OPTIONS,
+  type AnamnesisFonoFormData,
+} from "@/lib/anamnesis-fonoaudiologia";
 import {
   ANAMNESIS_TYPE_OPTIONS,
   getAnamnesisTypesForSession,
@@ -40,6 +47,36 @@ function selectedLabels(
     .filter((option) => values[option.key])
     .map((option) => option.label);
   return labels.length > 0 ? labels.join(", ") : "—";
+}
+
+function FonoSummary({ data }: { data: AnamnesisFonoFormData }) {
+  return (
+    <div className="space-y-3 text-sm text-muted-foreground">
+      <p>
+        <span className="font-medium text-foreground">Queixa principal:</span>{" "}
+        {data.queixaPrincipal || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Outras queixas:</span>{" "}
+        {selectedLabels(data.outrasQueixas, FONO_QUEIXAS_OPTIONS)}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Comunicação:</span>{" "}
+        {selectedLabels(data.comunicacao, FONO_COMUNICACAO_OPTIONS)}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Fala:</span>{" "}
+        {selectedLabels(data.fala, FONO_FALA_OPTIONS)}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Audição:</span>{" "}
+        {data.audicao || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Voz:</span> {data.voz || "—"}
+      </p>
+    </div>
+  );
 }
 
 function FisioterapiaSummary({ data }: { data: AnamnesisFisioterapiaFormData }) {
@@ -201,6 +238,17 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
                 onSuccess={handleSuccess}
               />
             )}
+            {selectedType === "fonoaudiologia" && (
+              <AnamnesisFonoaudiologiaForm
+                patientId={patientId}
+                onSuccess={handleSuccess}
+              />
+            )}
+            {selectedType === "nutricao" && (
+              <p className="text-sm text-muted-foreground">
+                A anamnese nutricional fica na aba Nutrição do prontuário.
+              </p>
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -272,6 +320,10 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
                           {anamnese.anamnesisType === "fisioterapia" ? (
                             <FisioterapiaSummary
                               data={anamnese.formData as AnamnesisFisioterapiaFormData}
+                            />
+                          ) : anamnese.anamnesisType === "fonoaudiologia" ? (
+                            <FonoSummary
+                              data={anamnese.formData as AnamnesisFonoFormData}
                             />
                           ) : (
                             <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-xs text-muted-foreground">

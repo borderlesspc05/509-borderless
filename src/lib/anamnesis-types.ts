@@ -18,6 +18,11 @@ export const ANAMNESIS_TYPE_OPTIONS = [
     ] as const satisfies readonly ClinicalArea[],
   },
   {
+    value: "fonoaudiologia",
+    label: "Fonoaudiologia",
+    clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+  },
+  {
     value: "nutricao",
     label: "Nutrição",
     clinicalAreas: ["nutricao"] as const satisfies readonly ClinicalArea[],
