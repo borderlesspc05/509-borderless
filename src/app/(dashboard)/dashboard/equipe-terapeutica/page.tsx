@@ -20,21 +20,25 @@ export default async function EquipeTerapeuticaPage() {
     listAssignableProfessionalsAction(),
   ]);
 
-  const patients = (patientsResult.data?.patients ?? [])
+  const patients = (
+    patientsResult.success ? patientsResult.data?.patients ?? [] : []
+  )
     .filter((patient) => patient.status === "active")
     .map((patient) => ({
       id: patient.id,
       fullName: patient.full_name,
     }));
 
-  const professionals = (professionalsResult.data?.professionals ?? []).map(
-    (professional) => ({
-      id: professional.id,
-      fullName: professional.fullName,
-      professionalRole: professional.professionalRole,
-      profileLabel: professional.profileLabel,
-    })
-  );
+  const professionals = (
+    professionalsResult.success
+      ? professionalsResult.data?.professionals ?? []
+      : []
+  ).map((professional) => ({
+    id: professional.id,
+    fullName: professional.fullName,
+    professionalRole: professional.professionalRole,
+    profileLabel: professional.profileLabel,
+  }));
 
   const error = !patientsResult.success
     ? patientsResult.error
