@@ -67,7 +67,7 @@ async function getProgramPatientName(
 export async function listProgramsAction(): Promise<
   ActionResult<{ programs: ProgramListItem[] }>
 > {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 
@@ -98,7 +98,7 @@ export async function listProgramsAction(): Promise<
 export async function getProgramDetailsAction(
   programId: string
 ): Promise<ActionResult<ProgramDetails>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 
@@ -182,7 +182,7 @@ export type SaveProgramGeneralInput = {
 export async function saveProgramGeneralAction(
   input: SaveProgramGeneralInput
 ): Promise<ActionResult<{ program: ProgramRow }>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const name = input.name.trim();
 
@@ -287,7 +287,7 @@ export type SaveProgramInstructionsInput = {
 export async function saveProgramInstructionsAction(
   input: SaveProgramInstructionsInput
 ): Promise<ActionResult<{ program: ProgramRow }>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 
@@ -338,7 +338,7 @@ export type SaveProgramEvolutionInput = {
 export async function saveProgramEvolutionAction(
   input: SaveProgramEvolutionInput
 ): Promise<ActionResult<{ program: ProgramRow }>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 
@@ -405,7 +405,7 @@ export type SaveProgramTargetInput = {
 export async function saveProgramTargetAction(
   input: SaveProgramTargetInput
 ): Promise<ActionResult<{ target: ProgramTargetRow }>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const targetName = input.targetName.trim();
 
@@ -462,7 +462,7 @@ export async function saveProgramTargetAction(
 export async function deleteProgramTargetAction(
   targetId: string
 ): Promise<ActionResult> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 
@@ -493,7 +493,7 @@ export type SaveProgramCriterionInput = {
 export async function saveProgramCriterionAction(
   input: SaveProgramCriterionInput
 ): Promise<ActionResult<{ criterion: ProgramCriterionRow }>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const degree = input.degree.trim();
 
@@ -546,7 +546,7 @@ export async function saveProgramCriterionAction(
 export async function deleteProgramCriterionAction(
   criterionId: string
 ): Promise<ActionResult> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 
@@ -570,7 +570,7 @@ export async function uploadProgramFileAction(
   programId: string,
   formData: FormData
 ): Promise<ActionResult<{ file: ProgramFileRow }>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const file = formData.get("file");
 
@@ -631,7 +631,7 @@ export async function uploadProgramFileAction(
 export async function deleteProgramFileAction(
   fileId: string
 ): Promise<ActionResult> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 
@@ -654,7 +654,7 @@ export async function deleteProgramFileAction(
 export async function toggleProgramStatusAction(
   programId: string
 ): Promise<ActionResult<{ program: ProgramRow }>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const supabase = await createServerSupabaseClient();
 

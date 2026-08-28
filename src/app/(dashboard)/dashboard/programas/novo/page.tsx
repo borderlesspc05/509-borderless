@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProgramCreatePage() {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const patientsResult = await listPatientsAction();
 

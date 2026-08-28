@@ -41,7 +41,9 @@ import {
   programVisibilityLabels,
   type ProgramListItem,
 } from "@/lib/program-format";
+import { PERMISSIONS } from "@/lib/rbac";
 import { cn } from "@/lib/utils";
+import { useUserRole } from "@/hooks/use-user-role";
 
 type ProgramListProps = {
   programs: ProgramListItem[];
@@ -91,6 +93,8 @@ function matchesProgramSearch(program: ProgramListItem, query: string) {
 
 export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
   const toast = useAppToast();
+  const { hasPermission } = useUserRole();
+  const canManagePrograms = hasPermission(PERMISSIONS.PROGRAMS_MANAGE);
   const [programs, setPrograms] = useState(initialPrograms);
   const [searchQuery, setSearchQuery] = useState("");
   const [visibilityFilter, setVisibilityFilter] =
@@ -146,14 +150,18 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
   return (
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Button
-          size="lg"
-          nativeButton={false}
-          render={<Link href="/dashboard/programas/novo" />}
-        >
-          <Plus className="size-4" aria-hidden />
-          Novo Programa
-        </Button>
+        {canManagePrograms ? (
+          <Button
+            size="lg"
+            nativeButton={false}
+            render={<Link href="/dashboard/programas/novo" />}
+          >
+            <Plus className="size-4" aria-hidden />
+            Novo Programa
+          </Button>
+        ) : (
+          <div />
+        )}
 
         <div className="flex items-center gap-1 self-end sm:self-auto">
           <Button
@@ -299,7 +307,7 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
             <ProgramCard
               key={program.id}
               program={program}
-              onToggleStatus={handleToggleStatus}
+              onToggleStatus={canManagePrograms ? handleToggleStatus : undefined}
             />
           ))}
         </div>
@@ -309,7 +317,7 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
             <ProgramListRow
               key={program.id}
               program={program}
-              onToggleStatus={handleToggleStatus}
+              onToggleStatus={canManagePrograms ? handleToggleStatus : undefined}
             />
           ))}
         </div>

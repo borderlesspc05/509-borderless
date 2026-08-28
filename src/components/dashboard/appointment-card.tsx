@@ -26,7 +26,6 @@ import { useTouchScrollGuard } from "@/hooks/use-touch-scroll-guard";
 import { setDraggedAppointmentId } from "@/lib/appointment-move-utils";
 import { APPOINTMENT_STATUS_OPTIONS } from "@/lib/appointment-status";
 import { cn } from "@/lib/utils";
-import { formatQueueNumber } from "@/lib/reception-panel";
 import type {
   AppointmentStatus,
   DailyAppointment,
@@ -39,8 +38,13 @@ const statusOptions = APPOINTMENT_STATUS_OPTIONS.map((option) => ({
     : undefined,
 }));
 
+function formatQueueNumber(queueNumber: number) {
+  return String(queueNumber).padStart(3, "0");
+}
+
 type AppointmentCardProps = {
   appointment: DailyAppointment;
+  specialtyLabel?: string | null;
   isReadOnly?: boolean;
   canDrag?: boolean;
   canViewDetails?: boolean;
@@ -55,6 +59,7 @@ type AppointmentCardProps = {
 
 export function AppointmentCard({
   appointment,
+  specialtyLabel,
   isReadOnly = false,
   canDrag = false,
   canViewDetails = false,
@@ -174,6 +179,11 @@ export function AppointmentCard({
               <UserRound className="size-3.5 shrink-0" aria-hidden />
               {appointment.professional}
             </p>
+            {specialtyLabel ? (
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                {specialtyLabel}
+              </p>
+            ) : null}
             {appointment.queueNumber ? (
               <p className="text-xs font-semibold text-primary">
                 Senha {formatQueueNumber(appointment.queueNumber)}

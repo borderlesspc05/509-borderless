@@ -34,7 +34,8 @@ import {
 } from "@/lib/audit-log";
 import {
   applyStatusUpdate,
-  getPatientAppointmentsToday,
+  getAffectedAppointmentIds,
+  getPatientAppointmentsOnDate,
   requiresBulkConfirmation,
   type BulkStatus,
 } from "@/lib/appointment-status-utils";
@@ -49,6 +50,7 @@ import {
 } from "@/lib/agenda-filter-utils";
 import { useAppToast } from "@/hooks/use-app-toast";
 import { formatFullDate } from "@/lib/calendar-utils";
+import { getAppointmentConsultationDescription } from "@/lib/agenda-display-utils";
 import { appointmentStatusLabels } from "@/lib/patient-format";
 import type {
   AppointmentStatus,
@@ -139,6 +141,7 @@ export function DayAppointmentsDialog({
   const [callAppointment, setCallAppointment] =
     useState<DailyAppointment | null>(null);
   const [isCallDialogOpen, setIsCallDialogOpen] = useState(false);
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
   const canViewFinancialDetails = hasPermission(PERMISSIONS.FINANCE_MANAGE);
 
@@ -198,13 +201,13 @@ export function DayAppointmentsDialog({
     setIsAppointmentDialogOpen(true);
   }
 
-  function updateStatus(
+  async function updateStatus(
     appointmentId: string,
     newStatus: AppointmentStatus,
-    applyToAllPatientToday = false
-  ) {
-    if (!canManageAgenda) {
-      return;
+    applyToAllPatientOnDate = false
+  ): Promise<boolean> {
+    if (!canManageAgenda || !dateKey || isUpdatingStatus) {
+      return false;
     }
 
     const target = allAppointments.find(
@@ -212,63 +215,104 @@ export function DayAppointmentsDialog({
     );
 
     if (!target) {
-      return;
+      return false;
     }
 
+    const previousAppointments = allAppointments;
     const nextAppointments = applyStatusUpdate(
       allAppointments,
       appointmentId,
       newStatus,
-      applyToAllPatientToday
+      applyToAllPatientOnDate,
+      dateKey
     );
 
-    const affectedIds = applyToAllPatientToday
-      ? getPatientAppointmentsToday(allAppointments, target.patient).map(
-          (appointment) => appointment.id
-        )
-      : [appointmentId];
+    const affectedIds = getAffectedAppointmentIds(
+      allAppointments,
+      appointmentId,
+      applyToAllPatientOnDate,
+      dateKey
+    );
 
     const auditLogs = collectStatusChangeLogs(
       allAppointments,
       nextAppointments,
       affectedIds,
-      { isBulk: applyToAllPatientToday }
+      { isBulk: applyToAllPatientOnDate }
     );
 
     applyAppointmentsChange(nextAppointments, auditLogs);
 
     const statusLabel = appointmentStatusLabels[newStatus] ?? newStatus;
-    const bulkMessage = applyToAllPatientToday
+    const bulkMessage = applyToAllPatientOnDate
       ? `${affectedIds.length} atendimento${affectedIds.length > 1 ? "s" : ""} de ${target.patient} atualizado${affectedIds.length > 1 ? "s" : ""} para ${statusLabel}.`
       : `Situação de ${target.patient} alterada para ${statusLabel}.`;
 
-    toast.success({
-      title: applyToAllPatientToday ? "Status aplicado em massa" : "Status atualizado",
-      description: bulkMessage,
-    });
+    setIsUpdatingStatus(true);
 
-    const updatedAppointments = nextAppointments.filter((appointment) =>
-      affectedIds.includes(appointment.id)
-    );
+    try {
+      const updatedAppointments = nextAppointments.filter((appointment) =>
+        affectedIds.includes(appointment.id)
+      );
 
-    updatedAppointments.forEach((appointment) => {
-      void syncAppointmentStatus(appointment, newStatus).then((synced) => {
+      const syncResults = await Promise.all(
+        updatedAppointments.map((appointment) =>
+          syncAppointmentStatus(appointment, newStatus)
+        )
+      );
+
+      const failedCount = syncResults.filter((result) => !result).length;
+
+      if (failedCount > 0) {
+        onAppointmentsChange(previousAppointments);
+        toast.error({
+          title: "Falha na atualização",
+          description:
+            failedCount === affectedIds.length
+              ? "Não foi possível salvar a situação. Tente novamente."
+              : `${failedCount} de ${affectedIds.length} atendimentos não foram salvos. A agenda foi restaurada.`,
+        });
+        return false;
+      }
+
+      let mergedAppointments = nextAppointments;
+
+      syncResults.forEach((synced) => {
         if (!synced) {
-          toast.error({
-            title: "Falha na sincronização",
-            description:
-              "Não foi possível sincronizar o status com o servidor.",
-          });
           return;
         }
 
-        onAppointmentsChange(
-          nextAppointments.map((item) =>
-            item.id === synced.id ? synced : item
-          )
+        mergedAppointments = mergedAppointments.map((item) =>
+          item.id === synced.id ? synced : item
         );
       });
-    });
+
+      onAppointmentsChange(mergedAppointments);
+
+      toast.success({
+        title: applyToAllPatientOnDate
+          ? "Status aplicado em massa"
+          : "Status atualizado",
+        description: bulkMessage,
+      });
+
+      return true;
+    } catch (error) {
+      onAppointmentsChange(previousAppointments);
+
+      if (process.env.NODE_ENV === "development") {
+        console.error("[agenda-status-update]", error);
+      }
+
+      toast.error({
+        title: "Falha na atualização",
+        description: "Não foi possível salvar a situação. Tente novamente.",
+      });
+
+      return false;
+    } finally {
+      setIsUpdatingStatus(false);
+    }
   }
 
   function handleStatusChange(
@@ -286,22 +330,27 @@ export function DayAppointmentsDialog({
     }
 
     if (requiresBulkConfirmation(newStatus)) {
-      const todayPatientAppointments = getPatientAppointmentsToday(
+      if (!dateKey) {
+        return;
+      }
+
+      const patientAppointmentsOnDate = getPatientAppointmentsOnDate(
         allAppointments,
-        appointment.patient
+        dateKey,
+        appointment
       );
 
       setPendingUpdate({
         appointmentId,
         patientName: appointment.patient,
         status: newStatus,
-        affectedCount: todayPatientAppointments.length,
+        affectedCount: patientAppointmentsOnDate.length,
       });
       setIsBulkDialogOpen(true);
       return;
     }
 
-    updateStatus(appointmentId, newStatus);
+    void updateStatus(appointmentId, newStatus);
   }
 
   function handleMoveToDate(targetDate: string) {
@@ -366,18 +415,21 @@ export function DayAppointmentsDialog({
     };
   }
 
-  function handleBulkConfirm(applyToAll: boolean) {
+  async function handleBulkConfirm(applyToAll: boolean) {
     if (!pendingUpdate) {
       return;
     }
 
-    updateStatus(
+    const success = await updateStatus(
       pendingUpdate.appointmentId,
       pendingUpdate.status,
       applyToAll
     );
-    setIsBulkDialogOpen(false);
-    setPendingUpdate(null);
+
+    if (success) {
+      setIsBulkDialogOpen(false);
+      setPendingUpdate(null);
+    }
   }
 
   function handleAppointmentFinancialUpdate(updated: DailyAppointment) {
@@ -407,6 +459,10 @@ export function DayAppointmentsDialog({
   }
 
   function handleBulkDialogOpenChange(nextOpen: boolean) {
+    if (!nextOpen && isUpdatingStatus) {
+      return;
+    }
+
     setIsBulkDialogOpen(nextOpen);
 
     if (!nextOpen) {
@@ -517,6 +573,10 @@ export function DayAppointmentsDialog({
                   <AppointmentCard
                     key={appointment.id}
                     appointment={appointment}
+                    specialtyLabel={getAppointmentConsultationDescription(
+                      appointment,
+                      professionals
+                    )}
                     isReadOnly={isAgendaReadOnly}
                     canDrag={canDragAppointments}
                     canViewDetails={canViewFinancialDetails}
@@ -583,13 +643,15 @@ export function DayAppointmentsDialog({
         onPatientCalled={handlePatientCalled}
       />
 
-      {pendingUpdate ? (
+      {pendingUpdate && dateKey ? (
         <AppointmentBulkStatusDialog
           open={isBulkDialogOpen}
           onOpenChange={handleBulkDialogOpenChange}
           patientName={pendingUpdate.patientName}
+          dateKey={dateKey}
           status={pendingUpdate.status}
           affectedCount={pendingUpdate.affectedCount}
+          isLoading={isUpdatingStatus}
           onConfirm={handleBulkConfirm}
         />
       ) : null}

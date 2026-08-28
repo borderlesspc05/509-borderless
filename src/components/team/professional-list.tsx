@@ -40,7 +40,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { professionalStatusLabels } from "@/lib/professional-format";
+import { PERMISSIONS } from "@/lib/rbac";
 import { cn } from "@/lib/utils";
+import { useUserRole } from "@/hooks/use-user-role";
 
 type ProfessionalListProps = {
   professionals: TeamMember[];
@@ -124,6 +126,8 @@ function exportProfessionalsToCsv(professionals: TeamMember[]) {
 }
 
 export function ProfessionalList({ professionals }: ProfessionalListProps) {
+  const { hasPermission } = useUserRole();
+  const canManageTeam = hasPermission(PERMISSIONS.TEAM_MANAGE);
   const [professionalItems, setProfessionalItems] = useState(professionals);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
@@ -197,14 +201,18 @@ export function ProfessionalList({ professionals }: ProfessionalListProps) {
       <ProfessionalStatsRow professionals={professionalItems} />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Button
-          size="lg"
-          nativeButton={false}
-          render={<Link href="/dashboard/profissionais/novo" />}
-        >
-          <Plus className="size-4" aria-hidden />
-          Novo Profissional
-        </Button>
+        {canManageTeam ? (
+          <Button
+            size="lg"
+            nativeButton={false}
+            render={<Link href="/dashboard/profissionais/novo" />}
+          >
+            <Plus className="size-4" aria-hidden />
+            Novo Profissional
+          </Button>
+        ) : (
+          <div />
+        )}
 
         <div className="flex items-center gap-1 self-end sm:self-auto">
           <Button

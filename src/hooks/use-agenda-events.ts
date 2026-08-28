@@ -29,7 +29,11 @@ export function useAgendaEvents(careType: CareType = "ABA") {
 
   useEffect(() => {
     function handleVisibilityChange() {
-      if (document.visibilityState === "visible" && pathname === "/dashboard") {
+      if (
+        document.visibilityState === "visible" &&
+        pathname != null &&
+        pathname.includes("/agenda")
+      ) {
         void refetch();
       }
     }

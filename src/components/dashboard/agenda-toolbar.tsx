@@ -65,6 +65,11 @@ function getProfessionalLabel(professional: AgendaSearchProfessional) {
   return professional.fullName;
 }
 
+function isSerializedObjectInput(value: string) {
+  const trimmed = value.trim();
+  return trimmed.startsWith("{") && trimmed.includes('"id"');
+}
+
 const availabilityOptions: Array<{
   value: AgendaAvailabilityFilter;
   label: string;
@@ -217,6 +222,41 @@ export function AgendaToolbar({
         }
       : null;
 
+  const resolvedPatientItems = useMemo(() => {
+    if (!patientValue) {
+      return patientItems;
+    }
+
+    if (patientItems.some((patient) => patient.id === patientValue.id)) {
+      return patientItems;
+    }
+
+    return [patientValue, ...patientItems];
+  }, [patientItems, patientValue]);
+
+  const resolvedProfessionalItems = useMemo(() => {
+    if (!professionalValue) {
+      return professionalItems;
+    }
+
+    if (
+      professionalItems.some(
+        (professional) => professional.id === professionalValue.id
+      )
+    ) {
+      return professionalItems;
+    }
+
+    return [
+      {
+        id: professionalValue.id,
+        fullName: professionalValue.fullName,
+        professionalRole: null,
+      },
+      ...professionalItems,
+    ];
+  }, [professionalItems, professionalValue]);
+
   function applyDraft() {
     onFiltersChange(draft);
     setIsFiltersOpen(false);
@@ -283,24 +323,38 @@ export function AgendaToolbar({
             </Label>
             <div className="flex items-center gap-1.5">
               <Combobox
-                items={patientItems}
+                items={resolvedPatientItems}
                 value={patientValue}
                 inputValue={patientInput}
-                onInputValueChange={setPatientInput}
+                onInputValueChange={(nextValue) => {
+                  if (isSerializedObjectInput(nextValue)) {
+                    return;
+                  }
+
+                  if (personFilters.patient) {
+                    return;
+                  }
+
+                  setPatientInput(nextValue);
+                }}
                 onValueChange={(value) => {
                   if (!value) {
+                    setPatientInput("");
                     onPersonFiltersChange({
                       ...personFilters,
                       patient: null,
                     });
                     return;
                   }
+
+                  setPatientInput(value.fullName);
                   onPersonFiltersChange({
                     ...personFilters,
                     patient: { id: value.id, name: value.fullName },
                   });
                 }}
-                itemToStringValue={(patient) => patient.fullName}
+                itemToStringLabel={(patient) => patient.fullName}
+                itemToStringValue={(patient) => patient.id}
                 isItemEqualToValue={(item, value) => item.id === value.id}
               >
                 <ComboboxInput
@@ -361,24 +415,38 @@ export function AgendaToolbar({
             </Label>
             <div className="flex items-center gap-1.5">
               <Combobox
-                items={professionalItems}
+                items={resolvedProfessionalItems}
                 value={professionalValue}
                 inputValue={professionalInput}
-                onInputValueChange={setProfessionalInput}
+                onInputValueChange={(nextValue) => {
+                  if (isSerializedObjectInput(nextValue)) {
+                    return;
+                  }
+
+                  if (personFilters.professional) {
+                    return;
+                  }
+
+                  setProfessionalInput(nextValue);
+                }}
                 onValueChange={(value) => {
                   if (!value) {
+                    setProfessionalInput("");
                     onPersonFiltersChange({
                       ...personFilters,
                       professional: null,
                     });
                     return;
                   }
+
+                  setProfessionalInput(value.fullName);
                   onPersonFiltersChange({
                     ...personFilters,
                     professional: { id: value.id, name: value.fullName },
                   });
                 }}
-                itemToStringValue={(professional) => professional.fullName}
+                itemToStringLabel={(professional) => professional.fullName}
+                itemToStringValue={(professional) => professional.id}
                 isItemEqualToValue={(item, value) => item.id === value.id}
               >
                 <ComboboxInput

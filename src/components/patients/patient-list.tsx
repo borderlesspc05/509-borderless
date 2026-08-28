@@ -36,7 +36,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useUserRole } from "@/hooks/use-user-role";
 import { patientStatusLabels } from "@/lib/patient-format";
+import { PERMISSIONS } from "@/lib/rbac";
 import type { PatientRow } from "@/lib/supabase/database.types";
 import { cn } from "@/lib/utils";
 
@@ -122,6 +124,8 @@ function exportPatientsToCsv(patients: PatientRow[]) {
 }
 
 export function PatientList({ patients }: PatientListProps) {
+  const { hasPermission } = useUserRole();
+  const canManagePatients = hasPermission(PERMISSIONS.PATIENTS_MANAGE);
   const [patientItems, setPatientItems] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
@@ -190,14 +194,18 @@ export function PatientList({ patients }: PatientListProps) {
       <PatientStatsRow patients={patientItems} />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Button
-          size="lg"
-          nativeButton={false}
-          render={<Link href="/dashboard/pacientes/novo" />}
-        >
-          <Plus className="size-4" aria-hidden />
-          Novo Aprendiz
-        </Button>
+        {canManagePatients ? (
+          <Button
+            size="lg"
+            nativeButton={false}
+            render={<Link href="/dashboard/pacientes/novo" />}
+          >
+            <Plus className="size-4" aria-hidden />
+            Novo Aprendiz
+          </Button>
+        ) : (
+          <div />
+        )}
 
         <div className="flex items-center gap-1 self-end sm:self-auto">
           <Button

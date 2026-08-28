@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PatientCreatePage() {
-  await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  await requirePermission(PERMISSIONS.PATIENTS_MANAGE);
 
   return <PatientCreatePageView />;
 }

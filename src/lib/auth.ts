@@ -14,22 +14,22 @@ export const userProfileOptions = [
   {
     value: ROLES.COORDENADOR,
     label: "Coordenador",
-    description: "Acesso clínico restrito à própria área",
+    description: "Cadastra profissionais/aprendizes e agenda na sua área",
   },
   {
     value: ROLES.SUPERVISOR,
     label: "Supervisor",
-    description: "Profissionais formados (psicólogo, T.O., etc.)",
+    description: "Supervisão clínica e cadastro de programas",
   },
   {
     value: ROLES.AT1,
     label: "AT",
-    description: "Registra evoluções e atendimentos",
+    description: "Coletas clínicas: evolução, sessões, checklists e relatórios",
   },
   {
     value: ROLES.AT2,
     label: "AT 2",
-    description: "Assistente terapêutico — acesso clínico básico",
+    description: "Assistente terapêutico — coletas e registros clínicos",
   },
   {
     value: ROLES.RECEPCAO,

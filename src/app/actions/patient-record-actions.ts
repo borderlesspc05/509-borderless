@@ -4,6 +4,8 @@ import { requirePermission } from "@/lib/auth-guard";
 import { requireServerUserSession } from "@/lib/auth-server";
 import {
   assertPatientAccess,
+  sessionCanListAllPatients,
+  sessionCanManagePatients,
   sessionHasBroadPatientAccess,
   syncPatientResponsibleProfessionals,
 } from "@/lib/patient-access";
@@ -63,7 +65,7 @@ export async function listPatientsAction(): Promise<
     return { success: false, error: "Supabase não configurado." };
   }
 
-  if (!sessionHasBroadPatientAccess(session)) {
+  if (!sessionCanListAllPatients(session)) {
     const { data: assignments, error: assignmentsError } = await supabase
       .from("professional_patient_assignments")
       .select("patient_id")
@@ -262,7 +264,7 @@ function toPatientRecord(
 export async function createPatientAction(
   input: PatientFormInput
 ): Promise<ActionResult<{ patient: PatientRow }>> {
-  const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
+  const session = await requirePermission(PERMISSIONS.PATIENTS_MANAGE);
 
   const validated = validatePatientFormInput(input);
 
@@ -319,9 +321,11 @@ export async function updatePatientAction(
 ): Promise<ActionResult<{ patient: PatientRow }>> {
   const session = await requirePermission(PERMISSIONS.PATIENTS_VIEW);
 
-  const access = await assertPatientAccess(input.patientId, session);
-  if (!access.ok) {
-    return { success: false, error: access.error };
+  if (!sessionCanManagePatients(session)) {
+    const access = await assertPatientAccess(input.patientId, session);
+    if (!access.ok) {
+      return { success: false, error: access.error };
+    }
   }
 
   const validated = validatePatientFormInput(input);

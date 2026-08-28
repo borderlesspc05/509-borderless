@@ -1,11 +1,20 @@
-import { ROLES, normalizeRole, type Role } from "@/lib/rbac";
+import { hasPermission, normalizeRole, PERMISSIONS, ROLES, type Role } from "@/lib/rbac";
 import type { AppUserSession } from "@/lib/user-profile";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
-const BROAD_ACCESS_ROLES: readonly Role[] = [
+/** Admin/Colaborador: sessão com qualquer aprendiz sem vínculo na equipe. */
+const SESSION_ANY_PATIENT_ROLES: readonly Role[] = [
   ROLES.ADMIN,
   ROLES.COLABORADOR,
+];
+
+/** Perfis que listam todos os aprendizes (agenda, cadastro, supervisão). */
+const LIST_ALL_PATIENTS_ROLES: readonly Role[] = [
+  ROLES.ADMIN,
+  ROLES.COLABORADOR,
+  ROLES.RECEPCAO,
   ROLES.SUPERVISOR,
+  ROLES.COORDENADOR,
 ];
 
 export function sessionHasBroadPatientAccess(session: AppUserSession): boolean {
@@ -13,7 +22,27 @@ export function sessionHasBroadPatientAccess(session: AppUserSession): boolean {
     return true;
   }
 
-  return BROAD_ACCESS_ROLES.includes(normalizeRole(session.profile));
+  return SESSION_ANY_PATIENT_ROLES.includes(normalizeRole(session.profile));
+}
+
+export function sessionCanListAllPatients(session: AppUserSession): boolean {
+  if (session.isMaster) {
+    return true;
+  }
+
+  return LIST_ALL_PATIENTS_ROLES.includes(normalizeRole(session.profile));
+}
+
+export function sessionCanManagePatients(session: AppUserSession): boolean {
+  if (session.isMaster) {
+    return true;
+  }
+
+  return hasPermission(
+    session.profile,
+    PERMISSIONS.PATIENTS_MANAGE,
+    session.isMaster
+  );
 }
 
 export async function assertPatientAccess(

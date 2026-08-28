@@ -16,7 +16,7 @@ type ProgramEditPageProps = {
 };
 
 export default async function ProgramEditPage({ params }: ProgramEditPageProps) {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
 
   const { id } = await params;
 

@@ -20,6 +20,8 @@ export const PERMISSIONS = {
   AGENDA_SEARCH: "agenda:search",
   AGENDA_FORCE: "agenda:force",
   PATIENTS_VIEW: "patients:view",
+  PATIENTS_MANAGE: "patients:manage",
+  PROGRAMS_MANAGE: "programs:manage",
   PROFESSIONALS_VIEW: "professionals:view",
   ASSESSMENTS_VIEW: "assessments:view",
   CLINICAL_EVOLUTION_VIEW: "clinical_evolution:view",
@@ -73,27 +75,36 @@ const COLABORADOR_PERMISSIONS = Object.values(PERMISSIONS).filter(
     permission !== PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE
 );
 
+const AT_PERMISSIONS = [
+  PERMISSIONS.DASHBOARD_VIEW,
+  PERMISSIONS.AGENDA_VIEW,
+  PERMISSIONS.PATIENTS_VIEW,
+  PERMISSIONS.ASSESSMENTS_VIEW,
+  PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
+  PERMISSIONS.CLINICAL_EVOLUTION_MANAGE,
+  PERMISSIONS.DOCUMENT_TEMPLATES_VIEW,
+  PERMISSIONS.REPORTS_VIEW,
+  PERMISSIONS.INTERNAL_MESSAGING,
+] as const satisfies readonly Permission[];
+
 const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
-  // Recepção: cadastrar/editar aprendizes + agendar na agenda do profissional
+  // Recepção: cadastrar aprendizes + agendar na agenda dos profissionais
   [ROLES.RECEPCAO]: [
     PERMISSIONS.AGENDA_VIEW,
     PERMISSIONS.AGENDA_MANAGE,
     PERMISSIONS.PATIENTS_VIEW,
+    PERMISSIONS.PATIENTS_MANAGE,
     PERMISSIONS.INTERNAL_MESSAGING,
   ],
   [ROLES.FAMILIA]: [PERMISSIONS.FAMILY_PORTAL_VIEW],
-  // AT: registra (evolução / atendimento)
-  [ROLES.AT2]: [...BASE_THERAPIST_PERMISSIONS],
-  [ROLES.AT1]: [
-    ...BASE_THERAPIST_PERMISSIONS,
-    PERMISSIONS.CLINICAL_EVOLUTION_MANAGE,
-    PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
-    PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE,
-  ],
-  // Supervisor: profissionais formados (psicólogo, T.O., etc.)
+  // AT: coletas clínicas (evolução, sessões, checklists, relatórios)
+  [ROLES.AT2]: [...AT_PERMISSIONS],
+  [ROLES.AT1]: [...AT_PERMISSIONS],
+  // Supervisor: quase tudo + programas; sem cadastro de aprendizes nem liberação de acesso
   [ROLES.SUPERVISOR]: [
     ...BASE_THERAPIST_PERMISSIONS,
     ...CLINICAL_EVOLUTION_EDITOR_PERMISSIONS,
+    PERMISSIONS.PROGRAMS_MANAGE,
     PERMISSIONS.AGENDA_MANAGE,
     PERMISSIONS.AGENDA_SEARCH,
     PERMISSIONS.PROFESSIONALS_VIEW,
@@ -101,10 +112,12 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
     PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE,
   ],
-  // Coordenador: mesmo escopo clínico do supervisor, limitado à própria área
+  // Coordenador: cadastra profissionais/aprendizes e agenda; restrito à própria área
   [ROLES.COORDENADOR]: [
     ...BASE_THERAPIST_PERMISSIONS,
     ...CLINICAL_EVOLUTION_EDITOR_PERMISSIONS,
+    PERMISSIONS.PATIENTS_MANAGE,
+    PERMISSIONS.TEAM_MANAGE,
     PERMISSIONS.AGENDA_MANAGE,
     PERMISSIONS.AGENDA_SEARCH,
     PERMISSIONS.PROFESSIONALS_VIEW,
@@ -158,11 +171,13 @@ export const ROUTE_PERMISSIONS: Record<string, Permission> = {
   "/prontuario": PERMISSIONS.PATIENTS_VIEW,
   "/paciente": PERMISSIONS.PATIENTS_VIEW,
   "/dashboard/pacientes": PERMISSIONS.PATIENTS_VIEW,
+  "/dashboard/pacientes/novo": PERMISSIONS.PATIENTS_MANAGE,
   "/dashboard/prontuario-master": PERMISSIONS.PATIENTS_VIEW,
   "/dashboard/profissionais": PERMISSIONS.PROFESSIONALS_VIEW,
   "/dashboard/equipe-terapeutica": PERMISSIONS.PROFESSIONALS_VIEW,
   "/dashboard/avaliacoes": PERMISSIONS.ASSESSMENTS_VIEW,
   "/dashboard/programas": PERMISSIONS.ASSESSMENTS_VIEW,
+  "/dashboard/programas/novo": PERMISSIONS.PROGRAMS_MANAGE,
   "/evolucao": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
   "/dashboard/evolucao": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
   "/dashboard/orientacoes-familia": PERMISSIONS.CLINICAL_EVOLUTION_VIEW,
@@ -187,6 +202,7 @@ export const CLINICAL_EVOLUTION_EDITOR_ROLES = [
   ROLES.COORDENADOR,
   ROLES.SUPERVISOR,
   ROLES.AT1,
+  ROLES.AT2,
 ] as const satisfies readonly Role[];
 
 export const REPORTS_SUPERVISOR_ROLES = [
@@ -374,4 +390,25 @@ export function isFamilyOnlyRole(profile: UserProfile | string) {
 export function isClinicalRole(profile: UserProfile | string) {
   const role = normalizeRole(profile);
   return (CLINICAL_ROLES as readonly Role[]).includes(role);
+}
+
+export function canManagePatients(
+  profile: UserProfile | string,
+  isMaster = false
+) {
+  return hasPermission(profile, PERMISSIONS.PATIENTS_MANAGE, isMaster);
+}
+
+export function canManagePrograms(
+  profile: UserProfile | string,
+  isMaster = false
+) {
+  return hasPermission(profile, PERMISSIONS.PROGRAMS_MANAGE, isMaster);
+}
+
+export function canManageTeamAccess(
+  profile: UserProfile | string,
+  isMaster = false
+) {
+  return hasPermission(profile, PERMISSIONS.TEAM_MANAGE, isMaster);
 }

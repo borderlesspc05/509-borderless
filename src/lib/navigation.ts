@@ -93,7 +93,7 @@ export const mainNavEntries: NavEntry[] = [
       {
         title: "Programas",
         href: "/dashboard/programas",
-        permission: PERMISSIONS.ASSESSMENTS_VIEW,
+        permission: PERMISSIONS.PROGRAMS_MANAGE,
       },
     ],
   },

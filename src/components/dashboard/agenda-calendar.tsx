@@ -12,6 +12,7 @@ import { useAgendaProfessionals } from "@/hooks/use-agenda-professionals";
 import { useUserRole } from "@/hooks/use-user-role";
 import { buildDateMoveLog } from "@/lib/audit-log";
 import { moveAppointmentToDate, parseDraggedAppointmentId } from "@/lib/appointment-move-utils";
+import { AppointmentDayPreview } from "@/components/dashboard/appointment-day-preview";
 import { AppointmentDayIcon } from "@/components/dashboard/appointment-day-icon";
 import { DayAppointmentsDialog } from "@/components/dashboard/day-appointments-dialog";
 import {
@@ -328,6 +329,7 @@ export function AgendaCalendar({ careType = "ABA" }: AgendaCalendarProps) {
             const previewAppointments = dayAppointments.slice(0, 3);
             const hiddenCount =
               dayAppointments.length - previewAppointments.length;
+            const emphasizeSpecialty = Boolean(personFilters.patient);
             const hasAppointments = dayAppointments.length > 0;
             const hasVacantSlots = vacantCount > 0;
 
@@ -340,7 +342,7 @@ export function AgendaCalendar({ careType = "ABA" }: AgendaCalendarProps) {
                 onDragLeave={handleDayDragLeave}
                 onDrop={(event) => handleDayDrop(event, day.dateKey)}
                 className={cn(
-                  "relative flex min-h-16 flex-col border-b border-r border-border/70 p-1.5 text-left transition-colors sm:min-h-24 sm:p-2",
+                  "relative flex min-h-20 flex-col border-b border-r border-border/70 p-1 text-left transition-colors sm:min-h-28 sm:p-1.5 lg:min-h-32",
                   "hover:bg-muted/50 active:bg-muted/70",
                   "focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-none",
                   !day.isCurrentMonth && "bg-muted/20 text-muted-foreground",
@@ -377,13 +379,32 @@ export function AgendaCalendar({ careType = "ABA" }: AgendaCalendarProps) {
                     </div>
                   ) : null
                 ) : hasAppointments ? (
-                  <div className="mt-auto flex flex-wrap items-center gap-0.5 sm:gap-1">
-                    {previewAppointments.map((appointment) => (
-                      <AppointmentDayIcon
-                        key={appointment.id}
-                        status={appointment.status}
-                      />
-                    ))}
+                  <div className="mt-auto flex flex-col gap-0.5">
+                    <div
+                      className={cn(
+                        "flex-col gap-0.5",
+                        emphasizeSpecialty ? "flex" : "hidden sm:flex"
+                      )}
+                    >
+                      {previewAppointments.map((appointment) => (
+                        <AppointmentDayPreview
+                          key={appointment.id}
+                          appointment={appointment}
+                          professionals={professionals}
+                          emphasizeSpecialty={emphasizeSpecialty}
+                        />
+                      ))}
+                    </div>
+                    {!emphasizeSpecialty ? (
+                      <div className="flex flex-wrap items-center gap-0.5 sm:hidden">
+                        {dayAppointments.slice(0, 4).map((appointment) => (
+                          <AppointmentDayIcon
+                            key={appointment.id}
+                            status={appointment.status}
+                          />
+                        ))}
+                      </div>
+                    ) : null}
                     {hiddenCount > 0 ? (
                       <span className="rounded-full bg-muted px-1.5 py-0.5 text-[0.6rem] font-medium text-muted-foreground sm:text-[0.65rem]">
                         +{hiddenCount}

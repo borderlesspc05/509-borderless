@@ -9,31 +9,88 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { AppointmentStatus } from "@/lib/agenda-types";
-
-const statusLabels: Record<"confirmado" | "cancelado", string> = {
-  confirmado: "Confirmado",
-  cancelado: "Cancelado",
-};
+import { formatFullDate } from "@/lib/calendar-utils";
+import type { BulkStatus } from "@/lib/appointment-status-utils";
+import { appointmentStatusLabels } from "@/lib/appointment-status";
 
 type AppointmentBulkStatusDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   patientName: string;
-  status: "confirmado" | "cancelado";
+  dateKey: string;
+  status: BulkStatus;
   affectedCount: number;
+  isLoading?: boolean;
   onConfirm: (applyToAll: boolean) => void;
 };
+
+function getBulkDescription(
+  status: BulkStatus,
+  patientName: string,
+  formattedDate: string,
+  affectedCount: number
+) {
+  const statusLabel = appointmentStatusLabels[status];
+
+  if (status === "em_espera") {
+    return (
+      <>
+        Deseja marcar todos os atendimentos de{" "}
+        <span className="font-medium text-foreground">{patientName}</span> em{" "}
+        <span className="font-medium text-foreground capitalize">
+          {formattedDate}
+        </span>{" "}
+        como <span className="font-medium text-foreground">{statusLabel}</span>?
+        {affectedCount > 1 ? (
+          <>
+            {" "}
+            Os demais horários do dia também serão atualizados para{" "}
+            <span className="font-medium text-foreground">{statusLabel}</span>,
+            totalizando{" "}
+            <span className="font-medium text-foreground">
+              {affectedCount} atendimentos
+            </span>
+            .
+          </>
+        ) : null}
+      </>
+    );
+  }
+
+  return (
+    <>
+      Deseja aplicar esta situação a todos os atendimentos de{" "}
+      <span className="font-medium text-foreground">{patientName}</span> em{" "}
+      <span className="font-medium text-foreground capitalize">
+        {formattedDate}
+      </span>
+      ?
+      {affectedCount > 1 ? (
+        <>
+          {" "}
+          Isso afetará{" "}
+          <span className="font-medium text-foreground">
+            {affectedCount} atendimentos
+          </span>
+          .
+        </>
+      ) : null}
+    </>
+  );
+}
 
 export function AppointmentBulkStatusDialog({
   open,
   onOpenChange,
   patientName,
+  dateKey,
   status,
   affectedCount,
+  isLoading = false,
   onConfirm,
 }: AppointmentBulkStatusDialogProps) {
-  const statusLabel = statusLabels[status];
+  const statusLabel = appointmentStatusLabels[status];
+  const formattedDate = formatFullDate(dateKey);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -41,19 +98,12 @@ export function AppointmentBulkStatusDialog({
         <DialogHeader>
           <DialogTitle>Aplicar situação em massa?</DialogTitle>
           <DialogDescription>
-            Deseja aplicar esta situação a todos os atendimentos de{" "}
-            <span className="font-medium text-foreground">{patientName}</span> no
-            dia de hoje?
-            {affectedCount > 1 ? (
-              <>
-                {" "}
-                Isso afetará{" "}
-                <span className="font-medium text-foreground">
-                  {affectedCount} atendimentos
-                </span>
-                .
-              </>
-            ) : null}
+            {getBulkDescription(
+              status,
+              patientName,
+              formattedDate,
+              affectedCount
+            )}
           </DialogDescription>
         </DialogHeader>
 
@@ -61,12 +111,19 @@ export function AppointmentBulkStatusDialog({
           <Button
             type="button"
             variant="outline"
+            disabled={isLoading}
             onClick={() => onConfirm(false)}
           >
-            Apenas este atendimento
+            {isLoading ? "Aplicando..." : "Apenas este atendimento"}
           </Button>
-          <Button type="button" onClick={() => onConfirm(true)}>
-            Aplicar a todos ({statusLabel})
+          <Button
+            type="button"
+            disabled={isLoading}
+            onClick={() => onConfirm(true)}
+          >
+            {isLoading
+              ? "Aplicando..."
+              : `Aplicar a todos (${statusLabel})`}
           </Button>
         </DialogFooter>
       </DialogContent>
