@@ -12,6 +12,11 @@ import {
 } from "@/app/actions/nutrition-actions";
 import { NutritionNumberField } from "@/components/nutrition/nutrition-number-field";
 import {
+  normalizeMealPlanFoodItem,
+  NutritionMealPlanFoodEditor,
+} from "@/components/nutrition/nutrition-meal-plan-food-editor";
+import { NutritionMealPlanReadOnly } from "@/components/nutrition/nutrition-meal-plan-readonly";
+import {
   NutritionFieldGroup,
   NutritionFormFooter,
   NutritionHistoryItem,
@@ -29,6 +34,7 @@ import {
   scaleFoodNutrients,
   summarizeMealPlanMacros,
 } from "@/lib/nutrition/calculations";
+import { createDefaultHouseholdMeasure } from "@/lib/nutrition/household-measures";
 import type {
   MealPlanMeal,
   NutritionFood,
@@ -74,6 +80,8 @@ export function NutritionMealPlanSection({
     proteinG: 0,
     fatG: 0,
   });
+  const [defaultPortionG, setDefaultPortionG] = useState(100);
+  const [expandedPlanId, setExpandedPlanId] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     const [plansResult, templatesResult, foodsResult] = await Promise.all([
@@ -112,13 +120,37 @@ export function NutritionMealPlanSection({
               ...meal,
               foods: [
                 ...meal.foods,
-                {
+                normalizeMealPlanFoodItem({
                   foodId: food.id,
                   foodName: food.name,
                   quantityG,
                   ...nutrients,
-                },
+                  householdMeasure: createDefaultHouseholdMeasure(
+                    "unit",
+                    quantityG
+                  ),
+                  substitutions: [],
+                }),
               ],
+            }
+          : meal
+      )
+    );
+  }
+
+  function updateFoodInMeal(
+    mealId: string,
+    foodIndex: number,
+    nextFood: MealPlanMeal["foods"][number]
+  ) {
+    setMeals((current) =>
+      current.map((meal) =>
+        meal.id === mealId
+          ? {
+              ...meal,
+              foods: meal.foods.map((food, index) =>
+                index === foodIndex ? normalizeMealPlanFoodItem(nextFood) : food
+              ),
             }
           : meal
       )
@@ -164,7 +196,12 @@ export function NutritionMealPlanSection({
     setEditingPlanId(plan.id);
     setTitle(plan.title);
     setNotes(plan.notes ?? "");
-    setMeals(plan.meals);
+    setMeals(
+      plan.meals.map((meal) => ({
+        ...meal,
+        foods: meal.foods.map((food) => normalizeMealPlanFoodItem(food)),
+      }))
+    );
   }
 
   function handleDeletePlan(id: string) {
@@ -258,6 +295,20 @@ export function NutritionMealPlanSection({
               proteinG={macros.proteinG}
               fatG={macros.fatG}
             />
+
+            <NutritionFieldGroup
+              title="Porção padrão ao adicionar alimento"
+              description="Defina a quantidade inicial em gramas — editável depois em cada item."
+              columns={4}
+            >
+              <NutritionNumberField
+                id="default-portion-g"
+                label="Porção inicial"
+                unit="g"
+                value={defaultPortionG}
+                onChange={(value) => setDefaultPortionG(value ?? 100)}
+              />
+            </NutritionFieldGroup>
 
             <NutritionFieldGroup
               title="Cadastrar alimento personalizado"
@@ -374,7 +425,9 @@ export function NutritionMealPlanSection({
                             variant="outline"
                             size="sm"
                             className="h-auto max-w-full py-1.5 text-xs"
-                            onClick={() => addFoodToMeal(meal.id, food, 100)}
+                            onClick={() =>
+                              addFoodToMeal(meal.id, food, defaultPortionG)
+                            }
                           >
                             + {food.name}
                           </Button>
@@ -382,29 +435,17 @@ export function NutritionMealPlanSection({
                       </div>
 
                       {meal.foods.length > 0 ? (
-                        <ul className="divide-y divide-border/60 rounded-lg border border-border/60">
+                        <ul className="space-y-3">
                           {meal.foods.map((food, index) => (
-                            <li
+                            <NutritionMealPlanFoodEditor
                               key={`${food.foodId}-${index}`}
-                              className="flex items-center justify-between gap-3 px-3 py-2 text-sm"
-                            >
-                              <div>
-                                <p className="font-medium text-foreground">{food.foodName}</p>
-                                <p className="text-xs text-muted-foreground">
-                                  {food.quantityG}g · {food.caloriesKcal.toFixed(0)} kcal · C{" "}
-                                  {food.carbsG.toFixed(1)}g · P {food.proteinG.toFixed(1)}g · G{" "}
-                                  {food.fatG.toFixed(1)}g
-                                </p>
-                              </div>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeFoodFromMeal(meal.id, index)}
-                              >
-                                <Trash2 className="size-3.5" />
-                              </Button>
-                            </li>
+                              food={food}
+                              foodCatalog={foods}
+                              onChange={(nextFood) =>
+                                updateFoodInMeal(meal.id, index, nextFood)
+                              }
+                              onRemove={() => removeFoodFromMeal(meal.id, index)}
+                            />
                           ))}
                         </ul>
                       ) : (
@@ -441,7 +482,7 @@ export function NutritionMealPlanSection({
                 className={nutritionTextareaClassName}
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
-                placeholder="Substituições, orientações de preparo, restrições..."
+                placeholder="Orientações de preparo, restrições gerais..."
               />
             </div>
 
@@ -494,35 +535,62 @@ export function NutritionMealPlanSection({
           <p className="text-sm text-muted-foreground">Nenhum plano registrado.</p>
         ) : (
           <div className="space-y-3">
-            {plans.map((plan) => (
-              <NutritionHistoryItem
-                key={plan.id}
-                title={plan.title}
-                subtitle={`${plan.macros.caloriesKcal.toFixed(0)} kcal · ${plan.meals.length} refeições`}
-                actions={
-                  !readOnly ? (
-                    <>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => loadPlan(plan)}
-                      >
-                        Editar
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeletePlan(plan.id)}
-                      >
-                        <Trash2 className="size-4" />
-                      </Button>
-                    </>
-                  ) : undefined
-                }
-              />
-            ))}
+            {plans.map((plan) => {
+              const isExpanded = expandedPlanId === plan.id;
+
+              return (
+                <div
+                  key={plan.id}
+                  className="rounded-xl border border-border/70 bg-background"
+                >
+                  <NutritionHistoryItem
+                    title={plan.title}
+                    subtitle={`${plan.macros.caloriesKcal.toFixed(0)} kcal · ${plan.meals.length} refeições`}
+                    actions={
+                      <>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            setExpandedPlanId((current) =>
+                              current === plan.id ? null : plan.id
+                            )
+                          }
+                        >
+                          {isExpanded ? "Ocultar" : "Ver plano"}
+                        </Button>
+                        {!readOnly ? (
+                          <>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => loadPlan(plan)}
+                            >
+                              Editar
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeletePlan(plan.id)}
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          </>
+                        ) : null}
+                      </>
+                    }
+                  />
+                  {isExpanded ? (
+                    <div className="px-4 pb-4">
+                      <NutritionMealPlanReadOnly plan={plan} />
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
         )}
       </NutritionSectionCard>

@@ -30,6 +30,8 @@ function buildAdultPoints(records: NutritionAnthropometryRecord[]) {
         bmi: data.bmi,
         fatPercent: data.bioimpedance.fatPercent,
         waist: data.measurements.waistCm,
+        leftThigh: data.measurements.leftThighCm,
+        rightThigh: data.measurements.rightThighCm,
       };
     })
     .filter((point) => point.weight !== null);
@@ -123,6 +125,8 @@ export function NutritionEvolutionCharts({ records }: NutritionEvolutionChartsPr
         lines={[
           { key: "fatPercent", name: "% gordura", color: "var(--chart-3)" },
           { key: "waist", name: "Cintura (cm)", color: "var(--chart-4)" },
+          { key: "leftThigh", name: "Coxa esq. (cm)", color: "var(--chart-5)" },
+          { key: "rightThigh", name: "Coxa dir. (cm)", color: "var(--chart-1)" },
         ]}
       />
       <ChartPanel

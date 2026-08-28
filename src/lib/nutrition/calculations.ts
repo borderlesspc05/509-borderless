@@ -237,6 +237,8 @@ export function emptyAdultAnthropometry() {
       leftArmContractedCm: null,
       rightArmRelaxedCm: null,
       rightArmContractedCm: null,
+      leftThighCm: null,
+      rightThighCm: null,
     },
   };
 }

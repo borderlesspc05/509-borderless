@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
-import { Ruler, Save, Trash2 } from "lucide-react";
+import { Ruler, Pencil, Save, Trash2 } from "lucide-react";
 
 import {
   deleteNutritionAnthropometryAction,
@@ -9,6 +9,7 @@ import {
   saveNutritionAnthropometryAction,
 } from "@/app/actions/nutrition-actions";
 import { NutritionEvolutionCharts } from "@/components/nutrition/nutrition-evolution-charts";
+import { NutritionEvolutionTable } from "@/components/nutrition/nutrition-evolution-table";
 import { NutritionNumberField } from "@/components/nutrition/nutrition-number-field";
 import {
   NutritionFieldGroup,
@@ -152,6 +153,36 @@ export function NutritionAnthropometrySection({
     });
   }
 
+  function handleEdit(record: NutritionAnthropometryRecord) {
+    setEditingId(record.id);
+    setRecordType(record.recordType);
+    setConsultationDate(record.consultationDate);
+
+    if (record.recordType === "adult") {
+      const data = record.formData as AdultAnthropometryData;
+      setAdultData({
+        ...emptyAdultAnthropometry(),
+        ...data,
+        bioimpedance: {
+          ...emptyAdultAnthropometry().bioimpedance,
+          ...data.bioimpedance,
+        },
+        measurements: {
+          ...emptyAdultAnthropometry().measurements,
+          ...data.measurements,
+        },
+      });
+      return;
+    }
+
+    if (record.recordType === "child") {
+      setChildData(record.formData as ChildAnthropometryData);
+      return;
+    }
+
+    setPregnantData(record.formData as PregnantAnthropometryData);
+  }
+
   function handleDelete(id: string) {
     startTransition(async () => {
       const result = await deleteNutritionAnthropometryAction(patientId, id);
@@ -293,6 +324,8 @@ export function NutritionAnthropometrySection({
                     ["leftArmContractedCm", "Braço esq. contraído"],
                     ["rightArmRelaxedCm", "Braço dir. relaxado"],
                     ["rightArmContractedCm", "Braço dir. contraído"],
+                    ["leftThighCm", "Coxa esquerda"],
+                    ["rightThighCm", "Coxa direita"],
                   ] as const
                 ).map(([key, label]) => (
                   <NutritionNumberField
@@ -466,10 +499,14 @@ export function NutritionAnthropometrySection({
             </TabsContent>
           </Tabs>
 
-          <NutritionFormFooter hint="Os gráficos de evolução são atualizados automaticamente após salvar.">
+          <NutritionFormFooter hint="Os gráficos e a tabela de evolução são atualizados automaticamente após salvar.">
             <Button type="button" disabled={isPending} onClick={handleSave} className="gap-2">
               <Save className="size-4" />
-              {isPending ? "Salvando..." : "Salvar antropometria"}
+              {isPending
+                ? "Salvando..."
+                : editingId
+                  ? "Atualizar antropometria"
+                  : "Salvar antropometria"}
             </Button>
           </NutritionFormFooter>
         </NutritionSectionCard>
@@ -477,9 +514,12 @@ export function NutritionAnthropometrySection({
 
       <NutritionSectionCard
         title="Evolução antropométrica"
-        description="Gráficos comparativos entre consultas — peso, IMC, composição corporal e curvas pediátricas."
+        description="Gráficos e tabela comparativa entre consultas — todos os dados coletados."
       >
         <NutritionEvolutionCharts records={records} />
+        <div className="pt-2">
+          <NutritionEvolutionTable records={records} />
+        </div>
       </NutritionSectionCard>
 
       <NutritionSectionCard title="Histórico de registros">
@@ -494,14 +534,24 @@ export function NutritionAnthropometrySection({
                 badge={RECORD_TYPE_LABELS[record.recordType]}
                 actions={
                   !readOnly ? (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(record.id)}
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
+                    <>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(record)}
+                      >
+                        <Pencil className="size-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(record.id)}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </>
                   ) : undefined
                 }
               />

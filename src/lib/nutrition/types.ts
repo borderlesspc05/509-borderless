@@ -1,6 +1,10 @@
+import type { HouseholdMeasure } from "@/lib/nutrition/household-measures";
+
 export type AnthropometryRecordType = "adult" | "child" | "pregnant";
 
 export type EnergyPopulation = "adult" | "child" | "pregnant";
+
+export type { HouseholdMeasure };
 
 export type AdultAnthropometryData = {
   weightKg: number | null;
@@ -27,6 +31,8 @@ export type AdultAnthropometryData = {
     leftArmContractedCm: number | null;
     rightArmRelaxedCm: number | null;
     rightArmContractedCm: number | null;
+    leftThighCm: number | null;
+    rightThighCm: number | null;
   };
 };
 
@@ -48,6 +54,17 @@ export type PregnantAnthropometryData = {
   weeklyWeights: Record<string, number | null>;
 };
 
+export type MealPlanSubstitution = {
+  foodId: string;
+  foodName: string;
+  quantityG: number;
+  caloriesKcal: number;
+  carbsG: number;
+  proteinG: number;
+  fatG: number;
+  householdMeasure?: HouseholdMeasure;
+};
+
 export type MealPlanFoodItem = {
   foodId: string;
   foodName: string;
@@ -56,6 +73,8 @@ export type MealPlanFoodItem = {
   carbsG: number;
   proteinG: number;
   fatG: number;
+  householdMeasure?: HouseholdMeasure;
+  substitutions?: MealPlanSubstitution[];
 };
 
 export type MealPlanMeal = {
