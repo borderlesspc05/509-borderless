@@ -41,12 +41,14 @@ import {
   programVisibilityLabels,
   type ProgramListItem,
 } from "@/lib/program-format";
+import type { ProgramsPageMode } from "@/components/programs/programs-page-view";
 import { PERMISSIONS } from "@/lib/rbac";
 import { cn } from "@/lib/utils";
 import { useUserRole } from "@/hooks/use-user-role";
 
 type ProgramListProps = {
   programs: ProgramListItem[];
+  mode?: ProgramsPageMode;
 };
 
 type ViewMode = "grid" | "list";
@@ -91,10 +93,22 @@ function matchesProgramSearch(program: ProgramListItem, query: string) {
   return haystack.includes(query);
 }
 
-export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
+export function ProgramList({
+  programs: initialPrograms,
+  mode = "catalog",
+}: ProgramListProps) {
   const toast = useAppToast();
   const { hasPermission } = useUserRole();
   const canManagePrograms = hasPermission(PERMISSIONS.PROGRAMS_MANAGE);
+  const isLearnerMode = mode === "learner";
+  const canCreate =
+    isLearnerMode
+      ? hasPermission(PERMISSIONS.ASSESSMENTS_VIEW)
+      : canManagePrograms;
+  const createHref = isLearnerMode
+    ? "/dashboard/programacoes/novo"
+    : "/dashboard/programas/novo";
+  const createLabel = isLearnerMode ? "Nova Programação" : "Novo Programa";
   const [programs, setPrograms] = useState(initialPrograms);
   const [searchQuery, setSearchQuery] = useState("");
   const [visibilityFilter, setVisibilityFilter] =
@@ -150,14 +164,14 @@ export function ProgramList({ programs: initialPrograms }: ProgramListProps) {
   return (
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {canManagePrograms ? (
+        {canCreate ? (
           <Button
             size="lg"
             nativeButton={false}
-            render={<Link href="/dashboard/programas/novo" />}
+            render={<Link href={createHref} />}
           >
             <Plus className="size-4" aria-hidden />
-            Novo Programa
+            {createLabel}
           </Button>
         ) : (
           <div />

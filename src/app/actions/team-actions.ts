@@ -1,5 +1,6 @@
 "use server";
 
+import { normalizeCareModalities, type CareModality } from "@/lib/care-modality";
 import { requirePermission } from "@/lib/auth-guard";
 import type { UserProfile } from "@/lib/auth";
 import { isRole, normalizeRole, PERMISSIONS } from "@/lib/rbac";
@@ -22,6 +23,7 @@ export type TeamMember = {
   profileLabel: string;
   professionalRole: string | null;
   professionalCouncil: string | null;
+  careModalities: CareModality[];
   birthDate: string | null;
   cpf: string | null;
   status: "active" | "inactive";
@@ -39,6 +41,7 @@ export type CreateTeamMemberInput = {
   professionalCouncil?: string;
   cpf?: string;
   birthDate?: string;
+  careModalities?: string[];
 };
 
 function isClinicalProfile(profile: UserProfile) {
@@ -60,6 +63,7 @@ function mapTeamMember(
     profileLabel: getProfileLabel(profile),
     professionalRole: row.professional_role,
     professionalCouncil: row.professional_council,
+    careModalities: normalizeCareModalities(row.care_modalities),
     birthDate: row.birth_date ?? null,
     cpf: row.cpf ?? null,
     status: row.status ?? "active",
@@ -222,6 +226,7 @@ export type UpdateProfessionalInput = {
   professionalRole?: string;
   professionalCouncil?: string;
   profile: UserProfile;
+  careModalities?: string[];
 };
 
 export async function updateProfessionalAction(
@@ -263,6 +268,7 @@ export async function updateProfessionalAction(
       birth_date: normalizeOptionalText(input.birthDate),
       professional_role: professionalRole,
       professional_council: normalizeOptionalText(input.professionalCouncil),
+      care_modalities: normalizeCareModalities(input.careModalities),
       profile,
       updated_at: new Date().toISOString(),
     })
@@ -422,6 +428,7 @@ export async function createTeamMemberAction(
       profile,
       professional_role: professionalRole,
       professional_council: input.professionalCouncil?.trim() || null,
+      care_modalities: normalizeCareModalities(input.careModalities),
       cpf: normalizeOptionalText(input.cpf),
       birth_date: normalizeOptionalText(input.birthDate),
       updated_at: new Date().toISOString(),

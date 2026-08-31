@@ -5,40 +5,51 @@ import { DashboardPageHeader } from "@/components/dashboard/dashboard-page-heade
 import { PageContainer } from "@/components/layout/page-container";
 import type { ProgramListItem } from "@/lib/program-format";
 
+export type ProgramsPageMode = "catalog" | "learner";
+
 type ProgramsPageViewProps = {
   programs: ProgramListItem[];
   error?: string;
-  focusLearnerPrograms?: boolean;
+  mode?: ProgramsPageMode;
 };
 
 export function ProgramsPageView({
   programs,
   error,
-  focusLearnerPrograms = false,
+  mode = "catalog",
 }: ProgramsPageViewProps) {
+  const isLearnerMode = mode === "learner";
+
   return (
     <PageContainer size="wide" className="space-y-6">
       <DashboardPageHeader
-        title={focusLearnerPrograms ? "Programações" : "Programas"}
+        title={isLearnerMode ? "Programações" : "Programas"}
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
-          { label: focusLearnerPrograms ? "Evolução" : "Cadastro" },
-          { label: focusLearnerPrograms ? "Programações" : "Programas" },
+          { label: isLearnerMode ? "Evolução" : "Cadastro" },
+          { label: isLearnerMode ? "Programações" : "Programas" },
         ]}
       />
 
-      {focusLearnerPrograms ? (
+      {isLearnerMode ? (
         <section className="app-surface-card space-y-2 p-4 text-sm text-muted-foreground sm:p-5">
-          <p className="font-medium text-foreground">
-            Programações dos aprendizes
-          </p>
+          <p className="font-medium text-foreground">Aplicação de treinos aos aprendizes</p>
           <p>
-            Cadastre e acompanhe programas vinculados a cada aprendiz. Use{" "}
-            <span className="font-medium text-foreground">Novo programa</span> e
-            escolha o tipo <span className="font-medium text-foreground">Programa de Aprendiz</span>.
+            Cadastre e acompanhe programações vinculadas a cada aprendiz. Os modelos de
+            treino são criados em{" "}
+            <span className="font-medium text-foreground">Cadastro → Programas</span>.
           </p>
         </section>
-      ) : null}
+      ) : (
+        <section className="app-surface-card space-y-2 p-4 text-sm text-muted-foreground sm:p-5">
+          <p className="font-medium text-foreground">Catálogo de programas (treinos)</p>
+          <p>
+            Cadastre modelos reutilizáveis de programas ABA. Para aplicar um treino a um
+            aprendiz, use{" "}
+            <span className="font-medium text-foreground">Evolução → Programações</span>.
+          </p>
+        </section>
+      )}
 
       {error ? (
         <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
@@ -46,11 +57,12 @@ export function ProgramsPageView({
         </div>
       ) : (
         <ProgramList
-          programs={
-            focusLearnerPrograms
-              ? programs.filter((program) => program.registration_type === "learner")
-              : programs
-          }
+          programs={programs.filter((program) =>
+            isLearnerMode
+              ? program.registration_type === "learner"
+              : program.registration_type === "catalog"
+          )}
+          mode={mode}
         />
       )}
     </PageContainer>

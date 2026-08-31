@@ -12,6 +12,7 @@ import {
   formatPatientFullName,
   getPatientDisplayId,
 } from "@/lib/patient-format";
+import { formatCareModalities } from "@/lib/care-modality";
 import {
   getHealthPlanLabel,
   getSupportLevelLabel,
@@ -104,8 +105,12 @@ export function PatientViewDialog({
                 value={patient.guardian_name_2}
               />
               <InfoField
-                label="Convênio Saúde"
+                label="Plano / Convênio"
                 value={getHealthPlanLabel(patient.health_plan)}
+              />
+              <InfoField
+                label="Modalidade"
+                value={formatCareModalities(patient.care_modalities)}
               />
               <InfoField
                 label="Nível de Suporte"

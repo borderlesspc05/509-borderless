@@ -15,6 +15,7 @@ import {
 import { useAppToast } from "@/hooks/use-app-toast";
 import { DashboardPageHeader } from "@/components/dashboard/dashboard-page-header";
 import { PageContainer } from "@/components/layout/page-container";
+import { CareModalityField } from "@/components/shared/care-modality-field";
 import { EntityAvatarField } from "@/components/shared/entity-avatar-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +38,7 @@ import {
   isProfessionalSupervisor,
 } from "@/lib/professional-format";
 import { PROFESSIONAL_ROLES } from "@/lib/professionals-data";
+import type { CareModality } from "@/lib/care-modality";
 import { cn } from "@/lib/utils";
 
 type ProfessionalEditPageViewProps = {
@@ -106,6 +108,9 @@ export function ProfessionalEditPageView({
   const [professionalCouncil, setProfessionalCouncil] = useState(
     professional.professionalCouncil ?? ""
   );
+  const [careModalities, setCareModalities] = useState<CareModality[]>(
+    professional.careModalities
+  );
   const toast = useAppToast();
   const [profile, setProfile] = useState<UserProfile>(professional.profile);
   const [avatarUrl, setAvatarUrl] = useState(professional.avatarUrl);
@@ -168,6 +173,7 @@ export function ProfessionalEditPageView({
         professionalRole,
         professionalCouncil,
         profile,
+        careModalities,
       });
 
       if (!result.success) {
@@ -339,6 +345,13 @@ export function ProfessionalEditPageView({
                         </FormField>
                       </>
                     }
+                  />
+
+                  <CareModalityField
+                    idPrefix="professional-care-edit"
+                    values={careModalities}
+                    onChange={setCareModalities}
+                    className="mt-6"
                   />
                 </div>
               </div>

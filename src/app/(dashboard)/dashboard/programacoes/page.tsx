@@ -6,19 +6,12 @@ import { requirePermission } from "@/lib/auth-guard";
 import { PERMISSIONS } from "@/lib/rbac";
 
 export const metadata: Metadata = {
-  title: "Programas",
-  description: "Catálogo de programas ABA e programações de aprendizes.",
+  title: "Programações",
+  description: "Aplicação de programas aos aprendizes.",
 };
 
-type ProgramasPageProps = {
-  searchParams?: Promise<{ tipo?: string }>;
-};
-
-export default async function ProgramasPage({ searchParams }: ProgramasPageProps) {
-  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
-
-  const params = searchParams ? await searchParams : undefined;
-  const legacyLearnerView = params?.tipo === "learner";
+export default async function ProgramacoesPage() {
+  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
 
   const result = await listProgramsAction();
 
@@ -26,7 +19,7 @@ export default async function ProgramasPage({ searchParams }: ProgramasPageProps
     <ProgramsPageView
       programs={result.success ? (result.data?.programs ?? []) : []}
       error={result.success ? undefined : result.error}
-      mode={legacyLearnerView ? "learner" : "catalog"}
+      mode="learner"
     />
   );
 }

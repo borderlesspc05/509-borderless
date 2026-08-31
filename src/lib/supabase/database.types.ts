@@ -27,6 +27,7 @@ export type Database = {
           professional_role: string | null;
           birth_date: string | null;
           cpf: string | null;
+          care_modalities: string[];
           status: "active" | "inactive";
           patient_id: string | null;
           slot_duration_minutes: number;
@@ -51,6 +52,7 @@ export type Database = {
           professional_role?: string | null;
           birth_date?: string | null;
           cpf?: string | null;
+          care_modalities?: string[];
           status?: "active" | "inactive";
           patient_id?: string | null;
           slot_duration_minutes?: number;
@@ -75,6 +77,7 @@ export type Database = {
           professional_role?: string | null;
           birth_date?: string | null;
           cpf?: string | null;
+          care_modalities?: string[];
           status?: "active" | "inactive";
           patient_id?: string | null;
           slot_duration_minutes?: number;
@@ -277,6 +280,7 @@ export type Database = {
           health_plan: string | null;
           health_plan_identifier: string | null;
           support_level: string | null;
+          care_modalities: string[];
           status: "active" | "inactive" | "discharged";
           avatar_url: string | null;
           created_at: string;
@@ -311,6 +315,7 @@ export type Database = {
           health_plan?: string | null;
           health_plan_identifier?: string | null;
           support_level?: string | null;
+          care_modalities?: string[];
           status?: "active" | "inactive" | "discharged";
           avatar_url?: string | null;
           created_at?: string;
@@ -345,6 +350,7 @@ export type Database = {
           health_plan?: string | null;
           health_plan_identifier?: string | null;
           support_level?: string | null;
+          care_modalities?: string[];
           status?: "active" | "inactive" | "discharged";
           avatar_url?: string | null;
           created_at?: string;

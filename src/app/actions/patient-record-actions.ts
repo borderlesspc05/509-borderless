@@ -1,5 +1,6 @@
 "use server";
 
+import { normalizeCareModalities } from "@/lib/care-modality";
 import { requirePermission } from "@/lib/auth-guard";
 import { requireServerUserSession } from "@/lib/auth-server";
 import {
@@ -167,6 +168,7 @@ export type PatientFormInput = {
   healthPlan?: string;
   healthPlanIdentifier?: string;
   supportLevel?: string;
+  careModalities?: string[];
   responsibleProfessionalIds?: string[];
 };
 
@@ -221,6 +223,7 @@ function validatePatientFormInput(input: PatientFormInput) {
     healthPlan: normalizeOptionalText(input.healthPlan),
     healthPlanIdentifier: normalizeOptionalText(input.healthPlanIdentifier),
     supportLevel: normalizeOptionalText(input.supportLevel),
+    careModalities: normalizeCareModalities(input.careModalities),
     responsibleProfessionalIds: [
       ...new Set((input.responsibleProfessionalIds ?? []).filter(Boolean)),
     ],
@@ -258,6 +261,7 @@ function toPatientRecord(
     health_plan: validated.healthPlan,
     health_plan_identifier: validated.healthPlanIdentifier,
     support_level: validated.supportLevel,
+    care_modalities: validated.careModalities,
   };
 }
 

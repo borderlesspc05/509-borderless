@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import {
   Download,
+  FileText,
   LayoutGrid,
   List,
   Plus,
@@ -36,11 +37,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useUserRole } from "@/hooks/use-user-role";
+import { useAppToast } from "@/hooks/use-app-toast";
+import { getDocumentBrandingAction } from "@/app/actions/document-branding-actions";
 import { patientStatusLabels } from "@/lib/patient-format";
+import { generatePatientRegistryReportPdf } from "@/lib/patient-registry-report-pdf";
 import { PERMISSIONS } from "@/lib/rbac";
 import type { PatientRow } from "@/lib/supabase/database.types";
 import { cn } from "@/lib/utils";
+import { useUserRole } from "@/hooks/use-user-role";
 
 type PatientListProps = {
   patients: PatientRow[];
@@ -124,8 +128,10 @@ function exportPatientsToCsv(patients: PatientRow[]) {
 }
 
 export function PatientList({ patients }: PatientListProps) {
+  const toast = useAppToast();
   const { hasPermission } = useUserRole();
   const canManagePatients = hasPermission(PERMISSIONS.PATIENTS_MANAGE);
+  const [isExportingPdf, startExportPdf] = useTransition();
   const [patientItems, setPatientItems] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
@@ -174,6 +180,24 @@ export function PatientList({ patients }: PatientListProps) {
         patient.id === updatedPatient.id ? updatedPatient : patient
       )
     );
+  }
+
+  function handleExportPdf() {
+    startExportPdf(async () => {
+      try {
+        const brandingResult = await getDocumentBrandingAction();
+        await generatePatientRegistryReportPdf({
+          patients: filteredPatients,
+          branding: brandingResult.success ? brandingResult.data : undefined,
+        });
+      } catch (error) {
+        toast.error({
+          title: "Falha ao gerar PDF",
+          description:
+            error instanceof Error ? error.message : "Não foi possível exportar o relatório.",
+        });
+      }
+    });
   }
 
   return (
@@ -240,6 +264,17 @@ export function PatientList({ patients }: PatientListProps) {
           />
 
           <div className="flex flex-wrap gap-2 lg:shrink-0">
+            <Button
+              type="button"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/5 hover:text-primary"
+              onClick={handleExportPdf}
+              disabled={filteredPatients.length === 0 || isExportingPdf}
+            >
+              <FileText className="size-4" aria-hidden />
+              {isExportingPdf ? "Gerando PDF..." : "Relatório PDF"}
+            </Button>
+
             <Button
               type="button"
               variant="outline"

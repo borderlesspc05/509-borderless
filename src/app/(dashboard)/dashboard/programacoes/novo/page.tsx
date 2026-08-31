@@ -6,19 +6,19 @@ import { requirePermission } from "@/lib/auth-guard";
 import { PERMISSIONS } from "@/lib/rbac";
 
 export const metadata: Metadata = {
-  title: "Novo Programa",
-  description: "Cadastro de novo programa ABA.",
+  title: "Nova Programação",
+  description: "Aplicar programa a um aprendiz.",
 };
 
-export default async function ProgramCreatePage() {
-  await requirePermission(PERMISSIONS.PROGRAMS_MANAGE);
+export default async function ProgramacaoCreatePage() {
+  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
 
   const patientsResult = await listPatientsAction();
 
   return (
     <ProgramCreatePageView
       patients={patientsResult.success ? (patientsResult.data?.patients ?? []) : []}
-      mode="catalog"
+      mode="learner"
     />
   );
 }

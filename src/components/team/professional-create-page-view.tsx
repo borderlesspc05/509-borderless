@@ -10,6 +10,7 @@ import { createTeamMemberAction } from "@/app/actions/team-actions";
 import { useAppToast } from "@/hooks/use-app-toast";
 import { DashboardPageHeader } from "@/components/dashboard/dashboard-page-header";
 import { PageContainer } from "@/components/layout/page-container";
+import { CareModalityField } from "@/components/shared/care-modality-field";
 import { EntityAvatarField } from "@/components/shared/entity-avatar-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { userProfileOptions } from "@/lib/auth";
 import type { UserProfile } from "@/lib/auth";
+import type { CareModality } from "@/lib/care-modality";
 import { PROFESSIONAL_ROLES } from "@/lib/professionals-data";
 import { ROLES } from "@/lib/rbac";
 
@@ -55,6 +57,7 @@ export function ProfessionalCreatePageView() {
   const toast = useAppToast();
   const [selectedProfile, setSelectedProfile] = useState<UserProfile>(ROLES.AT1);
   const [selectedProfessionalRole, setSelectedProfessionalRole] = useState("");
+  const [careModalities, setCareModalities] = useState<CareModality[]>([]);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -77,6 +80,7 @@ export function ProfessionalCreatePageView() {
         professionalCouncil: String(formData.get("professionalCouncil") ?? ""),
         cpf: String(formData.get("cpf") ?? ""),
         birthDate: String(formData.get("birthDate") ?? ""),
+        careModalities,
       });
 
       if (!result.success) {
@@ -273,6 +277,13 @@ export function ProfessionalCreatePageView() {
               placeholder="CRP 00/00000"
             />
           </div>
+
+          <CareModalityField
+            idPrefix="professional-care"
+            values={careModalities}
+            onChange={setCareModalities}
+            className="sm:col-span-2"
+          />
 
           {error ? (
             <div className="rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive sm:col-span-2">

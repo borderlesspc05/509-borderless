@@ -1,3 +1,4 @@
+import { normalizeCareModalities, type CareModality } from "@/lib/care-modality";
 import type { PatientRow } from "@/lib/supabase/database.types";
 
 export const supportLevelItems = [
@@ -8,7 +9,9 @@ export const supportLevelItems = [
 
 export const healthPlanItems = [
   { label: "Particular", value: "particular" },
-  { label: "TRINO SAÚDE", value: "trino" },
+  { label: "TRINO", value: "trino" },
+  { label: "UNIMED", value: "unimed" },
+  { label: "SUS", value: "sus" },
 ] as const;
 
 export type PatientFormState = {
@@ -39,6 +42,7 @@ export type PatientFormState = {
   healthPlan: string;
   healthPlanIdentifier: string;
   supportLevel: string;
+  careModalities: CareModality[];
 };
 
 export const emptyPatientFormState: PatientFormState = {
@@ -69,6 +73,7 @@ export const emptyPatientFormState: PatientFormState = {
   healthPlan: "",
   healthPlanIdentifier: "",
   supportLevel: "",
+  careModalities: [],
 };
 
 export function patientRowToFormState(patient: PatientRow): PatientFormState {
@@ -100,6 +105,7 @@ export function patientRowToFormState(patient: PatientRow): PatientFormState {
     healthPlan: patient.health_plan ?? "",
     healthPlanIdentifier: patient.health_plan_identifier ?? "",
     supportLevel: patient.support_level ?? "",
+    careModalities: normalizeCareModalities(patient.care_modalities),
   };
 }
 

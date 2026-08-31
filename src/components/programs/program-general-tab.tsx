@@ -34,6 +34,8 @@ type ProgramGeneralTabProps = {
   details?: ProgramDetails;
   patients: PatientRow[];
   onSaved?: (details: ProgramDetails) => void;
+  defaultRegistrationType?: "catalog" | "learner";
+  lockRegistrationType?: boolean;
 };
 
 const registrationTypeOptions = [
@@ -59,13 +61,15 @@ export function ProgramGeneralTab({
   details,
   patients,
   onSaved,
+  defaultRegistrationType = "catalog",
+  lockRegistrationType = false,
 }: ProgramGeneralTabProps) {
   const router = useRouter();
   const toast = useAppToast();
   const program = details?.program;
   const [registrationType, setRegistrationType] = useState<
     "catalog" | "learner"
-  >(program?.registration_type ?? "catalog");
+  >(program?.registration_type ?? defaultRegistrationType);
   const [name, setName] = useState(program?.name ?? "");
   const [protocol, setProtocol] = useState(program?.protocol ?? "");
   const [specialty, setSpecialty] = useState(program?.specialty ?? "");
@@ -142,28 +146,30 @@ export function ProgramGeneralTab({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-6">
-          <fieldset className="space-y-3">
-            <legend className="text-sm font-medium text-muted-foreground">
-              Tipo de Cadastro *
-            </legend>
-            <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
-              {registrationTypeOptions.map((option) => (
-                <label
-                  key={option.value}
-                  className="flex items-center gap-2 text-sm text-foreground"
-                >
-                  <input
-                    type="radio"
-                    name="registration-type"
-                    checked={registrationType === option.value}
-                    onChange={() => setRegistrationType(option.value)}
-                    className="size-4 accent-primary"
-                  />
-                  {option.label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          {!lockRegistrationType ? (
+            <fieldset className="space-y-3">
+              <legend className="text-sm font-medium text-muted-foreground">
+                Tipo de Cadastro *
+              </legend>
+              <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
+                {registrationTypeOptions.map((option) => (
+                  <label
+                    key={option.value}
+                    className="flex items-center gap-2 text-sm text-foreground"
+                  >
+                    <input
+                      type="radio"
+                      name="registration-type"
+                      checked={registrationType === option.value}
+                      onChange={() => setRegistrationType(option.value)}
+                      className="size-4 accent-primary"
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          ) : null}
 
           <ProgramFormField id="protocol" label="Protocolo">
             <Select

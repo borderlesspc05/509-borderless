@@ -1,5 +1,6 @@
 "use client";
 
+import { CareModalityField } from "@/components/shared/care-modality-field";
 import { EntityAvatarField } from "@/components/shared/entity-avatar-field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -140,7 +141,7 @@ export function PatientGeralSection({
                   placeholder="Ex.: TEA — Nível 2"
                 />
               </PatientFormField>
-              <PatientFormField id="health-plan" label="Convênio Saúde">
+              <PatientFormField id="health-plan" label="Plano / Convênio">
                 <Select
                   items={healthPlanItems}
                   value={values.healthPlan || null}
@@ -223,6 +224,13 @@ export function PatientGeralSection({
             </>
           }
         />
+        <div className="mt-6">
+          <CareModalityField
+            idPrefix="patient-care"
+            values={values.careModalities}
+            onChange={(careModalities) => onChange("careModalities", careModalities)}
+          />
+        </div>
       </div>
     </div>
   );
@@ -462,6 +470,7 @@ function formStateToActionInput(values: PatientFormState) {
     healthPlan: values.healthPlan,
     healthPlanIdentifier: values.healthPlanIdentifier,
     supportLevel: values.supportLevel,
+    careModalities: values.careModalities,
   };
 }
 

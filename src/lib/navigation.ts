@@ -114,7 +114,7 @@ export const mainNavEntries: NavEntry[] = [
       },
       {
         title: "Programações",
-        href: "/dashboard/programas?tipo=learner",
+        href: "/dashboard/programacoes",
         permission: PERMISSIONS.ASSESSMENTS_VIEW,
       },
       {
@@ -319,11 +319,19 @@ export function isNavHrefActive(pathname: string, href: string) {
     return isAssessmentApplyPath(pathname);
   }
 
-  // Cadastro → Programas vs Evolução → Programações (mesmo path base)
+  // Cadastro → Programas (catálogo)
   if (hrefPath === "/dashboard/programas") {
     return (
       pathname === "/dashboard/programas" ||
       pathname.startsWith("/dashboard/programas/")
+    );
+  }
+
+  // Evolução → Programações (aplicação aos aprendizes)
+  if (hrefPath === "/dashboard/programacoes") {
+    return (
+      pathname === "/dashboard/programacoes" ||
+      pathname.startsWith("/dashboard/programacoes/")
     );
   }
 
