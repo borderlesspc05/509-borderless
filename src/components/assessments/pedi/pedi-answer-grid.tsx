@@ -5,6 +5,7 @@ import {
   getPediDomainGroups,
   type PediArea,
   type PediCapability,
+  type PediTransferMode,
 } from "@/lib/pedi";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,7 @@ type PediAnswerGridProps = {
   items: Record<string, PediCapability>;
   onChange: (itemId: string, value: PediCapability) => void;
   disabled?: boolean;
+  transferMode?: PediTransferMode;
 };
 
 function ScoreButton({
@@ -50,8 +52,9 @@ export function PediAnswerGrid({
   items,
   onChange,
   disabled = false,
+  transferMode = "car",
 }: PediAnswerGridProps) {
-  const domains = getPediDomainGroups(area);
+  const domains = getPediDomainGroups(area, transferMode);
 
   return (
     <section className="space-y-4" aria-label={`Folha — ${PEDI_AREA_LABELS[area]}`}>

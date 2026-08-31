@@ -18,6 +18,10 @@ import {
 import { useAppToast } from "@/hooks/use-app-toast";
 import { ProtectedComponent } from "@/components/auth/protected-component";
 import {
+  emptyToEvolutionFormState,
+  ToEvolutionStructuredForm,
+} from "@/components/clinical-evolution/to-evolution-structured-form";
+import {
   RichTextEditor,
   buildDocumentTemplateVariables,
 } from "@/components/clinical-evolution/rich-text-editor";
@@ -33,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserRole } from "@/hooks/use-user-role";
 import { PERMISSIONS } from "@/lib/rbac";
 import {
@@ -42,6 +47,11 @@ import {
 import { getDocumentBrandingAction } from "@/app/actions/document-branding-actions";
 import { generateClinicalEvolutionPdf } from "@/lib/clinical-evolution-pdf";
 import { toDateKey } from "@/lib/calendar-utils";
+import {
+  buildToEvolutionHtml,
+  isToEvolutionHtml,
+  type ToEvolutionFormState,
+} from "@/lib/terapia-ocupacional/to-evolution";
 import type { ConventionalEvolutionRecordRow } from "@/lib/supabase/database.types";
 
 type ConventionalEvolutionFormProps = {
@@ -75,6 +85,12 @@ export function ConventionalEvolutionForm({
   const [patientId, setPatientId] = useState(activePatients[0]?.id ?? "");
   const [sessionDate, setSessionDate] = useState(toDateKey(new Date()));
   const [contentHtml, setContentHtml] = useState("");
+  const [editorMode, setEditorMode] = useState<"to_structured" | "free">(
+    "to_structured"
+  );
+  const [toFormState, setToFormState] = useState<ToEvolutionFormState>(
+    emptyToEvolutionFormState
+  );
   const [drafts, setDrafts] = useState<ConventionalEvolutionRecordRow[]>([]);
   const [isLoadingDraft, setIsLoadingDraft] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -87,6 +103,30 @@ export function ConventionalEvolutionForm({
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
 
   const selectedPatient = getClinicalPatient(activePatients, patientId);
+
+  useEffect(() => {
+    if (editorMode !== "to_structured" || !selectedPatient) {
+      return;
+    }
+
+    setContentHtml(
+      buildToEvolutionHtml(toFormState, {
+        sessionDate,
+        patientName: selectedPatient.name,
+        professionalName: userName,
+        professionalRole: displayRole,
+        professionalCouncil: professionalCouncil ?? undefined,
+      })
+    );
+  }, [
+    editorMode,
+    toFormState,
+    sessionDate,
+    selectedPatient,
+    userName,
+    displayRole,
+    professionalCouncil,
+  ]);
 
   const templateVariables = buildDocumentTemplateVariables({
     patientName: selectedPatient?.name,
@@ -125,6 +165,9 @@ export function ConventionalEvolutionForm({
     }
 
     setContentHtml(result.record?.content_html ?? "");
+    if (result.record?.content_html && isToEvolutionHtml(result.record.content_html)) {
+      setEditorMode("to_structured");
+    }
     setLastSavedAt(result.record?.updated_at ?? null);
     setIsLoadingDraft(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -372,25 +415,56 @@ export function ConventionalEvolutionForm({
             Registro da sessão (anamnese / evolução)
           </h2>
           <p className="text-sm text-muted-foreground">
-            Redija a evolução de forma descritiva. O conteúdo é protegido por
-            sigilo profissional.
+            Use o modelo estruturado de Terapia Ocupacional ou o editor livre
+            para outras especialidades convencionais.
           </p>
         </div>
 
-        {isLoadingDraft ? (
-          <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground">
-            <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-            Carregando registro...
-          </div>
-        ) : (
-          <RichTextEditor
-            value={contentHtml}
-            onChange={setContentHtml}
-            disabled={!canManage}
-            enableTemplateInsert={canManage}
-            templateVariables={templateVariables}
-          />
-        )}
+        <Tabs
+          value={editorMode}
+          onValueChange={(value) =>
+            setEditorMode(value === "free" ? "free" : "to_structured")
+          }
+        >
+          <TabsList>
+            <TabsTrigger value="to_structured">Modelo TO</TabsTrigger>
+            <TabsTrigger value="free">Editor livre</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="to_structured" className="mt-4">
+            {isLoadingDraft ? (
+              <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground">
+                <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
+                Carregando registro...
+              </div>
+            ) : (
+              <div className="rounded-xl border border-border/70 bg-card p-4 sm:p-5">
+                <ToEvolutionStructuredForm
+                  value={toFormState}
+                  onChange={setToFormState}
+                  disabled={!canManage}
+                />
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="free" className="mt-4">
+            {isLoadingDraft ? (
+              <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground">
+                <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
+                Carregando registro...
+              </div>
+            ) : (
+              <RichTextEditor
+                value={contentHtml}
+                onChange={setContentHtml}
+                disabled={!canManage}
+                enableTemplateInsert={canManage}
+                templateVariables={templateVariables}
+              />
+            )}
+          </TabsContent>
+        </Tabs>
       </section>
 
       {feedback ? (

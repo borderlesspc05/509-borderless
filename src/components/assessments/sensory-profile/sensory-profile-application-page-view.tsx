@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Calculator, Loader2, Save } from "lucide-react";
+import { ArrowLeft, Calculator, Loader2, Save, AlertTriangle } from "lucide-react";
 
 import {
   calculateSensoryProfileAction,
@@ -206,6 +206,22 @@ export function SensoryProfileApplicationPageView({
           </Button>
         }
       />
+
+      <section className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 text-sm">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-600" />
+          <div className="space-y-1 text-amber-950 dark:text-amber-100">
+            <p className="font-medium">Validação clínica em andamento</p>
+            <p className="text-amber-900/90 dark:text-amber-200/90">
+              A equipe de Terapia Ocupacional solicitou enunciados idênticos ao
+              manual oficial, pois a tabela de pontuação usa numeração fixa dos
+              itens. Enquanto a revisão completa dos 86 itens não é concluída,
+              utilize o preenchimento manual ou o site Avalia TO para
+              aplicações que exijam cálculo normativo fidedigno.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <div className="app-surface-card space-y-4 p-4 sm:p-5">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

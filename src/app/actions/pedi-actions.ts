@@ -11,6 +11,7 @@ import {
   createEmptyPediCaregiverAnswers,
   findNearestRawScore,
   isPediCaregiverLevel,
+  isPediTransferMode,
   PEDI_AREA_MAX_RAW,
   PEDI_AREAS,
   PEDI_CAREGIVER_MAX_RAW,
@@ -295,6 +296,7 @@ export type SavePediEvaluationInput = {
   evaluationDate: string;
   items: Record<string, PediCapability>;
   caregiverItems?: Record<string, PediCaregiverLevel | null>;
+  transferMode?: "car" | "bus";
   scores: PediScoreResult;
   professionalName: string;
   professionalRole: string;
@@ -340,6 +342,9 @@ export async function savePediEvaluationAction(
     age: input.scores.age,
     items: input.items,
     caregiverItems: input.caregiverItems ?? null,
+    transferMode: isPediTransferMode(input.transferMode)
+      ? input.transferMode
+      : "car",
     scores: input.scores,
   };
 

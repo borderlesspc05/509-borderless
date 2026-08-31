@@ -4,8 +4,10 @@ import {
   PEDI_AREA_LABELS,
   PEDI_CAREGIVER_ITEMS_BY_AREA,
   PEDI_CAREGIVER_LEVEL_LABELS,
+  PEDI_CAREGIVER_TRANSFER_LABELS,
   type PediArea,
   type PediCaregiverLevel,
+  type PediTransferMode,
 } from "@/lib/pedi";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,7 @@ type PediCaregiverGridProps = {
   items: Record<string, PediCaregiverLevel | null>;
   onChange: (itemId: string, value: PediCaregiverLevel) => void;
   className?: string;
+  transferMode?: PediTransferMode;
 };
 
 const LEVELS: PediCaregiverLevel[] = [0, 1, 2, 3, 4, 5];
@@ -24,6 +27,7 @@ export function PediCaregiverGrid({
   items,
   onChange,
   className,
+  transferMode = "car",
 }: PediCaregiverGridProps) {
   const catalog = PEDI_CAREGIVER_ITEMS_BY_AREA[area];
 
@@ -50,6 +54,10 @@ export function PediCaregiverGrid({
       <ul className="space-y-3">
         {catalog.map((item) => {
           const value = items[item.id];
+          const text =
+            item.id === "ASC-MB-02"
+              ? PEDI_CAREGIVER_TRANSFER_LABELS[transferMode]
+              : item.text;
 
           return (
             <li
@@ -61,7 +69,7 @@ export function PediCaregiverGrid({
                   <span className="mr-2 text-xs font-semibold text-muted-foreground">
                     {item.sortOrder}.
                   </span>
-                  {item.text}
+                  {text}
                 </p>
                 <span className="text-[0.65rem] uppercase tracking-wide text-muted-foreground">
                   {item.label}

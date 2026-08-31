@@ -27,6 +27,8 @@ export {
 export {
   createEmptyPediAnswers,
   getPediDomainGroups,
+  getPediItems,
+  getPediItemsByArea,
   PEDI_ITEMS,
   PEDI_ITEMS_BY_AREA,
 } from "@/lib/pedi/item-map";
@@ -64,6 +66,15 @@ export {
   type PediCaregiverItemDefinition,
   type PediCaregiverLevel,
 } from "@/lib/pedi/caregiver-catalog";
+
+export {
+  PEDI_TRANSFER_MODES,
+  PEDI_TRANSFER_MODE_LABELS,
+  PEDI_MOBILITY_TRANSFER_ITEM_IDS,
+  isPediTransferMode,
+  PEDI_CAREGIVER_TRANSFER_LABELS,
+  type PediTransferMode,
+} from "@/lib/pedi/transfer-mode";
 
 export {
   buildPediItemMapHtml,

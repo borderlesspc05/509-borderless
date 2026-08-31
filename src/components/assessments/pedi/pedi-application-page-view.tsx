@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
+  AlertTriangle,
+  ArrowLeft,
   Calculator,
   FileText,
   Loader2,
   Printer,
   Save,
-  ArrowLeft,
 } from "lucide-react";
 
 import {
@@ -50,10 +51,14 @@ import {
   PEDI_AREA_LABELS,
   PEDI_AREAS,
   PEDI_INSTRUMENT,
+  PEDI_MOBILITY_TRANSFER_ITEM_IDS,
+  PEDI_TRANSFER_MODE_LABELS,
+  PEDI_TRANSFER_MODES,
   type PediArea,
   type PediCapability,
   type PediCaregiverLevel,
   type PediScoreResult,
+  type PediTransferMode,
 } from "@/lib/pedi";
 import { cn } from "@/lib/utils";
 
@@ -79,6 +84,7 @@ export function PediApplicationPageView({
     "functional"
   );
   const [activeArea, setActiveArea] = useState<PediArea>("self_care");
+  const [transferMode, setTransferMode] = useState<PediTransferMode>("car");
   const [items, setItems] = useState<Record<string, PediCapability>>(
     createEmptyPediAnswers
   );
@@ -109,6 +115,22 @@ export function PediApplicationPageView({
       return { area, total: areaItems.length };
     });
   }, [items]);
+
+  function handleTransferModeChange(mode: PediTransferMode) {
+    if (mode === transferMode) {
+      return;
+    }
+
+    setTransferMode(mode);
+    setItems((current) => {
+      const next = { ...current };
+      for (const itemId of PEDI_MOBILITY_TRANSFER_ITEM_IDS) {
+        next[itemId] = 0;
+      }
+      return next;
+    });
+    setScores(null);
+  }
 
   function handleItemChange(itemId: string, value: PediCapability) {
     setItems((current) => ({ ...current, [itemId]: value }));
@@ -178,6 +200,7 @@ export function PediApplicationPageView({
         evaluationDate,
         items,
         caregiverItems,
+        transferMode,
         scores,
         professionalName: userName || "Profissional",
         professionalRole: displayRole || "Clínico",
@@ -237,6 +260,22 @@ export function PediApplicationPageView({
         }
       />
 
+      <section className="print:hidden rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 text-sm">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-600" />
+          <div className="space-y-1 text-amber-950 dark:text-amber-100">
+            <p className="font-medium">Validação clínica em andamento</p>
+            <p className="text-amber-900/90 dark:text-amber-200/90">
+              A equipe de Terapia Ocupacional solicitou que os enunciados sigam
+              fielmente o manual oficial (folha Avalia TO), pois os números dos
+              itens no mapa são fixos. Enquanto a revisão completa não é
+              concluída, utilize o preenchimento manual ou o site Avalia TO para
+              aplicações que exijam pontuação normativa fidedigna.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <div className="print:hidden app-surface-card space-y-4 p-4 sm:p-5">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2">
@@ -295,6 +334,39 @@ export function PediApplicationPageView({
           </div>
         </div>
 
+        <div className="space-y-2 rounded-lg border border-border/70 bg-muted/10 p-4">
+          <Label htmlFor="pedi-transfer-mode">
+            Transferência — itens 11 a 15 (mobilidade)
+          </Label>
+          <p className="text-xs text-muted-foreground">
+            Escolha apenas o meio de transporte mais utilizado. Carro e ônibus
+            não devem ser pontuados simultaneamente.
+          </p>
+          <Select
+            value={transferMode}
+            items={PEDI_TRANSFER_MODES.map((mode) => ({
+              label: PEDI_TRANSFER_MODE_LABELS[mode],
+              value: mode,
+            }))}
+            onValueChange={(value) =>
+              handleTransferModeChange((value as PediTransferMode) ?? "car")
+            }
+          >
+            <SelectTrigger id="pedi-transfer-mode" className="h-11 w-full max-w-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {PEDI_TRANSFER_MODES.map((mode) => (
+                  <SelectItem key={mode} value={mode}>
+                    {PEDI_TRANSFER_MODE_LABELS[mode]}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="flex flex-wrap gap-2">
           {PEDI_AREAS.map((area) => (
             <Button
@@ -336,6 +408,7 @@ export function PediApplicationPageView({
             area={activeArea}
             items={items}
             onChange={handleItemChange}
+            transferMode={transferMode}
           />
         </TabsContent>
         <TabsContent value="caregiver" className="mt-4">
@@ -343,6 +416,7 @@ export function PediApplicationPageView({
             area={activeArea}
             items={caregiverItems}
             onChange={handleCaregiverChange}
+            transferMode={transferMode}
           />
         </TabsContent>
       </Tabs>
