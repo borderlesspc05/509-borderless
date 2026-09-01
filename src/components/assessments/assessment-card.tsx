@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Pencil, ToggleLeft } from "lucide-react";
+import { Pencil, PlayCircle, ToggleLeft } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {
   assessmentStatusLabels,
 } from "@/lib/assessment-format";
 import type { AssessmentTemplateRow } from "@/lib/supabase/database.types";
+import { getAssessmentApplyRoute } from "@/lib/assessment-apply-routes";
 import { cn } from "@/lib/utils";
 
 type AssessmentCardProps = {
@@ -59,6 +60,7 @@ function AssessmentDetailField({
 
 export function AssessmentCard({ template, onToggleStatus }: AssessmentCardProps) {
   const editHref = `/dashboard/avaliacoes/${template.id}/editar`;
+  const applyHref = getAssessmentApplyRoute(template.name);
   const toggleLabel = getAssessmentToggleActionLabel(template.status);
   const initials = getAssessmentInitials(template.name);
 
@@ -92,7 +94,23 @@ export function AssessmentCard({ template, onToggleStatus }: AssessmentCardProps
         />
       </div>
 
-      <div className="grid grid-cols-2 border-t border-border/60 bg-muted/20">
+      <div
+        className={cn(
+          "grid border-t border-border/60 bg-muted/20",
+          applyHref ? "grid-cols-3" : "grid-cols-2"
+        )}
+      >
+        {applyHref ? (
+          <Button
+            variant="ghost"
+            nativeButton={false}
+            className="h-auto flex-col gap-1.5 rounded-none border-r border-border/60 px-2 py-3 text-[0.7rem] font-semibold uppercase tracking-wide text-primary hover:bg-primary/5 hover:text-primary"
+            render={<Link href={applyHref} />}
+          >
+            <PlayCircle className="size-4" aria-hidden />
+            Aplicar
+          </Button>
+        ) : null}
         <Button
           variant="ghost"
           nativeButton={false}
@@ -120,6 +138,7 @@ export function AssessmentListRow({
   onToggleStatus,
 }: AssessmentCardProps) {
   const editHref = `/dashboard/avaliacoes/${template.id}/editar`;
+  const applyHref = getAssessmentApplyRoute(template.name);
   const toggleLabel = getAssessmentToggleActionLabel(template.status);
   const initials = getAssessmentInitials(template.name);
 
@@ -142,6 +161,16 @@ export function AssessmentListRow({
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
+        {applyHref ? (
+          <Button
+            size="sm"
+            nativeButton={false}
+            render={<Link href={applyHref} />}
+          >
+            <PlayCircle className="size-4" aria-hidden />
+            Aplicar
+          </Button>
+        ) : null}
         <Button
           variant="outline"
           size="sm"

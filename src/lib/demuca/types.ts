@@ -67,6 +67,13 @@ export type DemucaScoreResult = {
   isComplete: boolean;
 };
 
+export type DemucaEvaluationHistoryItem = {
+  id: string;
+  evaluationDate: string;
+  status: "draft" | "finalized";
+  domains: DemucaDomainScore[];
+};
+
 export const DEMUCA_DOMAINS: readonly DemucaDomainDefinition[] = [
   {
     id: "comp_restritivos",

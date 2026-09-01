@@ -1,5 +1,6 @@
 import {
   formatPatientBirthDate,
+  parseClinicalDateKey,
   type ClinicalPatient,
 } from "@/lib/clinical-evolution-data";
 import {
@@ -23,8 +24,10 @@ export type ClinicalEvolutionPdfInput = {
 };
 
 function formatSessionDate(sessionDate: string) {
-  const [year, month, day] = sessionDate.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
+  const date = parseClinicalDateKey(sessionDate);
+  if (!date) {
+    return "Não informada";
+  }
 
   return new Intl.DateTimeFormat("pt-BR", {
     weekday: "long",
@@ -119,7 +122,7 @@ function buildReportHtml(
         <h3 style="margin:0 0 12px;font-size:13px;font-family:Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:0.05em;color:${DOCUMENT_BRAND_COLORS.navy};">
           Evolução narrativa
         </h3>
-        <div style="padding:16px 18px;border:1px solid ${DOCUMENT_BRAND_COLORS.border};border-left:4px solid ${DOCUMENT_BRAND_COLORS.teal};border-radius:8px;font-size:14px;color:${DOCUMENT_BRAND_COLORS.text};background:#FBFDFF;">
+        <div class="clinical-evolution-narrative" style="min-width:0;max-width:100%;overflow:hidden;overflow-wrap:anywhere;word-break:break-word;padding:16px 18px;border:1px solid ${DOCUMENT_BRAND_COLORS.border};border-left:4px solid ${DOCUMENT_BRAND_COLORS.teal};border-radius:8px;font-size:14px;color:${DOCUMENT_BRAND_COLORS.text};background:#FBFDFF;">
           ${narrativeContent}
         </div>
       </section>
@@ -157,6 +160,20 @@ function buildIsolatedReportDocument(html: string) {
       }
       h1, h2, h3, p, ul, ol, li, strong, em {
         color: inherit;
+      }
+      .clinical-evolution-narrative,
+      .clinical-evolution-narrative * {
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+      }
+      .clinical-evolution-narrative pre {
+        white-space: pre-wrap !important;
+      }
+      .clinical-evolution-narrative table {
+        width: 100% !important;
+        table-layout: fixed;
       }
       img { max-width: 100%; }
     </style>

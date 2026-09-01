@@ -19,6 +19,7 @@ export function AvaliacoesAplicarPageView() {
   const role = normalizeRole(profile);
   const instruments = getApplicableAssessmentsForSession({
     professionalRole,
+    profile,
     isMaster,
     canManageAll: canSeeAllClinicalAreas(role, isMaster),
   });

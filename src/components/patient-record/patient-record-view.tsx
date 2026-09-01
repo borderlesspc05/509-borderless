@@ -72,6 +72,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useUserRole } from "@/hooks/use-user-role";
+import { getAnamnesisTypesForSession } from "@/lib/anamnesis-types";
 import {
   PATIENT_DOCUMENT_TYPE_OPTIONS,
   getPatientDocumentTypeLabel,
@@ -83,7 +84,7 @@ import {
   patientStatusLabels,
 } from "@/lib/patient-format";
 import { getTimelineKindLabel } from "@/lib/patient-timeline";
-import { PERMISSIONS } from "@/lib/rbac";
+import { canSeeAllClinicalAreas, PERMISSIONS } from "@/lib/rbac";
 import { toDateKey } from "@/lib/calendar-utils";
 import type { ClinicalEvolutionRecordRow } from "@/lib/supabase/database.types";
 import { cn } from "@/lib/utils";
@@ -138,9 +139,26 @@ function EvolutionStatusBadge({ status }: { status: ClinicalEvolutionRecordRow["
 export function PatientRecordView({ record }: PatientRecordViewProps) {
   const { patient } = record;
   const searchParams = useSearchParams();
-  const initialTab = searchParams.get("tab") ?? "historico";
-  const { hasPermission, userName, displayRole, professionalCouncil } =
-    useUserRole();
+  const requestedTab = searchParams.get("tab") ?? "historico";
+  const {
+    hasPermission,
+    userName,
+    displayRole,
+    professionalCouncil,
+    professionalRole,
+    isMaster,
+    role,
+  } = useUserRole();
+  const canUseAnamnesis =
+    getAnamnesisTypesForSession({
+      professionalRole,
+      isMaster,
+      canManageAll: canSeeAllClinicalAreas(role, isMaster),
+    }).length > 0;
+  const initialTab =
+    requestedTab === "anamneses" && !canUseAnamnesis
+      ? "historico"
+      : requestedTab;
   const canManageEvolution = hasPermission(PERMISSIONS.CLINICAL_EVOLUTION_MANAGE);
   const canViewConventional = hasPermission(
     PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW
@@ -366,7 +384,9 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
           <TabsTrigger value="cadastro">Dados Cadastrais</TabsTrigger>
           <TabsTrigger value="atendimentos">Histórico de Atendimentos</TabsTrigger>
           <TabsTrigger value="evolucoes">Evoluções</TabsTrigger>
-          <TabsTrigger value="anamneses">Anamneses</TabsTrigger>
+          {canUseAnamnesis ? (
+            <TabsTrigger value="anamneses">Anamneses</TabsTrigger>
+          ) : null}
           <TabsTrigger value="nutricao" className="gap-1.5">
             <Apple className="size-3.5" />
             Nutrição
@@ -727,9 +747,11 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
           ) : null}
         </TabsContent>
 
-        <TabsContent value="anamneses">
-          <PatientAnamnesesTab patientId={patient.id} />
-        </TabsContent>
+        {canUseAnamnesis ? (
+          <TabsContent value="anamneses">
+            <PatientAnamnesesTab patientId={patient.id} />
+          </TabsContent>
+        ) : null}
 
         <TabsContent value="nutricao">
           <PatientNutritionTab

@@ -3,6 +3,7 @@ export type {
   DemucaDomainDefinition,
   DemucaDomainId,
   DemucaDomainScore,
+  DemucaEvaluationHistoryItem,
   DemucaItemDefinition,
   DemucaRating,
   DemucaScoreResult,

@@ -8,7 +8,10 @@ import {
   DEMUCA_INSTRUMENT,
   DEMUCA_ITEM_COUNT,
   DEMUCA_ITEMS,
+  DEMUCA_DOMAINS,
   type DemucaAnswerSheet,
+  type DemucaDomainScore,
+  type DemucaEvaluationHistoryItem,
   type DemucaRating,
   type DemucaScoreResult,
 } from "@/lib/demuca";
@@ -44,30 +47,84 @@ function validateDemucaSheet(sheet: DemucaAnswerSheet): string | null {
   return null;
 }
 
-export async function calculateDemucaScoreAction(
-  sheet: DemucaAnswerSheet
-): Promise<ActionResult<DemucaScoreResult>> {
-  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
-
+function validateCalculableDemucaSheet(sheet: DemucaAnswerSheet): string | null {
   const validationError = validateDemucaSheet(sheet);
   if (validationError) {
-    return { success: false, error: validationError };
+    return validationError;
   }
 
   const answeredCount = countAnsweredDemucaItems(sheet.items);
 
   if (!sheet.allowPartial && answeredCount < DEMUCA_ITEM_COUNT) {
-    return {
-      success: false,
-      error: `Preencha todos os ${DEMUCA_ITEM_COUNT} itens ou habilite avaliação parcial.`,
-    };
+    return `Preencha todos os ${DEMUCA_ITEM_COUNT} itens ou habilite avaliação parcial.`;
   }
 
   if (sheet.allowPartial && answeredCount === 0) {
-    return {
-      success: false,
-      error: "Responda ao menos um item para calcular o escore parcial.",
-    };
+    return "Responda ao menos um item para calcular o escore parcial.";
+  }
+
+  return null;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function finiteNumber(value: unknown, fallback = 0) {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+function parseDemucaHistoryDomains(
+  contentHtml: string
+): DemucaDomainScore[] | null {
+  try {
+    const payload: unknown = JSON.parse(contentHtml);
+    if (!isRecord(payload) || !isRecord(payload.scores)) {
+      return null;
+    }
+
+    const storedDomains = payload.scores.domains;
+    if (!Array.isArray(storedDomains)) {
+      return null;
+    }
+
+    const domains = DEMUCA_DOMAINS.flatMap((definition): DemucaDomainScore[] => {
+      const stored = storedDomains.find(
+        (candidate) =>
+          isRecord(candidate) && candidate.domainId === definition.id
+      );
+
+      if (!isRecord(stored)) {
+        return [];
+      }
+
+      return [
+        {
+          domainId: definition.id,
+          domainLabel: definition.label,
+          rawScore: finiteNumber(stored.rawScore),
+          possibleScore: finiteNumber(stored.possibleScore),
+          finalScore: Math.min(Math.max(finiteNumber(stored.finalScore), 0), 1),
+          answeredCount: finiteNumber(stored.answeredCount),
+          itemCount: finiteNumber(stored.itemCount),
+        },
+      ];
+    });
+
+    return domains.length === DEMUCA_DOMAINS.length ? domains : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function calculateDemucaScoreAction(
+  sheet: DemucaAnswerSheet
+): Promise<ActionResult<DemucaScoreResult>> {
+  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+
+  const validationError = validateCalculableDemucaSheet(sheet);
+  if (validationError) {
+    return { success: false, error: validationError };
   }
 
   const scores = calculateDemucaScore({
@@ -84,12 +141,59 @@ export type SaveDemucaEvaluationInput = {
   evaluationDate: string;
   items: Record<string, DemucaRating | undefined>;
   allowPartial: boolean;
-  scores: DemucaScoreResult;
   professionalName: string;
   professionalRole: string;
   status?: "draft" | "finalized";
   notes?: string;
 };
+
+export async function listDemucaEvaluationHistoryAction(
+  patientId: string
+): Promise<ActionResult<{ evaluations: DemucaEvaluationHistoryItem[] }>> {
+  await requirePermission(PERMISSIONS.ASSESSMENTS_VIEW);
+
+  if (!patientId.trim()) {
+    return { success: true, data: { evaluations: [] } };
+  }
+
+  const supabase = await createServerSupabaseClient();
+  if (!supabase) {
+    return { success: false, error: "Supabase não configurado." };
+  }
+
+  const { data, error } = await supabase
+    .from("evaluations")
+    .select("id, evaluation_date, status, content_html")
+    .eq("patient_id", patientId)
+    .eq("instrument", DEMUCA_INSTRUMENT)
+    .eq("status", "finalized")
+    .order("evaluation_date", { ascending: false })
+    .limit(5);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  const evaluations = (data ?? [])
+    .flatMap((evaluation): DemucaEvaluationHistoryItem[] => {
+      const domains = parseDemucaHistoryDomains(evaluation.content_html);
+      if (!domains) {
+        return [];
+      }
+
+      return [
+        {
+          id: evaluation.id,
+          evaluationDate: evaluation.evaluation_date,
+          status: evaluation.status,
+          domains,
+        },
+      ];
+    })
+    .reverse();
+
+  return { success: true, data: { evaluations } };
+}
 
 export async function saveDemucaEvaluationAction(
   input: SaveDemucaEvaluationInput
@@ -100,14 +204,16 @@ export async function saveDemucaEvaluationAction(
     return { success: false, error: "Paciente obrigatório." };
   }
 
-  if (!input.scores.isComplete) {
-    return {
-      success: false,
-      error: input.allowPartial
-        ? "Responda ao menos um item antes de salvar."
-        : "Preencha todos os itens antes de salvar.",
-    };
+  const sheet = {
+    items: input.items,
+    allowPartial: input.allowPartial,
+  } satisfies DemucaAnswerSheet;
+  const validationError = validateCalculableDemucaSheet(sheet);
+  if (validationError) {
+    return { success: false, error: validationError };
   }
+
+  const scores = calculateDemucaScore(sheet);
 
   const supabase = await createServerSupabaseClient();
   if (!supabase) {
@@ -119,7 +225,7 @@ export async function saveDemucaEvaluationAction(
     evaluationDate: input.evaluationDate,
     allowPartial: input.allowPartial,
     items: input.items,
-    scores: input.scores,
+    scores,
     notes: input.notes?.trim() || undefined,
   };
 
@@ -134,7 +240,7 @@ export async function saveDemucaEvaluationAction(
       instrument: DEMUCA_INSTRUMENT,
       evaluation_date: input.evaluationDate || toDateKey(new Date()),
       content_html: JSON.stringify(payload),
-      total_score: Number((input.scores.overallScore * 100).toFixed(2)),
+      total_score: Number((scores.overallScore * 100).toFixed(2)),
       status,
       professional_name: input.professionalName,
       professional_role: input.professionalRole,

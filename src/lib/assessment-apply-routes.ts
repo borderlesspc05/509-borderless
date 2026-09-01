@@ -14,6 +14,7 @@ import {
   clinicalAreasIntersect,
   getClinicalAreasForSession,
 } from "@/lib/clinical-areas";
+import { normalizeRole, ROLES, type Role } from "@/lib/rbac";
 
 /** Hub de aplicação ao paciente (menu Evolução → Avaliações). */
 export const ASSESSMENT_APPLY_HUB_HREF = "/dashboard/avaliacoes/aplicar";
@@ -119,10 +120,22 @@ export type ApplicableAssessment = (typeof APPLICABLE_ASSESSMENTS)[number];
 
 export function getApplicableAssessmentsForSession(input: {
   professionalRole?: string | null;
+  profile?: Role | string;
   isMaster?: boolean;
   canManageAll?: boolean;
 }) {
-  const userAreas = getClinicalAreasForSession(input);
+  const isCoordinatorWithoutSpecialty =
+    input.profile !== undefined &&
+    normalizeRole(input.profile) === ROLES.COORDENADOR &&
+    (!input.professionalRole || input.professionalRole === "Coordenador");
+
+  const userAreas = getClinicalAreasForSession({
+    ...input,
+    // Cadastros legados usavam "Coordenador" como cargo, sem informar a
+    // especialidade clínica. Nessa situação, o catálogo completo evita que o
+    // coordenador fique bloqueado; as rotas continuam protegidas por RBAC.
+    canManageAll: input.canManageAll || isCoordinatorWithoutSpecialty,
+  });
   return APPLICABLE_ASSESSMENTS.filter((item) =>
     clinicalAreasIntersect([...item.clinicalAreas], userAreas)
   );

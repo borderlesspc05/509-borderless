@@ -1,15 +1,40 @@
+"use client";
+
+import dynamic from "next/dynamic";
+
 import {
   formatDemucaPercent,
+  type DemucaEvaluationHistoryItem,
   type DemucaScoreResult,
 } from "@/lib/demuca";
 import { cn } from "@/lib/utils";
 
+const DemucaScoreCharts = dynamic(
+  () =>
+    import("@/components/assessments/demuca/demuca-score-charts").then(
+      (module) => module.DemucaScoreCharts
+    ),
+  {
+    loading: () => (
+      <div className="grid gap-4 border-t border-border/60 p-5 lg:grid-cols-2">
+        <div className="h-80 animate-pulse rounded-xl bg-muted/40" />
+        <div className="h-80 animate-pulse rounded-xl bg-muted/40" />
+      </div>
+    ),
+  }
+);
+
 type DemucaScoreCardProps = {
   scores: DemucaScoreResult;
+  history?: DemucaEvaluationHistoryItem[];
   className?: string;
 };
 
-export function DemucaScoreCard({ scores, className }: DemucaScoreCardProps) {
+export function DemucaScoreCard({
+  scores,
+  history = [],
+  className,
+}: DemucaScoreCardProps) {
   return (
     <section
       className={cn(
@@ -74,6 +99,8 @@ export function DemucaScoreCard({ scores, className }: DemucaScoreCardProps) {
           </div>
         ))}
       </div>
+
+      <DemucaScoreCharts scores={scores} history={history} />
 
       <p className="border-t border-border/60 px-5 py-2 text-[0.7rem] text-muted-foreground">
         Escala DEMUCA 2.0 (Oliveira, Freire &amp; Parizzi). Escore final da

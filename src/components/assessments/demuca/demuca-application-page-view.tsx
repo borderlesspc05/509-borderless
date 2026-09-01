@@ -6,6 +6,7 @@ import { ArrowLeft, Loader2, Save } from "lucide-react";
 
 import {
   calculateDemucaScoreAction,
+  listDemucaEvaluationHistoryAction,
   saveDemucaEvaluationAction,
 } from "@/app/actions/demuca-actions";
 import { DemucaAnswerGrid } from "@/components/assessments/demuca/demuca-answer-grid";
@@ -37,6 +38,7 @@ import {
   createEmptyDemucaAnswers,
   DEMUCA_INSTRUMENT,
   DEMUCA_ITEM_COUNT,
+  type DemucaEvaluationHistoryItem,
   type DemucaRating,
   type DemucaScoreResult,
 } from "@/lib/demuca";
@@ -54,6 +56,7 @@ export function DemucaApplicationPageView({
   const calculateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
+  const historyRequestRef = useRef(0);
 
   const activePatients = patients.filter((patient) => patient.id);
   const patientSelectItems = activePatients.map((patient) => ({
@@ -68,11 +71,34 @@ export function DemucaApplicationPageView({
     createEmptyDemucaAnswers
   );
   const [scores, setScores] = useState<DemucaScoreResult | null>(null);
+  const [history, setHistory] = useState<DemucaEvaluationHistoryItem[]>([]);
+  const [currentEvaluationId, setCurrentEvaluationId] = useState<string | null>(
+    null
+  );
   const [isCalculating, setIsCalculating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   const selectedPatient = getClinicalPatient(activePatients, patientId);
   const answeredCount = countAnsweredDemucaItems(items);
+
+  const loadHistory = useCallback(async (nextPatientId: string) => {
+    const requestId = historyRequestRef.current + 1;
+    historyRequestRef.current = requestId;
+
+    if (!nextPatientId) {
+      setHistory([]);
+      return;
+    }
+
+    const result = await listDemucaEvaluationHistoryAction(nextPatientId);
+    if (historyRequestRef.current !== requestId) {
+      return;
+    }
+
+    setHistory(
+      result.success && result.data ? result.data.evaluations : []
+    );
+  }, []);
 
   const runCalculation = useCallback(
     async (
@@ -120,6 +146,25 @@ export function DemucaApplicationPageView({
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!patientId) {
+      return;
+    }
+
+    const requestId = historyRequestRef.current + 1;
+    historyRequestRef.current = requestId;
+
+    void listDemucaEvaluationHistoryAction(patientId).then((result) => {
+      if (historyRequestRef.current !== requestId) {
+        return;
+      }
+
+      setHistory(
+        result.success && result.data ? result.data.evaluations : []
+      );
+    });
+  }, [patientId]);
 
   function scheduleCalculation(
     nextItems: Record<string, DemucaRating | undefined>,
@@ -186,7 +231,6 @@ export function DemucaApplicationPageView({
         evaluationDate,
         items,
         allowPartial,
-        scores,
         professionalName: userName || "Profissional",
         professionalRole: displayRole || "Musicoterapia",
         status,
@@ -206,6 +250,8 @@ export function DemucaApplicationPageView({
             ? "DEMUCA finalizada."
             : "Rascunho DEMUCA salvo.",
       });
+      setCurrentEvaluationId(result.data?.evaluation.id ?? null);
+      await loadHistory(selectedPatient.id);
     } finally {
       setIsSaving(false);
     }
@@ -242,7 +288,11 @@ export function DemucaApplicationPageView({
             items={patientSelectItems}
             onValueChange={(value) => {
               setPatientId((value as string) ?? "");
+              setItems(createEmptyDemucaAnswers());
+              setAllowPartial(false);
               setScores(null);
+              setHistory([]);
+              setCurrentEvaluationId(null);
             }}
           >
             <SelectTrigger id="demuca-patient" className="h-11 w-full">
@@ -316,7 +366,14 @@ export function DemucaApplicationPageView({
         </div>
       </div>
 
-      {scores ? <DemucaScoreCard scores={scores} /> : null}
+      {scores ? (
+        <DemucaScoreCard
+          scores={scores}
+          history={history.filter(
+            (evaluation) => evaluation.id !== currentEvaluationId
+          )}
+        />
+      ) : null}
 
       <DemucaAnswerGrid items={items} onChange={handleItemChange} />
 
