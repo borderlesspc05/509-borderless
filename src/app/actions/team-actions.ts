@@ -8,6 +8,10 @@ import type { ProfessionalRole } from "@/lib/professionals-data";
 import { PROFESSIONAL_ROLES } from "@/lib/professionals-data";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import {
+  isMissingCareModalitiesColumn,
+  omitCareModalities,
+} from "@/lib/supabase/schema-compat";
 import type { UserProfileRow } from "@/lib/supabase/database.types";
 import { getProfileLabel } from "@/lib/user-profile";
 
@@ -260,21 +264,32 @@ export async function updateProfessionalAction(
     return { success: false, error: "Supabase não configurado." };
   }
 
-  const { data, error } = await supabase
+  const professionalUpdate = {
+    full_name: fullName,
+    cpf: normalizeOptionalText(input.cpf),
+    birth_date: normalizeOptionalText(input.birthDate),
+    professional_role: professionalRole,
+    professional_council: normalizeOptionalText(input.professionalCouncil),
+    care_modalities: normalizeCareModalities(input.careModalities),
+    profile,
+    updated_at: new Date().toISOString(),
+  };
+
+  let { data, error } = await supabase
     .from("user_profiles")
-    .update({
-      full_name: fullName,
-      cpf: normalizeOptionalText(input.cpf),
-      birth_date: normalizeOptionalText(input.birthDate),
-      professional_role: professionalRole,
-      professional_council: normalizeOptionalText(input.professionalCouncil),
-      care_modalities: normalizeCareModalities(input.careModalities),
-      profile,
-      updated_at: new Date().toISOString(),
-    })
+    .update(professionalUpdate)
     .eq("id", input.professionalId)
     .select("*")
     .single();
+
+  if (error && isMissingCareModalitiesColumn(error.message)) {
+    ({ data, error } = await supabase
+      .from("user_profiles")
+      .update(omitCareModalities(professionalUpdate))
+      .eq("id", input.professionalId)
+      .select("*")
+      .single());
+  }
 
   if (error) {
     return {
@@ -421,21 +436,32 @@ export async function createTeamMemberAction(
       ? input.professionalRole
       : null;
 
-  const { data: profileRow, error: profileError } = await adminClient
+  const professionalUpdate = {
+    full_name: fullName,
+    profile,
+    professional_role: professionalRole,
+    professional_council: input.professionalCouncil?.trim() || null,
+    care_modalities: normalizeCareModalities(input.careModalities),
+    cpf: normalizeOptionalText(input.cpf),
+    birth_date: normalizeOptionalText(input.birthDate),
+    updated_at: new Date().toISOString(),
+  };
+
+  let { data: profileRow, error: profileError } = await adminClient
     .from("user_profiles")
-    .update({
-      full_name: fullName,
-      profile,
-      professional_role: professionalRole,
-      professional_council: input.professionalCouncil?.trim() || null,
-      care_modalities: normalizeCareModalities(input.careModalities),
-      cpf: normalizeOptionalText(input.cpf),
-      birth_date: normalizeOptionalText(input.birthDate),
-      updated_at: new Date().toISOString(),
-    })
+    .update(professionalUpdate)
     .eq("id", createdUser.user.id)
     .select("*")
     .single();
+
+  if (profileError && isMissingCareModalitiesColumn(profileError.message)) {
+    ({ data: profileRow, error: profileError } = await adminClient
+      .from("user_profiles")
+      .update(omitCareModalities(professionalUpdate))
+      .eq("id", createdUser.user.id)
+      .select("*")
+      .single());
+  }
 
   if (profileError || !profileRow) {
     return {

@@ -11,6 +11,10 @@ import {
   syncPatientResponsibleProfessionals,
 } from "@/lib/patient-access";
 import { PERMISSIONS } from "@/lib/rbac";
+import {
+  isMissingCareModalitiesColumn,
+  omitCareModalities,
+} from "@/lib/supabase/schema-compat";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type {
   AgendaEventRow,
@@ -282,14 +286,26 @@ export async function createPatientAction(
     return { success: false, error: "Supabase não configurado." };
   }
 
-  const { data, error } = await supabase
+  const patientRecord = toPatientRecord(validated);
+  let { data, error } = await supabase
     .from("patients")
     .insert({
-      ...toPatientRecord(validated),
+      ...patientRecord,
       status: "active",
     })
     .select()
     .single();
+
+  if (error && isMissingCareModalitiesColumn(error.message)) {
+    ({ data, error } = await supabase
+      .from("patients")
+      .insert({
+        ...omitCareModalities(patientRecord),
+        status: "active",
+      })
+      .select()
+      .single());
+  }
 
   if (error) {
     return {
@@ -344,15 +360,28 @@ export async function updatePatientAction(
     return { success: false, error: "Supabase não configurado." };
   }
 
-  const { data, error } = await supabase
+  const patientRecord = toPatientRecord(validated);
+  let { data, error } = await supabase
     .from("patients")
     .update({
-      ...toPatientRecord(validated),
+      ...patientRecord,
       updated_at: new Date().toISOString(),
     })
     .eq("id", input.patientId)
     .select()
     .single();
+
+  if (error && isMissingCareModalitiesColumn(error.message)) {
+    ({ data, error } = await supabase
+      .from("patients")
+      .update({
+        ...omitCareModalities(patientRecord),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", input.patientId)
+      .select()
+      .single());
+  }
 
   if (error) {
     return {
