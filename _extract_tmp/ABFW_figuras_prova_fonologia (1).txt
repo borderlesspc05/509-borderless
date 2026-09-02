@@ -1,0 +1,142 @@
+BEST=pymupdf replacement_chars=0
+  alt pymupdf: chars=1447 replacement=0
+  alt pdfplumber: chars=804 replacement=0
+
+=== PyMuPDF: ABFW_figuras_prova_fonologia (1).pdf ===
+pages=34
+
+----- PAGE 1 -----
+
+[images_on_page=1]
+
+----- PAGE 2 -----
+
+[images_on_page=1]
+
+----- PAGE 3 -----
+
+[images_on_page=1]
+
+----- PAGE 4 -----
+
+[images_on_page=1]
+
+----- PAGE 5 -----
+
+[images_on_page=1]
+
+----- PAGE 6 -----
+
+[images_on_page=1]
+
+----- PAGE 7 -----
+
+[images_on_page=1]
+
+----- PAGE 8 -----
+
+[images_on_page=1]
+
+----- PAGE 9 -----
+
+[images_on_page=1]
+
+----- PAGE 10 -----
+
+[images_on_page=1]
+
+----- PAGE 11 -----
+
+[images_on_page=1]
+
+----- PAGE 12 -----
+
+[images_on_page=1]
+
+----- PAGE 13 -----
+
+[images_on_page=1]
+
+----- PAGE 14 -----
+
+[images_on_page=1]
+
+----- PAGE 15 -----
+
+[images_on_page=1]
+
+----- PAGE 16 -----
+
+[images_on_page=1]
+
+----- PAGE 17 -----
+
+[images_on_page=1]
+
+----- PAGE 18 -----
+
+[images_on_page=1]
+
+----- PAGE 19 -----
+
+[images_on_page=1]
+
+----- PAGE 20 -----
+
+[images_on_page=1]
+
+----- PAGE 21 -----
+
+[images_on_page=1]
+
+----- PAGE 22 -----
+
+[images_on_page=1]
+
+----- PAGE 23 -----
+
+[images_on_page=1]
+
+----- PAGE 24 -----
+
+[images_on_page=1]
+
+----- PAGE 25 -----
+
+[images_on_page=1]
+
+----- PAGE 26 -----
+
+[images_on_page=1]
+
+----- PAGE 27 -----
+
+[images_on_page=1]
+
+----- PAGE 28 -----
+
+[images_on_page=1]
+
+----- PAGE 29 -----
+
+[images_on_page=1]
+
+----- PAGE 30 -----
+
+[images_on_page=1]
+
+----- PAGE 31 -----
+
+[images_on_page=1]
+
+----- PAGE 32 -----
+
+[images_on_page=1]
+
+----- PAGE 33 -----
+
+[images_on_page=1]
+
+----- PAGE 34 -----
+
+[images_on_page=1]

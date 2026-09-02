@@ -4,11 +4,13 @@ export const PROFESSIONAL_ROLES = [
   "Assistente Terapêutico (AT)",
   "Coordenador",
   "Fonoaudiólogo",
+  "Fonoaudióloga",
   "Terapeuta Ocupacional",
   "Supervisor Administrativo",
   "Musicoterapeuta",
   "Neuropsicólogo",
   "Psicopedagoga",
+  "Psicopedagogo",
   "Fisioterapeuta",
   "Nutricionista",
 ] as const;

@@ -6,6 +6,7 @@ import { ClipboardList, PlusCircle, FileText } from "lucide-react";
 import { getAnamnesisListAction, type AnamnesisRecord } from "@/app/actions/anamnesis-actions";
 import { AnamnesisFisioterapiaForm } from "@/components/clinical-reports/anamnesis-fisioterapia-form";
 import { AnamnesisFonoaudiologiaForm } from "@/components/clinical-reports/anamnesis-fonoaudiologia-form";
+import { AnamnesisMusicoterapiaForm } from "@/components/clinical-reports/anamnesis-musicoterapia-form";
 import { AnamnesisTerapiaOcupacionalForm } from "@/components/clinical-reports/anamnesis-terapia-ocupacional-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +28,10 @@ import {
   FONO_QUEIXAS_OPTIONS,
   type AnamnesisFonoFormData,
 } from "@/lib/anamnesis-fonoaudiologia";
+import {
+  MUSICOTERAPIA_FOCUS_OPTIONS,
+  type AnamnesisMusicoterapiaFormData,
+} from "@/lib/anamnesis-musicoterapia";
 import {
   ANAMNESIS_TYPE_OPTIONS,
   getAnamnesisTypesForSession,
@@ -137,6 +142,43 @@ function FisioterapiaSummary({ data }: { data: AnamnesisFisioterapiaFormData }) 
   );
 }
 
+function MusicoterapiaSummary({
+  data,
+}: {
+  data: AnamnesisMusicoterapiaFormData;
+}) {
+  const focus = MUSICOTERAPIA_FOCUS_OPTIONS.filter(
+    (option) => data.closing?.focusCategories?.[option.key]
+  )
+    .map((option) => option.label)
+    .join(", ");
+
+  return (
+    <div className="space-y-3 text-sm text-muted-foreground">
+      <p>
+        <span className="font-medium text-foreground">Queixa / entendimento:</span>{" "}
+        {data.general?.understandingAndComplaint || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Diagnóstico:</span>{" "}
+        {data.general?.diagnosis || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Preferências musicais:</span>{" "}
+        {data.musical?.caregiverPreferences || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Categorias de foco:</span>{" "}
+        {focus || "—"}
+      </p>
+      <p>
+        <span className="font-medium text-foreground">Observações:</span>{" "}
+        {data.closing?.therapistNotes || "—"}
+      </p>
+    </div>
+  );
+}
+
 export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
   const { isMaster, profile, professionalRole } = useUserRole();
   const role = normalizeRole(profile);
@@ -192,8 +234,11 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Nova Anamnese</CardTitle>
-                <CardDescription>Preencha os dados do formulário estruturado.</CardDescription>
+                <CardTitle>Nova Anamnese por área</CardTitle>
+                <CardDescription>
+                  Cada área clínica tem seu próprio formulário (não é anamnese
+                  geral). Selecione a especialidade abaixo.
+                </CardDescription>
               </div>
               <Button variant="outline" size="sm" onClick={() => setIsCreating(false)}>
                 Voltar
@@ -240,6 +285,12 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
             )}
             {selectedType === "fonoaudiologia" && (
               <AnamnesisFonoaudiologiaForm
+                patientId={patientId}
+                onSuccess={handleSuccess}
+              />
+            )}
+            {selectedType === "musicoterapia" && (
+              <AnamnesisMusicoterapiaForm
                 patientId={patientId}
                 onSuccess={handleSuccess}
               />
@@ -324,6 +375,10 @@ export function PatientAnamnesesTab({ patientId }: { patientId: string }) {
                           ) : anamnese.anamnesisType === "fonoaudiologia" ? (
                             <FonoSummary
                               data={anamnese.formData as AnamnesisFonoFormData}
+                            />
+                          ) : anamnese.anamnesisType === "musicoterapia" ? (
+                            <MusicoterapiaSummary
+                              data={anamnese.formData as AnamnesisMusicoterapiaFormData}
                             />
                           ) : (
                             <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-xs text-muted-foreground">

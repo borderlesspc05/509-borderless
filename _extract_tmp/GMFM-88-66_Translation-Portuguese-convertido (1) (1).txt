@@ -1,0 +1,712 @@
+BEST=pdfplumber replacement_chars=0
+  alt pdfplumber: chars=21194 replacement=0
+  alt pymupdf: chars=21097 replacement=0
+
+=== PDFplumber: GMFM-88-66_Translation-Portuguese-convertido (1) (1).pdf ===
+pages=6
+
+----- PAGE 1 -----
+MEDIDA DA FUNÇÃO MOTORA GROSSA (GMFM)
+FOLHA DE PONTUAÇÃO (GMFM-88 e GMFM-66)*
+Nome da criança: Registro:
+Data da avaliação: Nível no GMFCS1
+X
+Data de nascimento:
+I II III IV V
+Idade cronológica anos meses
+Condições de teste (p. ex., local, vestuário, tempo, outras
+pessoas presentes):
+Nome do avaliador:
+A GMFM é um instrumento de observação padronizado, elaborado e validado para medir mudança na função motora grossa que
+ocorre ao longo do tempo nas crianças com paralisia cerebral. O sistema de pontuação deve ser entendido como diretriz genérica.
+Entretanto, a maioria dos itens tem descrição específica para cada pontuação. É obrigatório que as diretrizes contidas no manual
+sejam usadas para pontuar cada item.
+SISTEMA DE PONTUAÇÃO* 0 = não inicia
+1 = inicia
+2 = completa parcialmente
+3 = completa
+NT = não testado (usado na pontuação pelo GMAE)
+É importante diferenciar a verdadeira pontuação “0” (criança não inicia) dos itens que não são testados (NT),
+se você estiver interessado em usar o programa Estimador de Habilidade Motora Grossa GMFM-66
+O programa Estimador de Habilidade Motora Grossa 2 (GMAE-2) GMFM-66 está disponível para download no endereço
+www.canchild.ca para aqueles que adquiriram o Manual da GMFM. A GMFM-66 é válida apenas para aplicação a crianças com
+paralisia cerebral.
+Contato para Grupos de Pesquisa:
+CanChild Centre For Childhood Disability Research, Institute for Applied Health Sciences, McMaster University
+1400 Main St. W., Room 408
+Hamilton, ON Canada L8S 1C7.
+E-mail:canchild@mcmaster.ca - Website: www.canchild.ca.
+1 O nível GMFCS é uma medida da gravidade da função motora. Definições para o GMFCS (expandido e revisado) são encontradas em Palisano et
+al. Developmental Medicine & Child Neurology 2008; 50:744-50, e no programa Estimador de Habilidade Motora Grossa 2 (GMAE-2). Acesso:
+http://motorgrowth.canchild.ca/en/GMFCS/resources/GMFCS-ER.pdf.
+(*) Tradução para a Língua Portuguesa realizada por Luara Tomé Cyrillo e Maria Cristina dos Santos Galvão, fisioterapeutas da
+AACD – Associação de Assistência à Criança Deficiente, São Paulo, SP, Brasil.
+© Memnon Edições Científicas Ltda., Luara Tomé Cyrillo, Maria Cristina dos Santos Galvão. Folha de Pontuação da GMFM
+
+--- TABLE p1-0 ---
+ ||  || 
+
+--- TABLE p1-1 ---
+ ||  ||  || 
+ ||  ||  || 
+ ||  ||  || 
+
+----- PAGE 2 -----
+Assinale () a pontuação apropriada: se algum item não é testado (NT), circule o número do item na coluna à direita.
+ITEM A: DEITAR E ROLAR PONTUAÇÃO NT
+1 SUP: CABEÇA NA LINHA MÉDIA: vira a cabeça com membros simétricos ........................ 0 1 2 3 X 1.
+*2 SUP: traz as mãos para a linha média, dedos uns com os outros ............................................... 0 1 2 3 X 2.
+3 SUP: levanta a cabeça 45º .......................................................................................................... 0 1 2 3 X 3.
+4 SUP: flexiona quadril e joelho direito em amplitude completa ................................................ 0 1 2 X 3 4.
+5 SUP: flexiona quadril e joelho esquerdo em amplitude completa ............................................. 0 1 2 X 3 5.
+*6 SUP: alcança com o braço direito, mão cruza a linha média em direção ao brinquedo ............ 0 1 2 3 X 6.
+*7 SUP: alcança com o braço esquerdo, mão cruza a linha média em direção ao brinquedo ........ 0 1 2 3 X 7.
+8 SUP: rola para a posição prona sobre o lado direito .................................................................. 0 1 2 3 X 8.
+9 SUP: rola para a posição prona sobre o lado esquerdo .............................................................. 0 1 2 3 X 9.
+*10 PR: levanta a cabeça na vertical ................................................................................................. 0 1 2 3 X 10.
+11 PR SOBRE OS ANTEBRAÇOS: levanta cabeça na vertical, cotovelos estendidos, peito
+elevado ....................................................................................................................................... 0 1 2 3 X 11.
+12 PR SOBRE OS ANTEBRAÇOS: peso sobre o antebraço direito, estende completamente o
+braço contralateral para a frente ................................................................................................. 0 1 2 3 X 12.
+13 PR SOBRE OS ANTEBRAÇOS: peso sobre o antebraço esquerdo, estende completamente o
+braço contralateral para a frente ........................................................................................................ 0 1 2 3 X 13.
+14 PR: rola para a posição supina sobre o lado direito ................................................................... 0 1 2 3 X 14.
+15 PR: rola para a posição supina sobre o lado esquerdo ............................................................... 0 1 2 3 X 15.
+6 PR: pivoteia 90º para a direita usando os membros ................................................................... 0 1 2 3 X 16.
+17 PR: pivoteia 90º para a esquerda usando os membros ............................................................... 0 1 2 3 X 17.
+TOTAL DA DIMENSÃO A
+ITEM B: SENTAR PONTUAÇÃO NT
+*18 SUP: MÃOS SEGURADAS PELO AVALIADOR: puxa-se para sentar com controle de cabeça ..... 0 1 2 3 18.
+19 SUP: rola para o lado direito, consegue sentar ..................................................................................... 0 1 2 3 X 19.
+20 SUP: rola para o lado esquerdo, consegue sentar ................................................................................. 0 1 2 3 X 20.
+*21 SENTADA SOBRE O TAPETE, APOIADA NO TÓRAX PELO TERAPEUTA: levanta a cabeça X
+na vertical, mantém por 3 segundos ................................................................................................. 0 1 2 3 X 21.
+*22 SENTADA SOBRE O TAPETE, APOIADA NO TÓRAX PELO TERAPEUTA: levanta a cabeça
+na linha média, mantém por 10 segundos ............................................................................................ 0 1 2 3 X 22.
+*23 SENTADA SOBRE O TAPETE, BRAÇO(S) APOIADO(s): mantém por 5 segundos ..................... 0 1 2 3 X 23.
+*24 SENTADA SOBRE O TAPETE: mantém braços livres por 3 segundos ............................................. 0 1 2 3 X 24.
+*25 SENTADA SOBRE O TAPETE COM UM BRINQUEDO PEQUENO NA FRENTE: inclina-se
+para a frente, toca o brinquedo, endireita-se sem apoio do braço ......................................................... 0 1 2 3 X 25.
+*26 SENTADA SOBRE O TAPETE: toca o brinquedo colocado 45º atrás do lado direito da criança,
+retorna para a posição inicial ................................................................................................................ 0 1 2 3 X 26.
+*27 SENTADA SOBRE O TAPETE: toca o brinquedo colocado 45º atrás do lado esquerdo da
+criança, retorna para a posição inicial ................................................................................................... 0 1 2 3 X 27.
+28 SENTADA SOBRE O LADO DIREITO: mantém, braços livres, por 5 segundos ............................. 0 1 2 3 X 28.
+29 SENTADA SOBRE O LADO ESQUERDO: mantém, braços livres, por 5 segundos ........................ 0 1 2 3 X 29.
+*30 SENTADA SOBRE O TAPETE: abaixa-se para a posição prona com controle ................................. 0 1 2 3 X 30.
+*31 SENTADA SOBRE O TAPETE COM OS PÉS PARA A FRENTE: atinge 4 apoios sobre o lado direito .. 0 1 2 3 X 31.
+*32 SENTADA SOBRE O TAPETE COM OS PÉS PARA A FRENTE: atinge 4 apoios sobre o lado esquerdo . 0 1 2 3 X 32.
+33 SENTADA SOBRE O TAPETE: pivoteia 90º sem auxílio dos braços ............................................... 0 1 2 3 X 33.
+*34 SENTADA NO BANCO: mantém, braços e pés livres, por 10 segundos ........................................... 0 1 2 X 3 34.
+*35 EM PÉ: atinge a posição sentada em um banco pequeno ..................................................................... 0 1 2 3 X 35.
+*36 NO CHÃO: atinge a posição sentada em um banco pequeno .............................................................. 0 1 2 3 X 36.
+*37 NO CHÃO: atinge a posição sentada em um banco grande ................................................................. 0 1 2 3 X 37.
+TOTAL DA DIMENSÃO B
+© Memnon Edições Científicas Ltda., Luara Tomé Cyrillo, Maria Cristina dos Santos Galvão. Folha de Pontuação da GMFM
+
+--- TABLE p2-0 ---
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p2-1 ---
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p2-2 ---
+
+
+
+X
+X
+
+
+
+
+
+
+--- TABLE p2-3 ---
+X
+X
+X
+
+
+X
+X
+X
+X
+X
+
+--- TABLE p2-4 ---
+
+
+
+
+
+
+--- TABLE p2-5 ---
+
+
+
+
+
+
+--- TABLE p2-6 ---
+
+
+
+
+
+
+--- TABLE p2-7 ---
+ || X
+ || X
+ || X
+ || X
+ || X
+ || 
+
+--- TABLE p2-8 ---
+
+
+
+
+
+
+--- TABLE p2-9 ---
+
+
+
+
+
+
+--- TABLE p2-10 ---
+
+
+
+
+
+
+--- TABLE p2-11 ---
+X
+X
+X | X
+
+--- TABLE p2-12 ---
+
+
+
+
+
+--- TABLE p2-13 ---
+
+
+
+
+
+--- TABLE p2-14 ---
+
+
+
+
+
+--- TABLE p2-15 ---
+X
+X
+
+
+--- TABLE p2-16 ---
+
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p2-17 ---
+
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p2-18 ---
+
+
+
+
+
+
+
+X
+
+
+
+
+--- TABLE p2-19 ---
+X
+X
+X
+X
+X
+X
+X
+
+X
+X
+X
+
+----- PAGE 3 -----
+ITEM C: ENGATINHAR E AJOELHAR PONTUAÇÃO NT
+38 PR: arrasta-se 1,8 metros para a frente ............................................................................................ 0 1 2 3 X 38.
+*39 4 APOIOS: mantém o peso sobre as mãos e joelhos, por 10 segundos ............................................ 0 1 2 3 X 39.
+*40 4 APOIOS: atinge a posição sentada com os braços livres .............................................................. 0 1 2 X 3 40.
+*41 PR: atinge 4 apoios, peso sobre as mãos e joelhos ........................................................................... 0 1 2 3 X 41.
+*42 4 APOIOS: avança o braço direito para a frente, mão acima do nível do ombro.............................. 0 1 2 3 X 42.
+*43 4 APOIOS: avança o braço esquerdo para a frente, mão acima do nível do ombro .......................... 0 1 2 3 X 43.
+*44 4 APOIOS: engatinha ou impulsiona-se 1,8 metros para a frente .................................................... 0 1 2 3 X 44.
+*45 4 APOIOS: engatinha 1,8 metros para a frente com movimento alternado dos membros ................ 0 1 2 3 X 45.
+*46 4 APOIOS: sobe 4 degraus engatinhando sobre as mãos e os joelhos/pés........................................ 0 1 2 3 X 46.
+47 4 APOIOS: desce 4 degraus engatinhando para trás sobre as mãos e os joelhos/pés ........................ 0 1 2 3 X 47.
+*48 SENTADA SOBRE O TAPETE: atinge a posição ajoelhada usando os braços, mantém,
+braços livres, por 10 segundos......................................................................................................... 0 1 2 3 X 48.
+49 AJOELHADA: atinge a posição semiajoelhada sobre o joelho direito usando braços, mantém,
+braços livres, por 10 segundos......................................................................................................... 0 1 2 3 X 49.
+50 AJOELHADA: atinge a posição semiajoelhada sobre o joelho esquerdo usando braços,
+mantém, braços livres, por 10 segundos .......................................................................................... 0 1 2 3 X 50.
+*51 AJOELHADA: anda na posição ajoelhada 10 passos para a frente, braços livres ............................ 0 1 2 3 X 51.
+TOTAL DA DIMENSÃO C
+ITEM D: EM PÉ PONTUAÇÃO NT
+*52 NO CHÃO: puxa-se para a posição em pé apoiada em um banco grande ................................. 0 1 2 3 X 52.
+*53 EM PÉ: mantém, braços livres, por 3 segundos ......................................................................... 0 1 2 3 X 53.
+*54 EM PÉ: segurando-se em um banco grande com uma mão, levanta o pé direito, por 3 segundos . 0 1 2 3 X 54.
+*55 EM PÉ: segurando-se em um banco grande com uma mão, levanta o pé esquerdo, por 3 segundos .. 0 1 2 3 X 55.
+*56 EM PÉ: mantém, braços livres, por 20 segundos ....................................................................... 0 1 2 X 3 56.
+*57 EM PÉ: levanta o pé esquerdo, braços livres, por 10 segundos ................................................. 0 1 2 X 3 57.
+*58 EM PÉ: levanta o pé direito, braços livres, por 10 segundos ..................................................... 0 1 2 X 3 58.
+*59 SENTADA EM BANCO PEQUENO: atinge a posição em pé sem usar os braços ................. 0 1 2 3 X 59.
+*60 AJOELHADA: atinge a posição em pé passando pela posição semiajoelhada sobre o joelho
+direito, sem usar os braços ......................................................................................................... 0 1 2 3 X 60.
+*61 AJOELHADA: atinge a posição em pé passando pela posição semiajoelhada sobre o joelho
+esquerdo, sem usar os braços ..................................................................................................... 0 1 2 3 X 61.
+*62 EM PÉ: abaixa-se com controle para sentar no chão, braços livres ........................................... 0 1 2 X 3 62.
+*63 EM PÉ: agacha-se, braços livres ................................................................................................ 0 1 2 3 X 63.
+*64 EM PÉ: pega um objeto no chão, braços livres, retorna para a posição em pé .......................... 0 1 2 3 X 64.
+TOTAL DA DIMENSÃO D
+ITEM E: ANDAR, CORRER, PULAR PONTUAÇÃO NT
+*65 EM PÉ, SEGURANDO-SE COM AS DUAS MÃOS EM UM BANCO GRANDE: anda de
+lado 5 passos para o lado direito ................................................................................................ 0 1 2 3 X
+65.
+*66 EM PÉ, SEGURANDO-SE COM AS DUAS MÃOS EM UM BANCO GRANDE: anda de
+lado 5 passos para o lado esquerdo ............................................................................................ 0 1 2 3 X 66.
+*67 EM PÉ, DUAS MÃOS SEGURADAS: anda 10 passos para a frente ....................................... 0 1 2 3 X 67.
+*68 EM PÉ, UMA MÃO SEGURADA: anda 10 passos para a frente ............................................. 0 1 2 3 X 68.
+*69 EM PÉ: anda 10 passos para a frente ......................................................................................... 0 1 2 3 X 69.
+*70 EM PÉ: anda 10 passos para a frente, para, vira 180º e retorna ................................................. 0 1 2 3 X 70.
+*71 EM PÉ: anda 10 passos para trás ............................................................................................... 0 1 2 3 X 71.
+*72 EM PÉ: anda 10 passos para a frente, carregando um objeto grande com as duas mãos .......... 0 1 2 3 X 72.
+© Memnon Edições Científicas Ltda., Luara Tomé Cyrillo, Maria Cristina dos Santos Galvão. Folha de Pontuação da GMFM
+
+--- TABLE p3-0 ---
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p3-1 ---
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p3-2 ---
+
+
+X
+
+
+
+
+
+
+
+
+--- TABLE p3-3 ---
+X
+X
+
+X
+X
+X
+X
+X
+X
+X
+
+--- TABLE p3-4 ---
+
+
+
+--- TABLE p3-5 ---
+
+
+
+--- TABLE p3-6 ---
+
+
+
+--- TABLE p3-7 ---
+X
+X
+
+--- TABLE p3-8 ---
+
+
+
+
+
+
+
+
+
+--- TABLE p3-9 ---
+
+
+
+
+
+
+
+
+
+--- TABLE p3-10 ---
+
+
+
+
+X
+X
+X
+
+
+--- TABLE p3-11 ---
+X
+X
+X
+X
+
+
+
+X
+
+--- TABLE p3-12 ---
+
+
+
+
+
+--- TABLE p3-13 ---
+
+
+
+
+
+--- TABLE p3-14 ---
+
+X
+
+
+
+--- TABLE p3-15 ---
+X
+
+X
+X
+
+--- TABLE p3-16 ---
+
+
+
+
+
+
+
+
+--- TABLE p3-17 ---
+
+
+
+
+
+
+
+
+--- TABLE p3-18 ---
+
+
+
+
+
+
+
+
+--- TABLE p3-19 ---
+X
+X
+X
+X
+X
+X
+X
+
+----- PAGE 4 -----
+*73 EM PÉ: anda 10 passos consecutivos para a frente entre linhas paralelas afastadas 20 centí-
+X
+metros uma da outra ................................................................................................................... 0 1 2 3 73.
+*74 EM PÉ: anda 10 passos consecutivos para a frente sobre uma linha com 2 centímetros de
+X
+largura ................................................................................................................................................. 0 1 2 3 75.
+X
+*75 EM PÉ: transpõe um bastão posicionado na altura dos joelhos, iniciando com o pé direito ..... 0 1 2 3 75.
+X
+*76 EM PÉ: transpõe um bastão posicionado na altura dos joelhos, iniciando com o pé esquerdo . 0 1 2 3 76.
+X
+*77 EM PÉ: corre 4,5 metros, para e retorna .................................................................................... 0 1 2 3 77.
+X
+*78 EM PÉ: chuta a bola com o pé direito ........................................................................................ 0 1 2 3 78.
+X
+*79 EM PÉ: chuta a bola com o pé esquerdo .................................................................................... 0 1 2 3 79.
+X
+*80 EM PÉ: pula 30 centímetros de altura, com ambos os pés simultaneamente ............................ 0 1 2 3 80.
+X
+*81 EM PÉ: pula 30 centímetros para a frente, com ambos os pés simultaneamente ...................... 0 1 2 3 81.
+*82 EM PÉ: pula 10 vezes sobre o pé direito dentro de um círculo com 60 centímetros de diâmetro .. 0 1 2 X 3 82.
+*83 EM PÉ: pula 10 vezes sobre o pé esquerdo dentro de um círculo com 60 centímetros de diâmetro ... 0 1 2 X 3 83.
+*84 EM PÉ, SEGURANDO EM UM CORRIMÃO: sobe 4 degraus, segurando em um corrimão,
+alternando os pés ........................................................................................................................ 0 1 2 3
+X
+84.
+*85 EM PÉ, SEGURANDO EM UM CORRIMÃO: desce 4 degraus, segurando em um corrimão,
+alternando os pés ........................................................................................................................ 0 1 2 3 X 85.
+*86 EM PÉ: sobre 4 degraus, alternando os pés ............................................................................... 0 1 2 3 X 86.
+*87 EM PÉ: desce 4 degraus, alternando os pés ............................................................................... 0 1 2 3 X 87.
+*88 EM PÉ EM UM DEGRAU COM 15 CENTÍMETROS DE ALTURA: pula do degrau, com
+ambos os pés simultaneamente .................................................................................................. 0 1 2 3 X 88.
+TOTAL DA DIMENSÃO E
+Esta avaliação foi indicativa do desempenho habitual da criança: SIM NÃO
+COMENTÁRIOS:
+© Memnon Edições Científicas Ltda., Luara Tomé Cyrillo, Maria Cristina dos Santos Galvão. Folha de Pontuação da GMFM
+
+--- TABLE p4-0 ---
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p4-1 ---
+
+
+
+
+
+
+
+
+
+
+
+--- TABLE p4-2 ---
+X
+X
+X
+X
+X
+X
+X
+X
+
+
+
+--- TABLE p4-3 ---
+
+
+
+
+
+
+
+
+X
+X
+
+--- TABLE p4-4 ---
+X || 
+
+--- TABLE p4-5 ---
+
+
+
+
+--- TABLE p4-6 ---
+
+
+
+
+--- TABLE p4-7 ---
+
+
+
+
+--- TABLE p4-8 ---
+X
+X
+X
+
+----- PAGE 5 -----
+RESUMO DA PONTUAÇÃO DA GMFM
+ÁREA-META
+DIMENSÃO CÁLCULO DAS PONTUAÇÕES PERCENTUAIS DAS DIMENSÕES Assinalar com √
+Total da Dimensão A
+A. Deitar e Rolar = 49 x 100 = 96% A.
+51 51
+Total da Dimensão B
+Sentar = 59 x 100 = 98,3% B.
+B.
+60 60
+Total da Dimensão C
+C. Engatinhar e Ajoelhar = 41 x 100 = 97,6% C.
+42 42
+Total da Dimensão D
+D. Em Pé = 35 x 100 = 89,7% D.
+39 39
+Total da Dimensão E
+E. Andar, Correr e Pular = 70 x 100 = 97,2% E.
+72 72
+%A + %B + %C + %D + %E
+PONTUAÇÃO TOTAL =
+Número total de Dimensões
+96+98,3 +97,6 +89,7 +97,2
+= =478,8 = 95,7%
+5 5
+Soma das pontuações percentuais em cada dimensão identificada como área-meta
+PONTUAÇÃO-META TOTAL =
+Número de áreas-meta
++ +
+= = %
+Pontuação do Estimador de Habilidade Motora Grossa da GMFM-661
+Pontuação da GMFM-66 = a
+Intervalo de Confiança de 95%
+Pontuação anterior da GMFM-66 = a
+Intervalo de Confiança de 95%
+Mudança na pontuação da GMFM-66 =
+1 Conforme o programa Estimador de Habilidade Motora Grossa (GMAE)
+© Memnon Edições Científicas Ltda., Luara Tomé Cyrillo, Maria Cristina dos Santos Galvão. Folha de Pontuação da GMFM
+
+----- PAGE 6 -----
+TESTE COM DISPOSITIVOS DE MOBILIDADE / ÓRTESE
+Assinale abaixo com (√) qual dispositivo de mobilidade / órtese foi utilizado e em que dimensão foi aplicado primeiramente. (Pode haver
+mais do que um).
+Dispositivo de mobilidade Dimensão Órtese Dimensão
+Andador com rodas / de empurrar ............ Estabilizador de quadril ........................
+Andador ..................................................... Estabilizador de joelho .........................
+Muleta axilar ............................................. Estabilizador de tornozelo-pé ...............
+Muletas ...................................................... Estabilizador de pé ...............................
+Bengala de quatro apoios .......................... Sapatos .................................................
+Bengala ..................................................... Nenhuma ..............................................
+Nenhum ..................................................... Outra
+Outro (especifique)
+(especifique)
+RESUMO DA PONTUAÇÃO COM USO DE DISPOSITIVO DE MOBILIDADE / ÓRTESE
+DIMENSÃO CÁLCULO DAS PONTUAÇÕES PERCENTUAIS DAS DIMENSÕES ÁREA-META
+Assinalar com √
+Total da Dimensão A = x 100 = % A.
+A. Deitar e Rolar
+51 51
+B. Sentar Total da Dimensão B = x 100 = % B.
+60 60
+Total da Dimensão C = x 100 = % C.
+C. Engatinhar e Ajoelhar
+42 42
+Total da Dimensão D = x 100 = % D.
+D. Em Pé
+39 39
+Total da Dimensão E = x 100 = % E.
+E. Andar, Correr e Pular
+72 72
+PONTUAÇÃO TOTAL = %A + %B + %C + %D + %E
+Número total de Dimensões
+= + + + + = = %
+5 5
+PONTUAÇÃO-META TOTAL = Soma das pontuações percentuais em cada dimensão identificada como área-meta
+Número de áreas-meta
+= + + = %
+Pontuação do Estimador de Habilidade Motora Grossa da GMFM-661
+Pontuação da GMFM-66 = a
+Intervalo de Confiança de 95%
+Pontuação anterior da GMFM-66 = a
+Intervalo de Confiança de 95%
+Mudança nas pontuações da GMFM-66 =
+1 Conforme o programa Estimador de Habilidade Motora (GMAE)
+© Memnon Edições Científicas Ltda., Luara Tomé Cyrillo, Maria Cristina dos Santos Galvão. Folha de Pontuação da GMFM
+
+--- TABLE p6-0 ---
+
+
+
+
+
+
+
+
+
+--- TABLE p6-1 ---
+
+
+
+
+
+

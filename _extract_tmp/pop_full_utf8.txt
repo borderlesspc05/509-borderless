@@ -1,0 +1,58 @@
+P0: 
+P1: 
+P2: POP - Protocolo de Observação Psicomotora
+P3: Profissional Responsável: ____________________________________
+Data: ____/____/____
+Nome da Criança: __________________________________________
+Idade: ____ anos
+Diagnóstico Clínico (se houver): _______________________________
+P4: 
+P5: 1. OBSERVAÇÃO GERAL DURANTE A AVALIAÇÃO
+P6: Comportamento inicial (entrada na sala, contato visual, curiosidade):
+P7: Vínculo com o terapeuta:
+☐ Estabelecido espontaneamente
+☐ Estabelecido com mediação
+☐ Não estabelecido
+P8: Reações ao ambiente:
+☐ Adequadas ☐ Apreensivas ☐ Indiferente ☐ Agitado(a)
+P9: 
+P10: Participação:
+☐ Ativa ☐ Parcial ☐ Passiva ☐ Resistência
+P11: 2. AVALIAÇÃO DA MOTRICIDADE GLOBAL
+P12: 
+P13: 3. AVALIAÇÃO DA MOTRICIDADE FINA
+P14: 
+P15: 4. ESQUEMA CORPORAL E LATERALIDADE
+P16: 
+P17: 5. ORGANIZAÇÃO ESPACIAL E TEMPORAL
+P18: 
+P19: 6. COORDENAÇÃO E PRAXIAS
+P20: 
+P21: 7. REGULAÇÃO E CONTROLE MOTOR
+P22: 
+P23: 8. DIMENSÃO EMOCIONAL E RELACIONAL (NO CONTEXTO MOTOR)
+P24: 
+P25: 9. ANÁLISE E CONCLUSÕES
+P26: 
+P27: 
+P28: 				
+P29: 
+P30: 
+P31: 
+P32: 
+P33: 
+P34: 
+P35: 
+P36: 
+P37: 
+P38: ___________________________________________
+P39: 
+P40: Assinatura do Profissional
+P41: 						            CRP/Registro
+P42: 
+P43: 
+P44: 
+P45: 
+P46: 
+P47: 
+P48: 

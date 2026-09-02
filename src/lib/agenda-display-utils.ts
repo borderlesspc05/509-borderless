@@ -15,11 +15,13 @@ const ROLE_SHORT_LABELS: Record<ProfessionalRole, string> = {
   "Assistente Terapêutico (AT)": "AT",
   Coordenador: "COORD.",
   Fonoaudiólogo: "FONOAUDI",
+  Fonoaudióloga: "FONOAUDI",
   "Terapeuta Ocupacional": "T. OCUP.",
   "Supervisor Administrativo": "SUP. ADM.",
   Musicoterapeuta: "MUSICOTE",
   Neuropsicólogo: "NEUROPSI",
   Psicopedagoga: "PSICOPED",
+  Psicopedagogo: "PSICOPED",
   Fisioterapeuta: "FISIOTERA",
   Nutricionista: "NUTRI",
 };

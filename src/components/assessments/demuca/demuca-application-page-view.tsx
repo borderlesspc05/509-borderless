@@ -373,7 +373,13 @@ export function DemucaApplicationPageView({
             (evaluation) => evaluation.id !== currentEvaluationId
           )}
         />
-      ) : null}
+      ) : (
+        <section className="rounded-xl border border-dashed border-border/80 bg-muted/10 p-4 text-sm text-muted-foreground">
+          Preencha os itens da escala para calcular o escore e gerar os
+          gráficos. Se quiser visualizar o gráfico antes de concluir todos os
+          itens, ative <strong>Avaliação parcial</strong>.
+        </section>
+      )}
 
       <DemucaAnswerGrid items={items} onChange={handleItemChange} />
 

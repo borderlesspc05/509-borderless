@@ -1,0 +1,84 @@
+=== DOCX: POP PROTOCOLO DE OBERVAÇÃO PSICOMOTORA.docx ===
+paragraphs=49 tables=7
+[P2|Normal (Web)] POP - Protocolo de Observação Psicomotora
+[P3|Normal (Web)] Profissional Responsável: ____________________________________
+Data: ____/____/____
+Nome da Criança: __________________________________________
+Idade: ____ anos
+Diagnóstico Clínico (se houver): _______________________________
+[P5|Heading 2] 1. OBSERVAÇÃO GERAL DURANTE A AVALIAÇÃO
+[P6|Normal (Web)] Comportamento inicial (entrada na sala, contato visual, curiosidade):
+[P7|Normal (Web)] Vínculo com o terapeuta:
+☐ Estabelecido espontaneamente
+☐ Estabelecido com mediação
+☐ Não estabelecido
+[P8|Normal (Web)] Reações ao ambiente:
+☐ Adequadas ☐ Apreensivas ☐ Indiferente ☐ Agitado(a)
+[P10|Normal (Web)] Participação:
+☐ Ativa ☐ Parcial ☐ Passiva ☐ Resistência
+[P11|Heading 2] 2. AVALIAÇÃO DA MOTRICIDADE GLOBAL
+[P13|Heading 2] 3. AVALIAÇÃO DA MOTRICIDADE FINA
+[P15|Heading 2] 4. ESQUEMA CORPORAL E LATERALIDADE
+[P17|Heading 2] 5. ORGANIZAÇÃO ESPACIAL E TEMPORAL
+[P19|Heading 2] 6. COORDENAÇÃO E PRAXIAS
+[P21|Heading 2] 7. REGULAÇÃO E CONTROLE MOTOR
+[P23|Heading 2] 8. DIMENSÃO EMOCIONAL E RELACIONAL (NO CONTEXTO MOTOR)
+[P25|Heading 2] 9. ANÁLISE E CONCLUSÕES
+[P38|Normal] ___________________________________________
+[P40|Normal] Assinatura do Profissional
+[P41|Normal] CRP/Registro
+
+--- TABLE 0 (8 rows x 2 cols) ---
+R0: Habilidade || Observação
+R1: Marcha (andar livre) || ☐ Normal ☐ Alterada: _____________________
+R2: Corrida || ☐ Adequada ☐ Descoordenada ☐ Evita correr
+R3: Saltos || ☐ Com os dois pés ☐ Um pé só ☐ Dificuldade
+R4: Subir/descer degraus || ☐ Independente ☐ Com apoio ☐ Dificuldade
+R5: Controle postural (em pé, sentado) || ☐ Estável ☐ Instável ☐ Hipotonia/hipertonia
+R6: Equilíbrio dinâmico || ☐ Preservado ☐ Alterado ☐ Necessita ajuda
+R7: Reação ao desequilíbrio || ☐ Adequada ☐ Demorada ☐ Ausente
+
+--- TABLE 1 (7 rows x 2 cols) ---
+R0: Habilidade || Observação
+R1: Pinça digital (polegar/indicador) || ☐ Preservada ☐ Imatura ☐ Ausente
+R2: Coordenação olho-mão || ☐ Boa ☐ Regular ☐ Fraca
+R3: Desenho livre/espontâneo || ☐ Realiza ☐ Com ajuda ☐ Não realiza
+R4: Recorte com tesoura || ☐ Adequado ☐ Dificuldade ☐ Não realiza
+R5: Montar blocos/puzzle || ☐ Consegue ☐ Dificuldade ☐ Recusa
+R6: Ritmo (bater palmas, imitar sons) || ☐ Adequado ☐ Irregular ☐ Não responde
+
+--- TABLE 2 (6 rows x 2 cols) ---
+R0: Aspecto || Observação
+R1: Nomeação de partes do corpo || ☐ Nomeia ☐ Aponta ☐ Dificuldade
+R2: Reconhecimento no outro || ☐ Sim ☐ Parcial ☐ Não reconhece
+R3: Imitação de movimentos || ☐ Adequada ☐ Parcial ☐ Não realiza
+R4: Lateralidade espontânea || ☐ Destro ☐ Canhoto ☐ Indefinida
+R5: Lateralidade no uso de objetos || ☐ Consistente ☐ Inconsistente
+
+--- TABLE 3 (5 rows x 2 cols) ---
+R0: Aspecto || Observação
+R1: Noção de cima/baixo/frente/trás || ☐ Compreende ☐ Parcial ☐ Dificuldade
+R2: Reconhecimento de formas e tamanhos || ☐ Adequado ☐ Parcial ☐ Não reconhece
+R3: Noção de sequência temporal || ☐ Simples ☐ Com ajuda ☐ Ausente
+R4: Execução de comandos sequenciais || ☐ Sim ☐ Parcial ☐ Não executa
+
+--- TABLE 4 (5 rows x 2 cols) ---
+R0: Habilidade || Observação
+R1: Praxis global (gestos amplos) || ☐ Adequada ☐ Alterada ☐ Ausente
+R2: Praxis fina (gestos manuais específicos) || ☐ Adequada ☐ Alterada ☐ Ausente
+R3: Praxis ideomotora (imitar gestos simbólicos) || ☐ Sim ☐ Parcial ☐ Não realiza
+R4: Praxis construtiva (montar/desenhar estruturas) || ☐ Adequada ☐ Dificuldade ☐ Não realiza
+
+--- TABLE 5 (5 rows x 2 cols) ---
+R0: Aspecto || Observação
+R1: Inibição motora || ☐ Adequada ☐ Impulsiva ☐ Hiporresponsiva
+R2: Controle da força || ☐ Adequado ☐ Excessiva ☐ Fraca
+R3: Resistência física || ☐ Boa ☐ Cansa facilmente ☐ Apática
+R4: Velocidade de resposta motora || ☐ Adequada ☐ Lenta ☐ Rápida demais
+
+--- TABLE 6 (5 rows x 2 cols) ---
+R0: Aspecto || Observação
+R1: Interesse pelas atividades || ☐ Alto ☐ Moderado ☐ Baixo
+R2: Frustração frente a erros || ☐ Tolera ☐ Irrita-se ☐ Evita
+R3: Iniciativa || ☐ Inicia atividades ☐ Apenas com estímulo
+R4: Interação com o avaliador || ☐ Espontânea ☐ Com estímulo ☐ Evita contato

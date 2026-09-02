@@ -1,0 +1,86 @@
+=== DOCX: Anamnese - musicoterapia (1).docx ===
+paragraphs=175 tables=0
+[P3|Normal] Formulário de admissão
+[P5|Normal] Data de admissão (1º Avaliação): ___/___/___
+[P6|Normal] Nome do paciente: ___________________________________
+[P7|Normal] Sexo: (   ) M    (    ) F           Data de Nascimento: ___/___/___                Idade: ___ anos
+[P8|Normal] Idade Cronológica: _______
+[P9|Normal] Pessoa de referência: Mãe - _____________________________  Pai - ______________________
+[P10|Normal] Nome do entrevistado:  ___________________________  Relação com o paciente: ____________
+[P11|Normal] Telefone: (xx) xxxxx-xxxx
+[P14|Normal] Dados Clínicos:
+[P16|List Paragraph] Condições da gestação?
+[P18|List Paragraph] Condições do parto?
+(  ) Normal   (   ) Cesariana
+[P20|List Paragraph] Doenças infantis?
+[P22|List Paragraph] Quais/como foram as vivências musicais/sonoras durante a gestação?
+[P24|List Paragraph] Quais/como foram as primeiras vivências musicais/sonoras pós nascimento?
+[P27|Normal] Informações Gerais:
+[P29|List Paragraph] Possui algum diagnóstico atual? Quem forneceu?
+[P31|List Paragraph] Está tomando alguma medicação?
+[P33|List Paragraph] Possui alguma alergia ou sensibilidade?
+[P35|List Paragraph] Há alguma preocupação que eu deveria tomar ao trabalhar com a criança? (convulsão, mordidas, comportamento auto lesivo, etc).
+[P37|List Paragraph] Já fez ou está fazendo alguma terapia?
+[P39|List Paragraph] O que o paciente tem aversão?
+[P41|List Paragraph] Possui algum hiperfoco?
+[P43|List Paragraph] O que você entende sobre Musicoterapia? Qual é a principal queixa ou dificuldade apresentada pelo paciente?
+[P47|Normal] Referência Musical:
+[P49|List Paragraph] Quais as preferências/recusas musicais dos responsáveis?
+[P51|List Paragraph] Tem alguma experiência ou exposição com a música?
+[P53|List Paragraph] Gosta de ouvir música?
+[P54|List Paragraph] Sim (  )    Não (   )
+[P56|List Paragraph] Possui instrumentos musicais em casa?
+[P58|List Paragraph] Qual frequência e como costuma ouvir (rádio, tv, celular, tablet)?
+[P60|List Paragraph] Qual estilo de músico gosta de ouvir? Existe algum cantor favorito?
+[P62|List Paragraph] Quando ouve música, como fica? (Atenta, faz outras coisas, se isola e outras)
+[P64|List Paragraph] Já tocou algum instrumento musical?
+[P65|List Paragraph] Sim (  )    Não (   )
+[P67|List Paragraph] Existem músicos na família? Quem?
+[P70|Normal] Motricidade ampla e fina
+[P72|List Paragraph] Tem alguma restrição de movimentos amplos?
+[P74|List Paragraph] É capaz de andar perfeitamente?
+[P76|List Paragraph] Requer alguma assistência física?
+[P78|List Paragraph] Utiliza plenamente todos os membros?
+[P80|List Paragraph] Se sente confortável em fazer movimentos e sentar no chão?
+[P82|List Paragraph] Possui alguma restrição relacionada à motricidade fina?
+[P84|List Paragraph] É capaz de realizar tarefas motoras finas com ambas as mãos? (comer com talheres, abotoar um botão, levar o alimento a boca, segurar um lápis, etc)
+[P86|List Paragraph] Possui dificuldades em manter objetos seguros nas mãos?
+[P89|Normal] Oral
+[P91|List Paragraph] Paciente verbal / não verbal?
+[P93|List Paragraph] Dificuldades no processamento da fala?
+[P95|List Paragraph] Qual idade iniciou a fala?
+[P97|List Paragraph] Tem alguma restrição alimentar?
+[P99|List Paragraph] Tem problemas respiratórios?
+[P102|Normal] Sensorial
+[P104|List Paragraph] Tem hiper sensibilidade auditiva (agudos, graves, volume)?
+[P106|List Paragraph] Tem alguma perda auditiva, visual, ou referente a outro sentido?
+[P108|List Paragraph] Tem restrição quanto ao contato físico?
+[P110|List Paragraph] É super estimulada por sons, luzes ou multidões?
+[P114|Normal] Emocional
+[P116|List Paragraph] Observou se apresenta alguma dificuldade emocional?
+[P118|List Paragraph] Demonstra emoções apropriadamente (como ele se expressa)?
+[P120|List Paragraph] Se descontrola ou fica bravo(a) com facilidade?
+[P122|List Paragraph] Passou por alguma situação traumática ou mudanças que afetaram suas condições de vida?
+[P124|List Paragraph] Possui algum diagnóstico emocional? (ansiedade, depressão, síndrome do pânico, bipolaridade, hiperatividade)
+[P129|Normal] Social
+[P131|List Paragraph] Possui irmão?
+[P133|List Paragraph] Com quem a criança fica a maior parte do tempo?
+[P135|List Paragraph] Observou se apresenta alguma dificuldade social? (familiar, grupos da mesma faixa etária, participa de conversas e brincadeiras)
+[P137|List Paragraph] Faz parte de algum grupo? (de estudos, dança, música, religioso, de reunião semanal com amigos)
+[P139|List Paragraph] Há alguma questão significativa que queira colocar sobre o convívio familiar/no trabalho/escola/com os amigos?
+[P142|Normal] Gostaria de mencionar algo que não foi abordado?
+[P146|Normal] Observações do musicoterapeuta:
+[P149|Normal] Como plano para tratamento, sugere-se inicialmente intervenções musicais que estimulem o domínio da Musicalidade, assim como práticas musicais estimulantes há habilidades de domínios da Comunicação expressiva, Motricidade Oral e Sensorial.
+[P152|Normal] Resumo:
+[P154|Normal] Categorias relevantes, com base nas informações acima, que serão foco das intervenções musicoterapêuticas.
+[P157|Normal] Motricidade Ampla
+[P158|Normal] Motricidade Fina
+[P159|List Paragraph] Motricidade Oral
+[P160|List Paragraph] Sensorial
+[P161|List Paragraph] Comunicação receptiva/percepção auditiva
+[P162|List Paragraph] Comunicação Expressiva
+[P163|Normal] Cognitiva
+[P164|Normal] Emocional
+[P165|Normal] Social
+[P166|List Paragraph] Musicalidade
+[P174|Normal] Assinatura/Data: ______________________________________________

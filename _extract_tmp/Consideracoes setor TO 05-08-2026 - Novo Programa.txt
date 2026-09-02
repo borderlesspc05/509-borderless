@@ -1,0 +1,260 @@
+=== DOCX: Consideracoes setor TO 05-08-2026 - Novo Programa.docx ===
+paragraphs=272 tables=0
+[P1|Normal] Considerações setor Terapia Ocupacional – novo aplicativo
+[P2|Normal] *Documento elaborado por: Agnes Sunderhus Pereira – Terapeuta Ocupacional CREFITO 15 20111 TO – Responsável técnica; Coordenadora.
+[P3|List Paragraph] Sobre o instrumento padronizado PEDI: algumas perguntas tiverem palavras e/ou sentidos na frase modificadas, o que dá margem a interpretação e respostas que não ficam fidedignas.O que ocorreu ? Segue INFORMAÇÕES 1 (ao final do documento) com a numeração das perguntas com as que estão erradas, agora escritas de forma correta.
+[P4|Normal] PRECISAMOS QUE AS PERGUNTAS ESTEJAM CORRETAS CONFORME MANUAL, POIS ISSO INTERFERFE NO MAPA DE ITENS QUE CONTEM OS NÚMEROS QUE SÃO REFERENTES ÀS PERGUNTAS JÁ FIXOS, O QUE MUDA É A COR SE A CRIANÇA REALIZA OU NÃO, E NÃO OS NÚMEROS DE LOCAIS.
+[P5|Normal] O PEDI POSSUI DUAS VARIAÇÕES: TRANSFERÊNCIA CARRO E TRANSFERÊNCIA ÔNIBUS QUE VARIA DE ACORDO COM O MEIO DE TRANSPORTE QUE A PESSOA MAIS UTILIZA, sendo preenchido apenas o que mais utiliza nos itens que vão do número 11 ao 15, variando com a e b. Caso contenha as duas para pontuar, vai interferir na pontuação bruta e causar erro, por isso o instrumento é escolhido e assinalado em apenas uma das variações.
+[P6|List Paragraph] Os instrumentos padronizados PERFIL SENSORIAL e o EBAI para ter o cálculo fidedigno, precisa ter as perguntas de acordo com o manual também, pois na hora de pontuar existe uma tabela atrás em que os números não são em ordem, e são preenchidos de acordo com a pontuação marcada pela pessoa que responde o questionário, variando de criança para criança, conforme ilustrado abaixo, por isso é importante que as perguntas estejam corretas.
+[P8|List Paragraph] Existe a possibilidade de termos o quantitativo de presenças e faltas de um período que precisemos de cada aprendiz ?
+[P9|List Paragraph] Segue modelo de evolução em prontuário de Terapia Ocupacional INFORMAÇÕES 2
+[P10|List Paragraph] Segue modelo de relatório de acompanhamento/evolução de Terapia Ocupacional
+[P12|List Paragraph] INFORMAÇÕES 1
+[P13|Normal] PEDI (Inventário de Avaliação Pediátrica de Incapacidade)
+[P14|Normal] ÁREA DE AUTOCUIDADO
+[P15|Normal] 32 E 33 as perguntas estão invertidas, o correto é:
+[P16|Normal] 32: Lava as mãos completamente
+[P17|Normal] 33: Seca as mãos completamente
+[P18|Normal] 36: Utiliza sabonete (e esponja, se for costume)
+[P19|Normal] 37: Seca o corpo completamente
+[P20|Normal] 38:Lava e seca a face completamente
+[P21|Normal] 39: (mesma coisa, mas com a pergunta diferente da do manual) Auxilia empurrando os braços para vestir a manga da camisa
+[P22|Normal] 40: Retira camisetas, vestido ou agasalho sem fecho
+[P23|Normal] 41: Coloca camisetas, vestido ou agasalho sem fecho
+[P24|Normal] 42:Coloca e retira camisas abertas na frente, porém sem fechar
+[P25|Normal] 43:Coloca e retira camisas abertas na frente, fechando-as
+[P26|Normal] 44: (mesma coisa, mas com a pergunta diferente da do manual) Tenta participar no fechamento de vestimentas
+[P27|Normal] 45: Abre e fecha fecho de correr (zíper), sem separá-lo ou fechar o botão
+[P28|Normal] 46: Abre e fecha colchete de pressão
+[P29|Normal] 47: Abotoa e Desabotoa
+[P30|Normal] 48: Abre e fecha o fecho de correr (zíper), separando e fechando colchete/botão
+[P31|Normal] 49: (mesma coisa, mas com a pergunta diferente da do manual)Auxilia colocando as pernas dentro da calça para vestir
+[P32|Normal] 50: Retira calças com elástico na cintura
+[P33|Normal] 51: Veste calças com elástico na cintura
+[P34|Normal] 54: Retira meias e abre os sapatos
+[P35|Normal] 55: Calça sapatos/sandálias
+[P36|Normal] 56: Calça meias
+[P37|Normal] 57: Coloca o sapato no pé correto; maneja fechos de velcro
+[P38|Normal] 58: Amarra os sapatos (prepara cadarço)
+[P39|Normal] 59: Auxilia no manejo de roupas durante uso de banheiro
+[P40|Normal] 60: Tentar limpar-se depois de utilizar o banheiro
+[P41|Normal] 61: Utiliza vaso sanitário, papel higiênico e dá descarga
+[P42|Normal] 62: Lida com roupas antes e depois de utilizar o banheiro
+[P43|Normal] 63: Limpa-se completamente depois de evacuar
+[P44|Normal] 64: Indica quando molhou roupa ou fralda (urina)
+[P45|Normal] 65: Ocasionalmente indica necessidade de urinar (durante o dia)
+[P46|Normal] 66: Indica, constantemente, necessidade de urinar e com tempo de utilizar o banheiro (durante o dia)
+[P47|Normal] 67: Vai ao banheiro sozinho para urinar (durante o dia)
+[P48|Normal] 68: Mantém-se constantemente seco durante o dia e à noite
+[P49|Normal] 69: Indica necessidade de ser trocado quando evacua
+[P50|Normal] 70: Ocasionalmente manifesta vontade de ir ao banheiro para evacuar (durante o dia)
+[P51|Normal] 71: Indica, constantemente, necessidade de evacuar e com tempo de utilizar o banheiro (durante o dia)
+[P52|Normal] 72: Faz distinção entre urinar e evacuar
+[P53|Normal] 73: Vai ao banheiro sozinho para evacuar, não tem acidentes intestinais
+[P54|Normal] ÁREA DE MOBILIDADE
+[P55|Normal] 1: Fica sentado na privada se estiver apoiado em equipamento ou no adulto
+[P56|Normal] 2: Fica sentado sem apoio na privada ou troninho
+[P57|Normal] 3: Senta e levanta de privada baixa ou troninho
+[P58|Normal] 4: Senta e levanta de privada própria para adulto
+[P59|Normal] 5: Senta e levanta da privada sem usar seus próprios braços
+[P60|Normal] 6: Fica sentado em cadeira se estiver apoiado em equipamento ou adulto
+[P61|Normal] 8: Senta e levanta da cadeira, mobília baixa infantis
+[P62|Normal] 9: Senta e levanta de cadeira de tamanho adulto
+[P63|Normal] 10: Senta e levanta de cadeira sem usar seus próprios braços
+[P64|Normal] TRANSFERÊNCIA NO CARRO
+[P65|Normal] 11a: Movimenta-se no carro; mexe, sobe e desce da cadeirinha do carro
+[P66|Normal] 12a: Entra e sai do carro com pouco auxílio ou instrução
+[P67|Normal] 13a: Entra e sai do carro sem assistência ou instrução
+[P68|Normal] 14a:Maneja cinto de segurança ou cinto da cadeirinha do carro
+[P69|Normal] 15a:Entra e sai do carro e abre e fecha a porta do mesmo
+[P70|Normal] TRANSFERÊNCIA NO ÔNIBUS
+[P71|Normal] 11b: Sobe e desce do banco do ônibus
+[P72|Normal] 12b:Move-se com o ônibus em movimento
+[P73|Normal] 13b:Desde a escada do ônibus
+[P74|Normal] 14b:Passa na roleta
+[P75|Normal] 15b:Sobe a escada do ônibus
+[P76|Normal] 16: Passa de deitado para sentado na cama ou berço
+[P77|Normal] 17: Passa para sentado na beirada da cama; deita a partir de sentado na beirada da cama
+[P78|Normal] 18:Sobe e desce de sua própria cama
+[P79|Normal] 19: Sobe e desce de sua própria cama, sem usar seus braços
+[P80|Normal] 20: Entra no chuveiro/box
+[P81|Normal] 21: Sai do chuveiro /box
+[P82|Normal] 22: Agacha para pegar sabonete ou shampoo no chão
+[P83|Normal] 23: Abre e fecha box ou cortinado
+[P84|Normal] 24: Abre e fecha a torneira
+[P85|Normal] 25: Rola, pivoteia, arrasta ou engatinha no chão em ambiente interno
+[P86|Normal] 28:Move-se pelo ambiente interno, mas com dificuldade (cai, velocidade lenta para a idade)
+[P87|Normal] 29:Move-se pelo ambiente  interno sem dificuldade
+[P88|Normal] 30: Move-se entre ambientes internos, mas com dificuldade (cai, velocidade lenta para a idade)
+[P89|Normal] 31:Move-se entre ambientes internos sem dificuldade
+[P90|Normal] 32:Move-se em ambientes internos por 15m; abre e fecha portas internas e externas
+[P91|Normal] 33:Muda objetos de lugar intencionalmente em ambiente interno
+[P92|Normal] 34:Move-se em ambiente interno, concomitantemente, com objetos pelo chão
+[P93|Normal] 35:Carrega objetos pequenos que cabem em uma das mãos em ambiente interno
+[P94|Normal] 36:Carrega objetos grandes que requerem a utilização das duas mãos em ambiente interno
+[P95|Normal] 37:Carrega objetos frágeis ou que contenham líquidos em ambiente interno
+[P96|Normal] 38:Anda em ambiente externo, mas segura em objetos, adultos ou aparelhos de apoio
+[P97|Normal] 39: Anda em ambiente externo sem apoio
+[P98|Normal] 40:Move-se em ambiente externo por 3-15m (comprimento de 1 a 5 carros)
+[P99|Normal] 41:Move-se em ambiente externo por 15-30m (comprimento de 5 a 10 carros)
+[P100|Normal] 42:Move-se em ambiente externo por 30-45m
+[P101|Normal] 43:Move-se em ambiente externo por 45m ou mais, mas com dificuldade (tropeça, velocidade lenta para a idade)
+[P102|Normal] 44:Move-se em ambiente externo por 45m ou mais sem dificuldade
+[P103|Normal] 45:Anda em superfícies niveladas (passeios e ruas planas)
+[P104|Normal] 46:Anda em superfícies pouco acidentadas (asfalto rachado)
+[P105|Normal] 47:Anda em superfícies irregulares e acidentadas (gramados e ruas de cascalho)
+[P106|Normal] 48:Sobe e desce rampas ou inclinações
+[P107|Normal] 49:Sobe e desce meio fio
+[P108|Normal] 50:Arrasta-se, engatinha para cima por partes ou lances parciais de escada (de 1 a 11 degraus)
+[P109|Normal] 51:Arrasta-se, engatinha para cima por um lance de escadas completo (12 a 15 degraus)
+[P110|Normal] 52:Sobe partes de um lance de escada (ereto)
+[P111|Normal] 53:Sobe um lance completo, mas com dificuldade (lento para a idade)
+[P112|Normal] 54:Sobe um conjunto de lances de escada sem dificuldade
+[P113|Normal] 55:Arrasta-se, engatinha para baixo ou por partes ou lances parciais de escada (de 1 a 11 degraus)
+[P114|Normal] 56:Arrasta-se, rasteja para baixo por um lance de escada
+[P115|Normal] 57:Desce, ereto, um lance de escada completo (12 a 15 degraus)
+[P116|Normal] 58:Desce um lance completo, mas com dificuldade (lento para a idade)
+[P117|Normal] 59:Desce um conjunto de lance de escada sem dificuldade
+[P118|Normal] ÁREA FUNÇÃO SOCIAL
+[P119|Normal] 1:Orienta-se pelo som
+[P120|Normal] 2:Reage ao "não"; reconhece o próprio nome ou de alguma pessoa familiar
+[P121|Normal] 3:Reconhece 10 palavras
+[P122|Normal] 4:Entende quando você fala sobre relacionamentos entre pessoas e/ou coisas que são visíveis
+[P123|Normal] 5:Entende quando você fala sobre tempo e sequência de eventos
+[P124|Normal] 6:Compreende sentenças curtas sobre objetos e pessoas familiares
+[P125|Normal] 7:Compreende comandos simples com palavras que descrevem pessoas ou coisas
+[P126|Normal] 8:Compreende direções que descrevem onde alguma coisa está
+[P127|Normal] 9:Compreende comando de dois passos utilizando se/então, antes/depois, primeiro/segundo, etc
+[P128|Normal] 10:Compreende duas sentenças que falam de um mesmo sujeito, mas de forma diferente
+[P129|Normal] 11:Nomeia objetos
+[P130|Normal] 12:Usa palavras específicas ou gestos para direcionar ou requisitar ações de outras pessoas
+[P131|Normal] 13:Procura informações fazendo perguntas
+[P132|Normal] 14:Descreve ações ou objetos
+[P133|Normal] 15:Fala sobre sentimentos ou pensamentos próprios
+[P134|Normal] 16:Usa gestos que tem propósitos adequados
+[P135|Normal] 17:Usa uma única palavra com significado adequado
+[P136|Normal] 18:Combina duas palavras com significado adequado
+[P137|Normal] 19:Usa sentenças de 4-5 palavras
+[P138|Normal] 20:Conecta duas ou mais ideias para contar uma história simples
+[P139|Normal] 21:Tenta indicar o problema ou dizer o que é necessário para ajudar a resolvê-lo
+[P140|Normal] 22:Se transtornado por causa de um problema, a criança precisa ser ajudada imediatamente, ou o seu comportamento é prejudicado
+[P141|Normal] 23:Se transtornado por causa de um problema, a criança consegue pedir ajuda e esperar se houver uma demora de pouco tempo
+[P142|Normal] 24:Em situações comuns, a criança descreve o problema e seus sentimentos com algum detalhe (geralmente não faz birra)
+[P143|Normal] 25:Diante de algum problema comum, a criança pode procurar um adulto para trabalhar uma solução em conjunto
+[P144|Normal] 26:Mostra interesse com relação a outros adultos
+[P145|Normal] 27:Inicia uma brincadeira familiar com adultos
+[P146|Normal] 28:Aguarda sua vez em um jogo simples com adultos, quando é dada a dica de que é sua vez
+[P147|Normal] 29:Tenta imitar uma ação prévia de um adulto durante uma brincadeira
+[P148|Normal] 30:Durante a brincadeira, a criança pode sugerir passos novos ou diferentes, ou responder a uma sugestão de um adulto com uma outra ideia
+[P149|Normal] 31:Percebe a presença de outras crianças e pode vocalizar ou gesticular para os companheiros
+[P150|Normal] 32:Interage com outras crianças em situações breves e simples
+[P151|Normal] 33:Tenta exercitar brincadeiras simples em uma atividade com outra criança
+[P152|Normal] 34:Planeja e executa atividade cooperativa com outras crianças; a brincadeira é complexa e mantida
+[P153|Normal] 35:Brinca de jogos de regras com outras crianças
+[P154|Normal] 36:Manipula brinquedos, objetos ou corpo com intenção
+[P155|Normal] 37:Usa objetos reais ou substituidos em sequência simples de faz de conta
+[P156|Normal] 38:Agrupa materiais para formar alguma coisa
+[P157|Normal] 39:Inventa longas rotinas de faz de conta envolvendo coisas que a criança já entende ou conhece
+[P158|Normal] 40:Inventa sequência elaboradas de faz de conta a partir da imaginação
+[P159|Normal] 42:Diz o primeiro e o último nome
+[P160|Normal] 43:Dá o nome e informações descritivas sobre os membros da família
+[P161|Normal] 44:Dá o endereço completo de casa
+[P162|Normal] 45:Dirige-se a um adulto para pedir auxílio sobre como voltar para casa ou voltar para o local quando perdido em local público
+[P163|Normal] 46:Tem uma noção geral do horário das refeições e rotina durante o dia
+[P164|Normal] 47:Tem alguma noção da sequência dos eventos familiares na semana
+[P165|Normal] 48:Tem conceitos simples de tempo
+[P166|Normal] 49:Associa um horário específico com atividades/eventos
+[P167|Normal] 50:Olha o relógio regularmente ou perunta as horas para cumprir o curso das obrigações
+[P168|Normal] 51:Começa a ajudar a cuidar dos seus pertences se for dada uma orientação e ordens constantes
+[P169|Normal] 52:Começa a ajudar nas tarefas domésticas simples se for dada uma orientação e ordens constantes
+[P170|Normal] 53:Ocasionalmente inicia rotinas simples para cuidar dos seus próprios pertences; pode requisitar ajuda física ou ser lembrado de completá-las
+[P171|Normal] 54:Ocasionalmente inicia tarefas domésticas simples, pode requisitar ajuda física ou ser lembrado de completá-las
+[P172|Normal] 55:Inicia e termina pelo menos uma tarefa doméstica que envolve vários passos e decisões; pode solicitar ajuda física
+[P173|Normal] 56:Mostra cuidado apropriado quando está perto de escadas
+[P174|Normal] 57:Mostra cuidado apropriado perto de objetos quentes ou cortantes
+[P175|Normal] 58:Ao atravessar a rua na presença de um adulto, a criança não precisa ser advertida sobre as normas de segurança
+[P176|Normal] 59:Sabe que não deve aceitar passeio, comida ou dinheiro de estranhos
+[P177|Normal] 60:Atravessa rua movimentada, com segurança, na ausência de um adulto
+[P178|Normal] 61:A criança brinca em casa com segurança, sem precisar ser vigiada constantemente
+[P179|Normal] 62:Vai ao ambiente externo da casa com segurança e é vigiada apenas periodicamente
+[P180|Normal] 64:Explora e atua em estabelecimentos comunitários sem supervisão
+[P181|Normal] 65: Faz transações em uma loja da vizinhança sem assistência
+[P182|List Paragraph] INFORMAÇÕES 2
+[P183|Heading 3] Modelo de Evolução em Prontuário – Setor de Terapia Ocupacional
+[P184|List Paragraph] Data / Hora: Já sai no sistema automaticamente ?
+[P185|List Paragraph] Diagnóstico Terapêutico Ocupacional:
+[P186|List Paragraph] Recursos  Utilizados: exemplo: colocar o ambiente terapêutico em que ocorreu a sessão, recursos e/ou aparelhos utilizados
+[P187|List Paragraph] Objetivo da Sessão | Metas Funcionais
+[P188|List Paragraph] Descrição do atendimento | raciocínio clínico e comportamental: relatar como recebeu aprendiz, estado geral, se há alguma questão de saúde ou relato anterior que seja relevante +
+[P189|List Paragraph] Engajamento e Resposta à intervenção e setting:
+[P190|List Paragraph] Descrição de como aprendiz iniciou e manteve a participação.
+[P191|List Paragraph] Reações diante das demandas propostas
+[P192|List Paragraph] Comportamentos interferentes e/ou necessidade de manejo de comportamentos
+[P193|List Paragraph] Desempenho Funcional / Desempenho ocupacional e Processos:
+[P194|List Paragraph] Observações clínicas estruturadas e não estruturadas e análise de atividade
+[P195|List Paragraph] Aspectos motores, sensoriais, cognitivos e socioemocionais observados durante a atividade.
+[P196|List Paragraph] Intercorrências ou fatores contextuais que influenciaram o desempenho na sessão.
+[P197|List Paragraph] Nível de Assistência Requerido: Indicar grau de ajuda necessária para execução | exemplos:
+[P198|List Paragraph] IND (Independente)
+[P199|List Paragraph] DV (Dica Verbal)
+[P200|List Paragraph] DVA (Dica Verbal Atrasada)
+[P201|List Paragraph] DVI (Dica Verbal Imediata)
+[P202|List Paragraph] DG (Dica Gestual)
+[P203|List Paragraph] MOD (Modelação)
+[P204|List Paragraph] AFP (Ajuda Física Parcial)
+[P205|List Paragraph] AFT (Ajuda Física Total)
+[P206|List Paragraph] Conduta e Próximos Passos
+[P207|List Paragraph] Diretriz para a Próxima Sessão: Estratégias que serão mantidas, ajustadas ou introduzidas.
+[P208|List Paragraph] Orientações à Família / Escola: Breve registro de orientações passadas aos cuidadores ou alinhamentos importantes, se houver].
+[P211|Normal] Paloma Maires Hoppe
+[P212|Normal] Terapeuta Ocupacional
+[P213|Normal] CREFITO 15 21537 TO
+[P215|Normal] Agnes Sunderhus Pereira
+[P216|Normal] Terapeuta Ocupacional
+[P217|Normal] CREFITO 15 20111 TO
+[P219|List Paragraph] INFORMAÇÕES 3
+[P220|Normal] RELATÓRIO DE ACOMPANHAMENTO TERAPÊUTICO OCUPACIONAL
+[P221|List Paragraph] O relatório de acompanhamento terapêutico tem a função de apresentar os ganhos funcionais que a intervenção proporcionou num determinado período de tempo, definido pela terapeuta
+[P222|List Paragraph] Modelo criado para guiar o seu raciocínio clínico para a construção do relatório, no que se refere à linha de pensamento e marco temporal
+[P223|List Paragraph] O que está escrito em maiúsculo como destaque, é um comentário a respeito da informação ou exemplos;
+[P224|List Paragraph] O que está em destaque de cor azul, deve ser modificado para inserir os dados.
+[P225|Normal] IDENTIFICAÇÃO
+[P226|Normal] Nome: 
+Data de Nascimento: 			Idade EM ANOS, MESES E DIAS:
+[P227|Normal] Responsáveis:
+[P228|Normal] Profissional  NOME
+[P229|Normal] Especialidade: Terapeuta Ocupacional
+[P230|Normal] Registro: CREFITO XXXXX
+[P231|Normal] Solicitante:
+[P232|Normal] INTRODUÇÃO
+[P233|Normal] XXX NOME DA CRIANÇA  está em intervenção de Terapia Ocupacional com método XXXXXX SE FOR O CASO, devido HD diagnóstico de XXXX (exemplo: SOMATODISPRAXIA, OU USAR CÓDIGOS CIF). No período considerado foram realizadas xxxxx sessões CASO NÃO SAIBA NÚMERO DE SESSÕES COLOCAR DESDE QUANDO EM MESES/ANO  está em acompanhamento no setor de Terapia Ocupacional. (Dado importante para evidenciar frequência e assiduidade, que impactam diretamente nos resultados)
+[P234|Normal] Os objetivos iniciais da intervenção terapêutica ocupacional contemplaram:
+[P235|Normal] EXEMPLOS: aumentar o tempo de permanência nas atividades de mesa; vestir e despir a camiseta com independência; calçar meias e tênis com independência, e não utilizar as mãos como apoio enquanto sentado por 5 minutos.
+[P236|Normal] II – AVALIAÇÃO PADRONIZADA (se for o caso)
+[P237|Normal] Para complementar o raciocínio clínico, foi aplicado o instrumento padronizado xxxxx
+[P238|Normal] INSERIR TEXTO PADRÃO EXPLICANDO O QUE É O INSTRUMENTO E INSERIR QUADROS E/OU TABELA FAZENDO RACIOCÍNIO CLÍNICO RELACIONANDO COM AS QUEIXAS OCUPACIONAIS.
+[P239|Normal] III - OBSERVAÇÕES CLÍNICAS E GANHOS FUNCIONAIS
+[P240|Normal] Conforme observado no gráfico/tabela, XXX apresentou melhora significativa, conseguindo permanecer por 10 minutos nas atividades propostas, o que também é observado no contexto XXXX COLOCAR DEMAIS TAMBÉM, de acordo com os relatos da professora. No contexto domiciliar, os pais também relataram avanços, principalmente ao observarem que XXX é capaz de permanecer sentado no momento das refeições. (FAZER BREVE DESCRIÇÃO DA MELHORA, CORRELACIONANDO ÀS DIFICULDADES APRESENTADAS PELA FAMÍLIA E ESCOLA.)
+[P241|Normal] Além disso, os pais também relataram que XXX está conseguindo despir e vestir a camiseta, quando o modelo não é tão ajustado ao corpo, no momento do banho. Em ambiente terapêutico, XXX . (RELAÇÃO COM GANHOS FUNCIONAIS NO CONTEXTO DOMICILIAR.)
+[P242|Normal] Observou-se que mesmo com a melhora na capacidade de XXX. (HOUVE GANHO FUNCIONAL, MAS SALIENTA-SE QUE ESTE OBJETIVO SERÁ MANTIDO, A FIM DE APRIMORAR A HABILIDADE/CAPACIDADE.)
+[P244|Normal] IV - PROPOSTA DE INTERVENÇÃO
+[P245|Normal] Com base nas informações descritas e acompanhamento no setor de Terapia Ocupacional, tendo em vista os ganhos funcionais decorrentes do acompanhamento terapêutico ocupacional e das oportunidades para treino tanto em contexto terapêutico como domiciliar, XXXX permanecerá com um plano de intervenção que utilizará uma abordagem EXEMPLOS com uso de inputs proprioceptivos e modulação sensorial, associado ao uso de pistas visuais, estruturação de rotinas previsíveis, fragmentação de tarefas em etapas menores, além de reforço social positivo contingente, com objetivo de aumentar a tolerância à frustração, promover a comunicação de forma funcional e possibilitar a independência e autonomia de XXX em suas Atividades de Vida Diária (AVDs) e Atividades Instrumentais de Vida Diária (AIVDs).
+[P247|Normal] • Despir e vestir blusa com fechamento frontal;
+[P248|Normal] • Permanecer sentado sem apoiar-se sobre as mãos ou escorregar da cadeira;
+[P249|Normal] • Fechar botões da blusa;
+[P250|Normal] • Pintar dentro dos limites do desenho.
+[P251|Normal] Para que esses critérios sejam alcançados dependerá das barreiras de aprendizado, da presença ou não de comportamentos interferentes, aspectos fisiológicos, cognitivos, motores, envolvimento familiar, dentre outros.
+[P253|Normal] V - CONCLUSÃO
+[P254|Normal] A finalidade deste relatório foi apresentar a evolução e acompanhamento terapêutico ocupacional de xxxxxxx no setor de Terapia Ocupacional realizada pela Terapeuta Ocupacional xxxxxxx. O aprendiz demonstra potencial para aquisição, aprimoramento e estimulação de novas habilidades e competências que se relacionam às intervenções terapêuticas ocupacionais.  Dessa forma, visando a ampliação do repertório funcional de aprendizado de novas habilidades faz-se necessário a manutenção das terapias no setor de Terapia Ocupacional, OU SUGESTÃO DE DIMINUIÇÃO/ AUMENTO/ ALTA/ ETC
+[P255|Normal] À disposição para maiores informações que se fizerem necessárias.
+[P256|Normal] Cachoeiro de Itapemirim, ES,  XXXXX  de 2026
+[P259|Normal] ___________________________
+[P260|Normal] Paloma Maires Hoppe
+[P261|Normal] Terapeuta Ocupacional
+[P262|Normal] CREFITO 15 21537 TO
+[P264|Normal] Agnes Sunderhus Pereira
+[P265|Normal] Terapeuta Ocupacional
+[P266|Normal] CREFITO 15 20111 TO
+[P269|Normal] Cachoeiro de Itapemirim, 05 de agosto de 2026.
+[P270|Normal] À disposição para maiores informações que se fizerem necessárias.
+[P271|Normal] Agnes Sunderhus Pereira – Terapeuta Ocupacional.

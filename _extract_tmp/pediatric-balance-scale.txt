@@ -1,0 +1,622 @@
+BEST=pymupdf replacement_chars=0
+  alt pymupdf: chars=18018 replacement=0
+  alt pdfplumber: chars=15662 replacement=0
+
+=== PyMuPDF: pediatric-balance-scale.pdf ===
+pages=8
+
+----- PAGE 1 -----
+ 
+ 
+ Appendix
+ 
+ 
+ 
+A    
+PEDIATRIC  BALANCE  SCALE 
+ 
+ 
+Name: 
+  
+ 
+Date: 
+  
+ 
+Location: 
+  
+ 
+Examiner:   
+ 
+ 
+ 
+Item Description 
+Score 
+0-4 
+Seconds 
+optional 
+ 
+1. 
+Sitting to standing 
+2. 
+Standing to sitting 
+3. 
+Transfers 
+4. 
+Standing unsupported 
+5. 
+Sitting unsupported 
+6. 
+Standing with eyes closed 
+7. 
+Standing with feet together 
+8. 
+Standing with one foot in front 
+9. 
+Standing on one foot 
+10. 
+Turning 360 degrees 
+11. 
+Turning to look behind 
+12. 
+Retrieving object from floor 
+13. 
+Placing alternate foot on stool 
+14. 
+Reaching forward with outstretched arm 
+ 
+Total Test Score 
+ 
+ 
+ 
+General Instructions 
+ 
+1.  Demonstrate each task and give instructions as written.  A child may receive a practice 
+trial on each item.  If the child is unable to complete the task based on their ability to understand 
+the directions, a second practice trial may be given.  Verbal and visual directions may be clarified 
+through the use of physical prompts. 
+ 
+2.   Each item should be scored utilizing the 0 to 4 scale.   Multiple trials are allowed on 
+many of the items.   The child's performance should be scored based  upon the lowest criteria, 
+which describes  the child's best performance.    If on the first trial a child receives the maximal 
+score of 4, additional trials need not be administered.   Several items require the child to maintain 
+a given position  for  a specific  time.    Progressively,  more  points  are  deducted  if the time  or 
+distance requirements  are not met; if the subject's performance  warrants supervision; or if the 
+subject touches an external support or  receives  assistance from the examiner. Subjects should 
+understand that they must maintain their balance while attempting the tasks. The choice, of which leg 
+stand on or how far to reach, is left to the subject.  Poor judgment will  adversely influence the 
+performance and the scoring. In addition to scoring items 4, 5, 6, 7, 8, 9,10, and 13, the examiner may 
+choose to ·record the exact time in seconds. 
+ 
+ 
+
+[images_on_page=0]
+
+----- PAGE 2 -----
+ 
+ 
+ 
+B 
+ 
+Equipment 
+ 
+The Pediatric Balance Scale was designed to require minimal use of specialized equipment.  The following is a 
+complete list of items required for administration of this tool: 
+ 
+      adjustable height bench 
+      chair with back support and arm rests  
+      stopwatch or watch with a second hand 
+masking tape- 1inch wide 
+      step stool 6 inches in height  
+      chalkboard eraser
+      ruler or yardstick 
+      a small level 
+ 
+ 
+The following items are optional and may be helpful during test administration: 
+2 child-size footprints  
+blindfold 
+a brightly colored object of at least two inches in size 
+flash cards 
+2 inches of adhesive-backed hook Velcro 
+Two 1 foot strips of loop Velcro 
+ 
+ 
+ 
+ 
+ 
+************************************************************************ 
+ 
+ 
+1. 
+Sitting To Standing 
+ 
+*Special  instruction: Items #1 and #2 may be tested simultaneously if, in the determination  of the examiner,  it 
+will facilitate the best performance  of the child. 
+ 
+INSTRUCTIONS: Child is asked to "Hold arms up and stand up."  The child is allowed to select the 
+position of his/her arms. 
+ 
+EQUIPMENT:   A bench of appropriate height to allow the child's feet to rest supported on the floor with the 
+hips and knees maintained in 90 degrees of flexion. 
+ 
+Best Of Three Trials 
+ 
+ 
+4  able to stand without using hands and stabilize independently 
+ 
+3  able to stand independently  using hands 
+ 
+2  able to stand using hands after several tries 
+ 
+1  needs minimal assist to stand or to stabilize 
+ 
+0  needs moderate or maximal assist to stand 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+[images_on_page=0]
+
+----- PAGE 3 -----
+ 
+ 
+ 
+c 
+ 
+2. 
+Standing To Sitting 
+ 
+*Special  instruction: Items #1 and #2 may be tested simultaneously if, in the determination of 
+the examiner, it will facilitate the best performance of the child. 
+ 
+ 
+ 
+INSTRUCTIONS: Child is asked to sit down slowly, without use of hands.  The child 
+is allowed to select the position of his/her arms. 
+ 
+EQUIPMENT:  A bench of appropriate height to allow the child's feet to rest supported on 
+the floor with the hips and knees maintained in 90 degrees of flexion. 
+ 
+Best Of Three Trials 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+3. 
+Transfers 
+4    sits safely with minimal use of hands  
+3    controls descent by using hands 
+2    uses back of legs against chair to control descent  
+1    sits independently, but has uncontrolled  descent  
+0    needs assistance to sit 
+ 
+ 
+INSTRUCTIONS: Arrange chair(s) for a stand pivot transfer, touching at a forty-five degree 
+angle.  Ask the child to transfer one way toward a seat with armrests and one way toward a 
+seat without armrests. 
+ 
+Equipment:  Two chairs, or one chair and one bench. One seating surface must have 
+armrests.  One chair/bench should be of standard adult size and the other should be of an 
+appropriate height to allow the child to conformably sit with feet supported on the floor and ninety 
+degrees of hip and knee flexion. 
+ 
+Best Of Three Trials 
+ 
+4     able to transfer safely with minor use of hands  
+3     able to transfer safely; definite need of hands 
+2     able to transfer with verbal cueing and/or supervision (spotting) 
+1     needs one person to assist 
+0     needs two people to assist or supervise (close guard) to be safe 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+[images_on_page=0]
+
+----- PAGE 4 -----
+ 
+D 
+ 
+4. 
+Standing Unsupported 
+ 
+INSTRUCTIONS: The child is asked to stand for 30 SECONDS without holding on or 
+moving his/her feet. A taped line or footprints may be placed on the floor to help the child 
+maintain a stationary foot position. The child may be engaged in non-stressful conversation to 
+maintain attention span for thirty seconds.  Weight shifting and equilibrium responses in feet are 
+acceptable; movement of the foot in space (off the support surface) indicates end of the timed 
+trial. 
+ 
+EQUIPMENT: 
+ 
+ 
+ 
+ 
+ 
+          a stop watch or watch with a second han
+      a twelve inch long masking tape line or two footprints placed 
+shoulder width apart 
+ 
+4     able to stand safely 30 SECONDS 
+3     able to stand 30 SECONDS with supervision  (spotting) 
+2     able to stand 15 SECONDS unsupported 
+1     needs several tries to stand 10 SECONDS unsupported  
+0     unable to stand 10 SECONDS unassisted 
+ 
+  
+Time in seconds 
+ 
+ 
+ 
+ 
+Special Instructions: If a subject is able to stand 30 SECONDS unsupported, score full points for 
+sitting unsupported.  Proceed to item #6 
+ 
+ 
+ 
+5. 
+Sitting With Back Unsupported  And Feet Supported On The Floor 
+ 
+INSTRUCTIONS: Please sit with arms folded on your chest for 30 SECONDS. Child 
+may be engaged in non-stressful conversation to maintain attention span for thirty seconds.  Time 
+should be stopped if protective reactions are observed in trunk or upper extremities. 
+ 
+EQUIPMENT: 
+ 
+ 
+ 
+ 
+  
+ 
+a stop watch or watch with a second hand 
+a bench of appropriate height to allow the feet to rest supported 
+on the floor with the hips and knees maintained  in ninety 
+degrees of flexion 
+ 
+4     able to sit safely and securely 30 SECONDS 
+3     able to sit 30 SECONDS under supervision (spotting) or may require            
+       definite use of upper extremities to maintain sitting position 
+2     able to sit 15 SECONDS 
+1     able to sit 10 SECONDS 
+0     unable to sit 10 SECONDS without support 
+ 
+  
+  Time in seconds 
+ 
+ 
+ 
+ 
+ 
+
+[images_on_page=0]
+
+----- PAGE 5 -----
+ 
+ 
+ 
+E 
+ 
+6. 
+Standing  Unsupported With Eyes Closed 
+ 
+INSTRUCTIONS:  The child is asked to stand still with feet shoulder width apart and close 
+his/her eyes for ten seconds.  Direction: "When I say close your eyes, I want you to stand 
+still, close your eyes, and keep them closed until I say open."  If necessary, a blindfold may 
+be used. Weight shifting and equilibrium responses in the feet are acceptable; movement of the 
+foot in space {off the support surface) indicates end of timed trial.  A taped line or footprints may 
+be placed on the floor to help the child maintain a stationary foot position. 
+ 
+EQUIPMENT:  
+ 
+ 
+a stop watch or watch with a second hand 
+ 
+a twelve-inch long masking tape line or two footprints placed shoulder width apart 
+ 
+blindfold 
+ 
+Best Of 3 Trials. 
+ 
+ 
+4     able to stand 10 seconds safely 
+ 
+3     able to stand 10 seconds with supervision (spotting) 
+ 
+2     able to stand 3 seconds 
+ 
+1     unable to keep eyes closed 3 seconds but stays steady 
+ 
+ 
+0     needs help to keep from falling
+ 
+  
+  Time in seconds 
+ 
+ 
+ 
+ 
+7. 
+Standing  Unsupported With Feet Together 
+ 
+INSTRUCTIONS:  The child is asked to place his/her feet together and stand still 
+without holding on. The child may be engaged in non-stressful conversation to maintain 
+attention span for thirty seconds. Weight shifting and equilibrium responses in feet are 
+acceptable; movement of the foot in space (off the support surface) indicates end of timed trial. A 
+taped line or footprints may be placed on the floor to help the child maintain stationary foot 
+position. 
+ 
+EQUIPMENT:   
+ 
+a stop watch or watch with a second hand 
+ 
+a twelve inch long masking tape line or two footprints placed together 
+ 
+Best Of 3 Trials 
+ 
+4     able to place feet together independently and stand 30 seconds safely  
+3     able to place feet together independently and stand for 30 seconds with supervision 
+       (spotting) 
+2     able to place feet together independently but unable to hold for 30 
+       seconds 
+1     needs help to attain position but able to stand 30 seconds with feet 
+       together 
+0     needs help to attain position and/or unable to hold for 30 seconds 
+ 
+  
+  Time in seconds 
+ 
+ 
+
+[images_on_page=0]
+
+----- PAGE 6 -----
+ 
+F 
+ 
+8.  
+Standing Unsupported One Foot In Front 
+ 
+INSTRUCTIONS:   The child is asked to stand with one foot in front of the other, heel 
+to toe.  If the child cannot place feet in a tandem position (directly in front), they should be asked 
+to step forward far enough to allow the heel of one foot to be placed ahead of the toes of the 
+stationary foot.  A taped line and/or footprints may be placed on the floor to help the child 
+maintain a stationary foot position.  In addition to a visual demonstration, a single physical prompt 
+(assistance with placement) may be given.  The child may be engaged in non-stressful 
+conversation to maintain his/her attention span for 30 seconds.  Weight shifting and/or equilibrium 
+reactions in the feet are acceptable.  Timed trials should be stopped if either foot moves in space 
+(leaves the support surface) and/or upper extremities support is utilized. 
+ 
+EQUIPMENT: 
+ 
+a stop watch or watch with a second hand 
+ 
+a twelve inch long masking tape line or two footprints placed heel to 
+toe 
+ 
+Best Of Three Trials 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+  
+4     able to place feet tandem independently and hold 30 seconds 
+3     able to place foot ahead of other independently and hold 30 seconds.    
+       Note: The length of the step must exceed the length of the stationary foot and 
+       the width of the stance should approximate the subject's normal stride width. 
+2     able to take small step independently and hold 30 seconds, or required 
+       assistance to place foot in front, but can stand for 30 seconds.
+ 
+1     needs help to step, but can hold 15 seconds  
+0     loses balance while stepping or standing 
+ 
+  
+  Time in seconds 
+ 
+9. 
+Standing On One Leg 
+ 
+INSTRUCTIONS:  The child is asked to stand on one leg for as long as he/she is able 
+to without holding on.  If necessary the child can be instructed to maintain his/her arms (hands) 
+on his/her hips (waist).  A taped line or footprints may be placed on the floor to help the child 
+maintain a stationary foot position.  Weight shifting and/or equilibrium reactions in the feet are 
+acceptable.  Timed trials should be stopped if the weight-bearing foot moves in space (leaves the 
+support surface), the up limb touches the opposite leg or the support surface and/or upper 
+extremities are utilized for support. 
+ 
+EQUIPMENT:   
+ 
+a stop watch or watch with a second hand 
+ 
+a twelve inch long masking tape line or two footprints placed heel to toe 
+ 
+3 Trials Average Score 
+ 
+ 
+ 
+4     able to lift leg independently and hold 10 seconds  
+3     able to lift leg independently and hold 5 to 9 seconds  
+2     able to lift leg independently and hold 3 to 4 seconds 
+1     tries to lift leg; unable to hold 3 seconds but remains standing  
+0     unable to try or needs assist to prevent fall 
+
+[images_on_page=0]
+
+----- PAGE 7 -----
+ 
+ 
+G 
+ 
+10. 
+Turn 360 Degrees 
+ 
+INSTRUCTIONS: The child is asked to turn completely around in a full circle, STOP, 
+and then turn a full circle in the other direction. 
+ 
+EQUIPMENT:    
+ 
+ 
+A stop watch or watch with a second hand 
+ 
+ 
+ 
+4     able to turn 360 degrees safely in 4 seconds or less each way (total of 
+        less than eight seconds) 
+3     able to turn 360 degrees safely in one direction only in 4 seconds or less  
+       completes turn in other direction requires more than four seconds  
+2     able to turn 360 degrees safely but slowly 
+1     needs close supervision (spotting) or constant verbal cueing  
+0     needs assistance while turning 
+ 
+  
+  Time in seconds 
+ 
+11. 
+Turning To Look Behind Left & Right Shoulders While Standing  Still 
+ 
+INSTRUCTIONS:  The child is asked to stand with his/her feet still, fixed in one place.  
+"Follow this object  as I move it.  Keep watching it as I move it, but don't move your feet." 
+ 
+EQUIPMENT: 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+a brightly colored object of at least two inches in size, or flash cards 
+ 
+a twelve inch long masking tape line or two footprints placed shoulder width apart 
+ 
+ 
+ 
+4     looks behind/over each shoulder; weight shifts include trunk rotation  
+3     looks behind/over one shoulder with trunk rotation; weight shift in  
+       the opposite direction is to the  level of the shoulder; no trunk rotation  
+2     turns head to look to level of shoulder; no trunk rotation 
+1     needs supervision (spotting) when turning; the chin rnoves greater than half the  
+       distance to  the shoulder 
+0     needs assist to keep from losing balance or falling; movement of the chin is  
+       less than half the distance to the shoulder 
+ 
+12. 
+Pick Up Object From The Floor From A Standing Position 
+ 
+INSTRUCTIONS: The child is asked to pick up a chalkboard eraser placed 
+approximately the length of his/her foot in front of his/her dominant foot.  In children, where 
+dominance is not clear, ask the child which hand they want to use and place the object in front of 
+that foot. 
+EQUIPMENT: 
+ 
+ 
+a chalkboard eraser 
+ 
+a taped line or footprints 
+ 
+ 
+ 
+4     able to pick up an eraser safely and easily 
+3     able to pick up eraser but needs supervision (spotting) 
+2     unable to pick up eraser but reaches 1 to 2 inches from eraser and  keeps balance  
+       independently 
+1     unable to pick up eraser; needs supervision (spotting) while attempting 
+0     unable to try, needs assist to keep from losing balance or falling 
+ 
+
+[images_on_page=0]
+
+----- PAGE 8 -----
+ 
+ 
+ 
+ 
+H 
+ 
+13.  
+Placing Alternate Foot On Step Stool While Standing Unsupported 
+ 
+INSTRUCTIONS:  The child is asked to place each foot alternately on the step stool and 
+to continue until each foot has touched the step/stool four times. 
+ 
+EQUIPMENT:  
+ 
+ 
+a step/stool of four inches in height 
+ 
+a stop watch or watch with a second hand 
+ 
+4     stands independently and safely and completes 8 steps in 20 seconds  
+3     able to stand independently and complete 8 steps >20 seconds 
+2     able to complete 4 steps without assistance, but requires close 
+       supervision (spotting) 
+1     able to complete 2 steps; needs minimal assistance 
+0     needs assistance to maintain balance or keep from falling, unable to try 
+ 
+  
+  Time in seconds 
+ 
+ 
+ 
+ 
+14.  
+Reaching Forward With Outstretched Arm While Standing 
+ 
+General Instruction And Set Up:  A yardstick affixed to a wall via Velcro strips will be used 
+as the measuring tool.   A taped line and/or footprints are used to maintain a stationary  foot 
+position.  The child will be asked to reach as far forward without falling, and without stepping over 
+the line.  The MCP joint of the child's fisted hand will be used as the anatomical reference point 
+for measurements.   Assistance may be given to initially position the child's arm at 90 degrees. 
+Support may not be provided during the reaching process.   If 90 degrees of shoulder flexion 
+cannot be obtained, then this item should be omitted. 
+ 
+INSTRUCTIONS: The child is asked to lift his/her arm up like this.  "Stretch out your 
+fingers, make a fist, and reach forward as far as you can without moving your feet." 
+ 
+3 Trials Average Results 
+ 
+EQUIPMENT:  
+ 
+a yardstick or ruler 
+a taped line or footprints 
+a level 
+ 
+4     can reach forward confidently >10 inches  
+3     can reach forward >5 inches, safely 
+2     can reach forward >2 inches, safely 
+1     reaches forward but needs supervision (spotting) 
+0     loses balance while trying, requires external support 
+ 
+  
+   Total Test Score 
+Maximum Score = 56 
+ 
+ 
+ 
+ 
+ 
+Reprinted from Franjoine M, Gunther J, Taylor M. Pediatric balance scale: a modified version of the Berg balance scale  for the school-age child with mild to moderate motor impairment. Pediatr Phys Ther. 
+2003;15:117-128, with permission from Wolters Kluwer Health.  
+APTA has secured permission, through licensing agreements with copyright holders, to allow APTA members to download copies of the tests/tools/instruments for the purpose of examining/evaluating patients in the clinic. 
+The licensing agreements do not permit APTA to grant permission to use the tests for other purposes or to grant permission for third-party use. Please contact copyright holders directly for permission to use the tests/tools/
+instruments for purposes other than direct patient care.
+
+[images_on_page=0]

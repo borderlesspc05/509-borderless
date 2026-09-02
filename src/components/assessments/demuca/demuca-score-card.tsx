@@ -1,28 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
 import {
   formatDemucaPercent,
   type DemucaEvaluationHistoryItem,
   type DemucaScoreResult,
 } from "@/lib/demuca";
+import { DemucaScoreCharts } from "@/components/assessments/demuca/demuca-score-charts";
 import { cn } from "@/lib/utils";
-
-const DemucaScoreCharts = dynamic(
-  () =>
-    import("@/components/assessments/demuca/demuca-score-charts").then(
-      (module) => module.DemucaScoreCharts
-    ),
-  {
-    loading: () => (
-      <div className="grid gap-4 border-t border-border/60 p-5 lg:grid-cols-2">
-        <div className="h-80 animate-pulse rounded-xl bg-muted/40" />
-        <div className="h-80 animate-pulse rounded-xl bg-muted/40" />
-      </div>
-    ),
-  }
-);
 
 type DemucaScoreCardProps = {
   scores: DemucaScoreResult;

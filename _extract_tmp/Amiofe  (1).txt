@@ -1,0 +1,363 @@
+BEST=pdfplumber replacement_chars=0
+  alt pdfplumber: chars=14806 replacement=0
+  alt pymupdf: chars=5296 replacement=0
+
+=== PDFplumber: Amiofe  (1).pdf ===
+pages=4
+
+----- PAGE 1 -----
+PROTOCOLO DE AVALIAÇÃO MIOFUNCIONAL OROFACIAL COM ESCORES (AMIOFE)
+Data / /
+Nome:
+DN / / Idade:
+Responsável:
+APARÊNCIA E CONDIÇÃO POSTURAL/POSIÇÃO
+Condição Postural dos Lábios Escores
+Selados Cumprem normalmente a função (3)
+Selados com Tensão Cumprem a função, mas com contração excessiva dos lábios e Mm. (2)
+Mentual
+Entreabertos Disfunção leve (2)
+Totalmente abertos Disfunção severa (1)
+Resultado do sujeito avaliado
+Escores
+Condição Postural da Mandíbula
+Condição postural normal Mantém EFL (3)
+Dentes em oclusão ou contato de rebordos Apertamento (2)
+Levemente Abaixada (lábios separados) Disfunção leve (2)
+Abaixada (boca aberta) Disfunção severa (1)
+Resultado do sujeito avaliado
+Escores
+Aspecto das Bochechas
+Normais Normal (3)
+Assimetria Leve (2)
+Severa (1)
+Flácida/Arqueada Leve (2)
+Severa (1)
+Resultado do sujeito avaliado
+Simetria Facial Escores
+Simetria entre os lados direito e esquerdo Normal (3)
+Assimetria Leve (2)
+Severa (1)
+Lado aumentado Direito Esquerdo
+Resultado do sujeito avaliado
+Posição da Língua Escores
+Contida na cavidade oral Normal (3)
+Interposta aos arcos dentário Adaptação ou disfunção (2)
+Protruída em excesso (1)
+Resultado do sujeito avaliado
+Aspecto do Palato Duro Escores
+Normal (3)
+Largura diminuída (estreito) Leve (2)
+Severo (1)
+Resultado do sujeito avaliado
+
+--- TABLE p1-0 ---
+Condição Postural dos Lábios ||  ||  ||  ||  ||  ||  ||  ||  || Escores
+Selados || Cumprem normalmente a função ||  ||  ||  ||  ||  ||  ||  || (3)
+Selados com Tensão || Cumprem a função, mas com contração excessiva dos lábios e Mm. | Mentual ||  ||  ||  ||  ||  ||  ||  || (2)
+Entreabertos || Disfunção leve ||  ||  ||  ||  ||  ||  ||  || (2)
+Totalmente abertos || Disfunção severa ||  ||  ||  ||  ||  ||  ||  || (1)
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  || 
+Condição Postural da Mandíbula ||  ||  ||  ||  ||  ||  ||  || Escores || 
+Condição postural normal ||  ||  ||  || Mantém EFL ||  ||  ||  || (3) || 
+Dentes em oclusão ou contato de rebordos ||  ||  ||  || Apertamento ||  ||  ||  || (2) || 
+Levemente Abaixada (lábios separados) ||  ||  ||  || Disfunção leve ||  ||  ||  || (2) || 
+Abaixada (boca aberta) ||  ||  ||  || Disfunção severa ||  ||  ||  || (1) || 
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  || 
+Aspecto das Bochechas ||  ||  ||  ||  ||  || Escores ||  ||  || 
+Normais ||  ||  ||  ||  || Normal || (3) ||  ||  || 
+Assimetria ||  ||  ||  ||  || Leve || (2) ||  ||  || 
+ ||  ||  ||  ||  || Severa || (1) ||  ||  || 
+Flácida/Arqueada ||  ||  ||  ||  || Leve || (2) ||  ||  || 
+ ||  ||  ||  ||  || Severa || (1) ||  ||  || 
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  || 
+Simetria Facial ||  ||  ||  ||  ||  || Escores ||  ||  || 
+Simetria entre os lados direito e esquerdo ||  || Normal ||  ||  ||  || (3) ||  ||  || 
+Assimetria ||  || Leve ||  ||  ||  || (2) ||  ||  || 
+ ||  || Severa ||  ||  ||  || (1) ||  ||  || 
+Lado aumentado ||  || Direito ||  ||  || Esquerdo ||  ||  ||  || 
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  || 
+Posição da Língua ||  ||  ||  ||  ||  ||  || Escores ||  || 
+Contida na cavidade oral ||  ||  || Normal ||  ||  ||  || (3) ||  || 
+Interposta aos arcos dentário ||  ||  || Adaptação ou disfunção ||  ||  ||  || (2) ||  || 
+ ||  ||  || Protruída em excesso ||  ||  ||  || (1) ||  || 
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  || 
+
+--- TABLE p1-1 ---
+Aspecto do Palato Duro ||  || Escores
+ || Normal || (3)
+Largura diminuída (estreito) || Leve || (2)
+ || Severo || (1)
+Resultado do sujeito avaliado ||  || 
+ ||  || 
+
+----- PAGE 2 -----
+MOBILIDADE
+Desempenho MOVIMENTOS
+LABIAIS
+Protrusão Retração Lateralidade D Lateralidade E Escores
+Normal (3) (3) (3) (3)
+Habilidade insuficiente (2) (2) (2) (2)
+tremor
+Sem habilidade (1) (1) (1) (1)
+Não realiza (1) (1) (1) (1)
+Somatória
+Desempenho MOVIMENTOS DA
+LÍNGUA
+Protruir Retrair Lateral D Lateral E Elevar Abaixar Escores
+Normal (3) (3) (3) (3) (3) (3)
+Habilidade insuficiente tremor (2) (2) (2) (2) (2) (2)
+Sem habilidade (1) (1) (1) (1) (1) (1)
+Não realiza (1) (1) (1) (1) (1) (1)
+Somatória
+Desempenho MOVIMENTOS DA MANDÍBULA
+Abaixar Elevar Lateral D Lateral E Protruir Escores
+Normal (3) (3) (3) (3) (3)
+Habilidade insuficiente / desvio (2) (2) (2) (2) (2)
+Sem habilidade (1) (1) (1) (1) (1)
+Não realiza (1) (1) (1) (1) (1)
+Somatória
+Desempenho MOVIMENTOS DAS BOCHECHAS
+Inflar Suflar Retrair Lateralizar o ar Escores
+Normal (3) (3) (3) (3)
+Habilidade insuficiente / desvio (2) (2) (2) (2)
+Sem habilidade (1) (1) (1) (1)
+Não realiza (1) (1) (1) (1)
+Somatória
+FUNÇÕES
+Respiração Escores
+Respiração nasal Normal (3)
+Respiração oronasal Leve (2)
+Severa (1)
+Resultado do sujeito avaliado
+
+--- TABLE p2-0 ---
+Desempenho || MOVIMENTOS | LABIAIS ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+ || Protrusão ||  ||  ||  || Retração ||  ||  ||  || Lateralidade D ||  ||  ||  || Lateralidade E ||  ||  ||  || Escores
+Normal || (3) ||  ||  ||  || (3) ||  ||  ||  || (3) ||  ||  ||  || (3) ||  ||  ||  || 
+Habilidade insuficiente | tremor || (2) ||  ||  ||  || (2) ||  ||  ||  || (2) ||  ||  ||  || (2) ||  ||  ||  || 
+Sem habilidade || (1) ||  ||  ||  || (1) ||  ||  ||  || (1) ||  ||  ||  || (1) ||  ||  ||  || 
+Não realiza || (1) ||  ||  ||  || (1) ||  ||  ||  || (1) ||  ||  ||  || (1) ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || Somatória ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+Desempenho ||  || MOVIMENTOS DA | LÍNGUA ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  || Protruir ||  || Retrair ||  ||  || Lateral D ||  || Lateral E ||  || Elevar ||  ||  ||  || Abaixar ||  || Escores
+Normal ||  || (3) ||  || (3) ||  ||  || (3) ||  || (3) ||  || (3) ||  ||  ||  || (3) ||  || 
+Habilidade insuficiente tremor ||  || (2) ||  || (2) ||  ||  || (2) ||  || (2) ||  || (2) ||  ||  ||  || (2) ||  || 
+Sem habilidade ||  || (1) ||  || (1) ||  ||  || (1) ||  || (1) ||  || (1) ||  ||  ||  || (1) ||  || 
+Não realiza ||  || (1) ||  || (1) ||  ||  || (1) ||  || (1) ||  || (1) ||  ||  ||  || (1) ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || Somatória ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+Desempenho ||  ||  || MOVIMENTOS DA MANDÍBULA ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  || Abaixar ||  ||  || Elevar ||  || Lateral D ||  || Lateral E ||  ||  ||  || Protruir ||  ||  || Escores
+Normal ||  ||  || (3) ||  ||  || (3) ||  || (3) ||  || (3) ||  ||  ||  || (3) ||  ||  || 
+Habilidade insuficiente / desvio ||  ||  || (2) ||  ||  || (2) ||  || (2) ||  || (2) ||  ||  ||  || (2) ||  ||  || 
+Sem habilidade ||  ||  || (1) ||  ||  || (1) ||  || (1) ||  || (1) ||  ||  ||  || (1) ||  ||  || 
+Não realiza ||  ||  || (1) ||  ||  || (1) ||  || (1) ||  || (1) ||  ||  ||  || (1) ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  || Somatória ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+Desempenho ||  ||  || MOVIMENTOS DAS BOCHECHAS ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+ ||  ||  || Inflar ||  ||  ||  || Suflar ||  || Retrair ||  ||  || Lateralizar o ar ||  ||  ||  || Escores || 
+Normal ||  ||  || (3) ||  ||  ||  || (3) ||  || (3) ||  ||  || (3) ||  ||  ||  ||  || 
+Habilidade insuficiente / desvio ||  ||  || (2) ||  ||  ||  || (2) ||  || (2) ||  ||  || (2) ||  ||  ||  ||  || 
+Sem habilidade ||  ||  || (1) ||  ||  ||  || (1) ||  || (1) ||  ||  || (1) ||  ||  ||  ||  || 
+Não realiza ||  ||  || (1) ||  ||  ||  || (1) ||  || (1) ||  ||  || (1) ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || Somatória ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  || 
+
+--- TABLE p2-1 ---
+Respiração ||  || Escores
+Respiração nasal || Normal || (3)
+Respiração oronasal || Leve || (2)
+ || Severa || (1)
+Resultado do sujeito avaliado ||  || 
+ ||  || 
+
+----- PAGE 3 -----
+Deglutição: Comportamento dos lábios Escores
+Vedam a Cavidade Oral Sem aparentar esforço (3)
+Vedam a Cavidade Oral, mas apresentam Leve (2)
+contração além do normal Severa (1)
+Não vedam a Cavidade Oral Não cumpre a função (1)
+Resultado do sujeito avaliado
+Deglutição: Comportamento da língua Escores
+Contida na cavidade oral Normal (3)
+Interposta aos arcos dentários Adaptação ou disfunção (2)
+Protruída em excesso (1)
+Resultado do sujeito avaliado
+Deglutição: Outros comportamentos e sinais de alteração
+Escores
+Movimentação da cabeça Ausente (1)
+Presente (0)
+Tensão dos Músculos Ausente (1)
+Faciais Presente (0)
+Escape de alimento Ausente (1)
+Presente (0)
+Resultado do sujeito avaliado
+Deglutição Eficiência Escores
+Bolo sólido ou líquido
+Não repete a deglutição do mesmo bolo (3)
+Uma repetição (2)
+Deglutições múltiplas (1)
+Bolo Líquido
+Não repete a deglutição do mesmo bolo (3)
+Uma repetição (2)
+Deglutições múltiplas (1)
+Resultado
+Resultado Total da Deglutição
+
+--- TABLE p3-0 ---
+Deglutição: Comportamento dos lábios ||  ||  ||  || Escores ||  || 
+Vedam a Cavidade Oral || Sem aparentar esforço ||  ||  || (3) ||  || 
+Vedam a Cavidade Oral, mas apresentam | contração além do normal || Leve ||  ||  || (2) ||  || 
+ || Severa ||  ||  || (1) ||  || 
+Não vedam a Cavidade Oral || Não cumpre a função ||  ||  || (1) ||  || 
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  || 
+Deglutição: Comportamento da língua ||  ||  ||  ||  ||  || Escores
+Contida na cavidade oral ||  || Normal ||  ||  ||  || (3)
+Interposta aos arcos dentários ||  || Adaptação ou disfunção ||  ||  ||  || (2)
+ ||  || Protruída em excesso ||  ||  ||  || (1)
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  || 
+Deglutição: Outros comportamentos e sinais de alteração ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  || Escores || 
+Movimentação da cabeça ||  ||  || Ausente ||  || (1) || 
+ ||  ||  || Presente ||  || (0) || 
+Tensão dos Músculos | Faciais ||  ||  || Ausente ||  || (1) || 
+ ||  ||  || Presente ||  || (0) || 
+Escape de alimento ||  ||  || Ausente ||  || (1) || 
+ ||  ||  || Presente ||  || (0) || 
+Resultado do sujeito avaliado ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  || 
+Deglutição Eficiência ||  ||  ||  ||  || Escores || 
+Bolo sólido ou líquido ||  ||  ||  ||  ||  || 
+Não repete a deglutição do mesmo bolo ||  ||  ||  ||  || (3) || 
+Uma repetição ||  ||  ||  ||  || (2) || 
+Deglutições múltiplas ||  ||  ||  ||  || (1) || 
+Bolo Líquido ||  ||  ||  ||  ||  || 
+Não repete a deglutição do mesmo bolo ||  ||  ||  ||  || (3) || 
+Uma repetição ||  ||  ||  ||  || (2) || 
+Deglutições múltiplas ||  ||  ||  ||  || (1) || 
+Resultado ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  || 
+Resultado Total da Deglutição ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  || 
+
+----- PAGE 4 -----
+Mastigação - Mordida Escores
+Incisivos Normal (3)
+Caninos-pré-molares (2)
+Molares (1)
+Não Morde (0)
+Resultado do sujeito avaliado
+Mastigação –Trituração
+Escores
+Bilateral Alternada (4)
+Simultânea (vertical) (3)
+Unilateral Preferencial (66%) (2)
+Crônica (95%) (1)
+Anterior (Frontal) (1)
+Não realiza a função Não tritura (1)
+Resultado do sujeito avaliado
+Outros comportamentos e sinais de alteração Escores
+Movimentação da cabeça ou outras Ausente (1)
+partes do corpo Presente (0)
+Postura alterada Ausente (1)
+Presente (0)
+Escape de alimento Ausente (1)
+Presente (0)
+Resultado do sujeito avaliado
+Resultado Total da Mastigação
+Tempo gasto para ingerir o alimento =
+Alimento utilizado =
+AVALIAÇÃO FUNCIONAL DA OCLUSÃO
+Linha média Normal Desviada para direita = Desviada para esquerda =
+Movimentos mandibulares Movimentos Medidas (mm)
+funcionais Normal Desvio Dor Trespasse Distância Total
+Vertical Interincisal
+Abertura D E D E
+Fechamento D E D E
+Interferência
+Lateralidade Dor Guias de desoclusão Trabalho Balanceio Medida
+Direita D E
+Esquerda D E
+Movimento Medidas
+Protrusão
+Dor Desvio Interferência Trespasse Distância Total
+Posterior horizontal
+D E D E D E
+Ruído ATM Abertura Fechamento Protrusão Lateralidade Lateralidade
+Direita Esquerda
+Direita
+Esquerda
+
+--- TABLE p4-0 ---
+Mastigação - Mordida ||  ||  ||  || Escores || 
+Incisivos | Caninos-pré-molares || Normal ||  ||  || (3) || 
+ ||  ||  ||  || (2) || 
+Molares ||  ||  ||  || (1) || 
+Não Morde ||  ||  ||  || (0) || 
+Resultado do sujeito avaliado ||  ||  ||  ||  || 
+ ||  ||  ||  ||  || 
+Mastigação –Trituração ||  ||  ||  ||  || Escores
+Bilateral ||  || Alternada ||  ||  || (4)
+ ||  || Simultânea (vertical) ||  ||  || (3)
+Unilateral ||  || Preferencial (66%) ||  ||  || (2)
+ ||  || Crônica (95%) ||  ||  || (1)
+Anterior (Frontal) ||  ||  ||  ||  || (1)
+Não realiza a função ||  || Não tritura ||  ||  || (1)
+Resultado do sujeito avaliado ||  ||  ||  ||  || 
+ ||  ||  ||  ||  || 
+Outros comportamentos e sinais de alteração ||  ||  || Escores ||  || 
+Movimentação da cabeça ou outras | partes do corpo || Ausente ||  || (1) ||  || 
+ || Presente ||  || (0) ||  || 
+ ||  ||  ||  ||  || 
+Postura alterada || Ausente ||  || (1) ||  || 
+ || Presente ||  || (0) ||  || 
+ ||  ||  ||  ||  || 
+Escape de alimento || Ausente ||  || (1) ||  || 
+ || Presente ||  || (0) ||  || 
+Resultado do sujeito avaliado ||  ||  ||  ||  || 
+ ||  ||  ||  ||  || 
+Resultado Total da Mastigação ||  ||  ||  ||  || 
+ ||  ||  ||  ||  || 
+Tempo gasto para ingerir o alimento = ||  ||  ||  ||  || 
+ ||  ||  ||  ||  || 
+Alimento utilizado = ||  ||  ||  ||  || 
+ ||  ||  ||  ||  || 
+
+--- TABLE p4-1 ---
+Linha média || Normal || Desviada para direita = || Desviada para esquerda =
+
+--- TABLE p4-2 ---
+ || Movimentos | Normal Desvio Dor ||  ||  ||  ||  || Medidas (mm) | Trespasse Distância Total | Vertical Interincisal ||  || 
+ || Normal ||  ||  ||  ||  ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  || 
+Abertura ||  || D || E || D || E ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  || 
+Fechamento ||  || D || E || D || E ||  ||  || 
+ ||  ||  ||  ||  ||  ||  ||  || 
+
+--- TABLE p4-3 ---
+Lateralidade ||  ||  ||  || Interferência ||  || 
+ || Dor ||  || Guias de desoclusão || Trabalho || Balanceio || Medida
+Direita || D || E ||  ||  ||  || 
+Esquerda || D || E ||  ||  ||  || 
+
+--- TABLE p4-4 ---
+Protrusão || Movimento | Dor Desvio ||  ||  ||  ||  ||  || Medidas | Trespasse Distância Total | horizontal ||  || 
+ ||  ||  ||  ||  || Interferência | Posterior ||  ||  ||  || 
+ || D || E || D || E || D || E ||  ||  || 
+
+--- TABLE p4-5 ---
+Ruído ATM || Abertura || Fechamento || Protrusão || Lateralidade | Direita || Lateralidade | Esquerda
+Direita ||  ||  ||  ||  || 
+Esquerda ||  ||  ||  ||  || 

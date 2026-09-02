@@ -291,13 +291,13 @@ export async function updateProfessionalAction(
       .single());
   }
 
-  if (error) {
+  if (error || !data) {
     return {
       success: false,
       error:
-        error.code === "42501"
+        error?.code === "42501"
           ? "Sem permissão para editar profissionais."
-          : error.message,
+          : error?.message ?? "Não foi possível atualizar o profissional.",
     };
   }
 

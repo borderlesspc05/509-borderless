@@ -1,4 +1,5 @@
 import type { ProfessionalRole } from "@/lib/professionals-data";
+import { resolveClinicalAreasFromRoleLabel } from "@/lib/professional-role-aliases";
 
 export const CLINICAL_AREAS = [
   "fisioterapia",
@@ -37,11 +38,13 @@ const ROLE_TO_AREAS: Record<ProfessionalRole, readonly ClinicalArea[]> = {
   "Assistente Terapêutico (AT)": ["aba", "geral"],
   Coordenador: ["aba", "geral"],
   Fonoaudiólogo: ["fonoaudiologia", "geral"],
+  Fonoaudióloga: ["fonoaudiologia", "geral"],
   "Terapeuta Ocupacional": ["terapia_ocupacional", "geral"],
   "Supervisor Administrativo": ["geral"],
   Musicoterapeuta: ["musicoterapia", "geral"],
   Neuropsicólogo: ["psicologia", "geral"],
   Psicopedagoga: ["psicopedagogia", "geral"],
+  Psicopedagogo: ["psicopedagogia", "geral"],
   Fisioterapeuta: ["fisioterapia", "geral"],
   Nutricionista: ["nutricao", "geral"],
 };
@@ -59,6 +62,14 @@ export function getClinicalAreasForRole(
 ): ClinicalArea[] {
   if (!professionalRole) {
     return ["geral"];
+  }
+
+  const resolved = resolveClinicalAreasFromRoleLabel(
+    professionalRole,
+    ROLE_TO_AREAS
+  );
+  if (resolved) {
+    return resolved;
   }
 
   const mapped = ROLE_TO_AREAS[professionalRole as ProfessionalRole];

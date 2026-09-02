@@ -307,13 +307,13 @@ export async function createPatientAction(
       .single());
   }
 
-  if (error) {
+  if (error || !data) {
     return {
       success: false,
       error:
-        error.code === "42501"
+        error?.code === "42501"
           ? "Sem permissão para cadastrar aprendizes."
-          : error.message,
+          : error?.message ?? "Não foi possível cadastrar o aprendiz.",
     };
   }
 
@@ -383,13 +383,13 @@ export async function updatePatientAction(
       .single());
   }
 
-  if (error) {
+  if (error || !data) {
     return {
       success: false,
       error:
-        error.code === "42501"
+        error?.code === "42501"
           ? "Sem permissão para editar aprendizes."
-          : error.message,
+          : error?.message ?? "Não foi possível atualizar o aprendiz.",
     };
   }
 

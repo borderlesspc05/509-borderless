@@ -3,9 +3,12 @@ import { AMIOFE_TEMPLATE_NAME } from "@/lib/fono/amiofe";
 import { LINGUAGEM_PROC_TEMPLATE_NAME } from "@/lib/fono/linguagem-proc";
 import { MBGR_TEMPLATE_NAME } from "@/lib/fono/mbgr";
 import { MOTRICIDADE_TEMPLATE_NAME } from "@/lib/fono/motricidade-orofacial";
+import { ASHWORTH_TEMPLATE_NAME } from "@/lib/ashworth";
 import { DEMUCA_TEMPLATE_NAME } from "@/lib/demuca";
 import { DICCAO_TEMPLATE_NAME } from "@/lib/diccao";
 import { EBAI_TEMPLATE_NAME } from "@/lib/ebai";
+import { PBS_TEMPLATE_NAME } from "@/lib/pbs";
+import { POP_TEMPLATE_NAME } from "@/lib/pop";
 import { PEDI_TEMPLATE_NAME } from "@/lib/pedi";
 import { SENSORY_PROFILE_TEMPLATE_NAME } from "@/lib/sensory-profile";
 import type { ClinicalArea } from "@/lib/clinical-areas";
@@ -30,6 +33,9 @@ export const ASSESSMENT_APPLY_ROUTES: Record<string, string> = {
   [LINGUAGEM_PROC_TEMPLATE_NAME]: "/dashboard/avaliacoes/linguagem",
   [ABFW_TEMPLATE_NAME]: "/dashboard/avaliacoes/abfw",
   [MBGR_TEMPLATE_NAME]: "/dashboard/avaliacoes/mbgr",
+  [ASHWORTH_TEMPLATE_NAME]: "/dashboard/avaliacoes/ashworth",
+  [POP_TEMPLATE_NAME]: "/dashboard/avaliacoes/pop",
+  [PBS_TEMPLATE_NAME]: "/dashboard/avaliacoes/pbs",
 };
 
 /** Instrumentos com tela de aplicação — usado no hub de atendimento. */
@@ -41,6 +47,7 @@ export const APPLICABLE_ASSESSMENTS = [
     description:
       "Pediatric Evaluation of Disability Inventory — funcionalidade e assistência do cuidador.",
     clinicalAreas: ["terapia_ocupacional"] as const satisfies readonly ClinicalArea[],
+    specialty: "Funcionalidade",
   },
   {
     name: SENSORY_PROFILE_TEMPLATE_NAME,
@@ -49,6 +56,7 @@ export const APPLICABLE_ASSESSMENTS = [
     description:
       "Avaliação do processamento sensorial em contextos cotidianos.",
     clinicalAreas: ["terapia_ocupacional"] as const satisfies readonly ClinicalArea[],
+    specialty: "Sensorial",
   },
   {
     name: EBAI_TEMPLATE_NAME,
@@ -57,6 +65,7 @@ export const APPLICABLE_ASSESSMENTS = [
     description:
       "Escala Brasileira de Avaliação do Desenvolvimento Infantil.",
     clinicalAreas: ["aba", "psicologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Desenvolvimento",
   },
   {
     name: DEMUCA_TEMPLATE_NAME,
@@ -65,30 +74,7 @@ export const APPLICABLE_ASSESSMENTS = [
     description:
       "Escala de Desenvolvimento Musical da Criança com Autismo (DEMUCA 2.0).",
     clinicalAreas: ["musicoterapia"] as const satisfies readonly ClinicalArea[],
-  },
-  {
-    name: DICCAO_TEMPLATE_NAME,
-    href: ASSESSMENT_APPLY_ROUTES[DICCAO_TEMPLATE_NAME],
-    buttonLabel: "Dicção",
-    description:
-      "Protocolo adaptado de articulação, fonação, diadocinesia e mobilidade orofacial.",
-    clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
-  },
-  {
-    name: AMIOFE_TEMPLATE_NAME,
-    href: ASSESSMENT_APPLY_ROUTES[AMIOFE_TEMPLATE_NAME],
-    buttonLabel: "AMIOFE",
-    description:
-      "Avaliação Miofuncional Orofacial com Escores (aparência, mobilidade e funções).",
-    clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
-  },
-  {
-    name: MOTRICIDADE_TEMPLATE_NAME,
-    href: ASSESSMENT_APPLY_ROUTES[MOTRICIDADE_TEMPLATE_NAME],
-    buttonLabel: "Motricidade Orofacial",
-    description:
-      "Avaliação infantil de órgãos fonoarticulatórios e funções neurovegetativas.",
-    clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Desenvolvimento musical",
   },
   {
     name: LINGUAGEM_PROC_TEMPLATE_NAME,
@@ -97,6 +83,7 @@ export const APPLICABLE_ASSESSMENTS = [
     description:
       "Observação comportamental de linguagem infantil — PROC / TIPITI.",
     clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Linguagem",
   },
   {
     name: ABFW_TEMPLATE_NAME,
@@ -105,6 +92,34 @@ export const APPLICABLE_ASSESSMENTS = [
     description:
       "Prova de fonologia — quadro fonético, emissão e recepção.",
     clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Fonologia",
+  },
+  {
+    name: DICCAO_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[DICCAO_TEMPLATE_NAME],
+    buttonLabel: "Dicção e Oratória",
+    description:
+      "Protocolo adaptado de articulação, fonação, diadocinesia e mobilidade orofacial.",
+    clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Dicção e Oratória",
+  },
+  {
+    name: AMIOFE_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[AMIOFE_TEMPLATE_NAME],
+    buttonLabel: "AMIOFE",
+    description:
+      "Avaliação Miofuncional Orofacial com Escores (aparência, mobilidade e funções).",
+    clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Motricidade Orofacial",
+  },
+  {
+    name: MOTRICIDADE_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[MOTRICIDADE_TEMPLATE_NAME],
+    buttonLabel: "Motricidade Orofacial",
+    description:
+      "Avaliação infantil de órgãos fonoarticulatórios e funções neurovegetativas.",
+    clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Motricidade Orofacial",
   },
   {
     name: MBGR_TEMPLATE_NAME,
@@ -113,6 +128,34 @@ export const APPLICABLE_ASSESSMENTS = [
     description:
       "Exame miofuncional orofacial MBGR (história clínica na anamnese de Fono).",
     clinicalAreas: ["fonoaudiologia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Motricidade Orofacial",
+  },
+  {
+    name: ASHWORTH_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[ASHWORTH_TEMPLATE_NAME],
+    buttonLabel: "Ashworth Modificada",
+    description:
+      "Tabela da Escala Modificada de Ashworth para avaliação de espasticidade / tônus.",
+    clinicalAreas: ["fisioterapia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Tônus muscular",
+  },
+  {
+    name: POP_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[POP_TEMPLATE_NAME],
+    buttonLabel: "POP Psicomotora",
+    description:
+      "Protocolo de Observação Psicomotora — motricidade, praxias, espacial/temporal e vínculo.",
+    clinicalAreas: ["fisioterapia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Psicomotricidade",
+  },
+  {
+    name: PBS_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[PBS_TEMPLATE_NAME],
+    buttonLabel: "PBS",
+    description:
+      "Pediatric Balance Scale — equilíbrio pediátrico (14 itens, máximo 56).",
+    clinicalAreas: ["fisioterapia"] as const satisfies readonly ClinicalArea[],
+    specialty: "Equilíbrio",
   },
 ] as const;
 
@@ -131,9 +174,6 @@ export function getApplicableAssessmentsForSession(input: {
 
   const userAreas = getClinicalAreasForSession({
     ...input,
-    // Cadastros legados usavam "Coordenador" como cargo, sem informar a
-    // especialidade clínica. Nessa situação, o catálogo completo evita que o
-    // coordenador fique bloqueado; as rotas continuam protegidas por RBAC.
     canManageAll: input.canManageAll || isCoordinatorWithoutSpecialty,
   });
   return APPLICABLE_ASSESSMENTS.filter((item) =>
@@ -141,10 +181,19 @@ export function getApplicableAssessmentsForSession(input: {
   );
 }
 
-/** Agrupa instrumentos pela área clínica principal para o hub. */
+type AssessmentGroup = {
+  area: ClinicalArea;
+  label: string;
+  specialties: Array<{
+    specialty: string;
+    items: ApplicableAssessment[];
+  }>;
+};
+
+/** Agrupa instrumentos por área e, dentro dela, por especialidade. */
 export function groupAssessmentsByClinicalArea(
   instruments: readonly ApplicableAssessment[]
-) {
+): AssessmentGroup[] {
   const order: ClinicalArea[] = [
     "fonoaudiologia",
     "terapia_ocupacional",
@@ -157,31 +206,44 @@ export function groupAssessmentsByClinicalArea(
     "geral",
   ];
 
-  const groups = new Map<
-    ClinicalArea,
-    { area: ClinicalArea; label: string; items: ApplicableAssessment[] }
-  >();
+  const byArea = new Map<ClinicalArea, ApplicableAssessment[]>();
 
   for (const item of instruments) {
-    const area = item.clinicalAreas[0] ?? "geral";
-    const existing = groups.get(area);
-    if (existing) {
-      existing.items.push(item);
-    } else {
-      groups.set(area, {
-        area,
-        label: CLINICAL_AREA_LABELS[area],
-        items: [item],
-      });
+    // Instrumentos multiárea entram em cada área correspondente
+    for (const area of item.clinicalAreas) {
+      const list = byArea.get(area) ?? [];
+      if (!list.some((existing) => existing.name === item.name)) {
+        list.push(item);
+      }
+      byArea.set(area, list);
     }
   }
 
   return order
-    .filter((area) => groups.has(area))
-    .map((area) => groups.get(area)!)
-    .concat(
-      [...groups.values()].filter((group) => !order.includes(group.area))
-    );
+    .filter((area) => byArea.has(area))
+    .map((area) => {
+      const items = byArea.get(area)!;
+      const specialtyOrder: string[] = [];
+      const specialtyMap = new Map<string, ApplicableAssessment[]>();
+
+      for (const item of items) {
+        const specialty = item.specialty || "Geral";
+        if (!specialtyMap.has(specialty)) {
+          specialtyOrder.push(specialty);
+          specialtyMap.set(specialty, []);
+        }
+        specialtyMap.get(specialty)!.push(item);
+      }
+
+      return {
+        area,
+        label: CLINICAL_AREA_LABELS[area],
+        specialties: specialtyOrder.map((specialty) => ({
+          specialty,
+          items: specialtyMap.get(specialty)!,
+        })),
+      };
+    });
 }
 
 const ASSESSMENT_APPLY_PATHS = new Set([

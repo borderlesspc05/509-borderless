@@ -1,0 +1,53 @@
+BEST=pdfplumber replacement_chars=0
+  alt pdfplumber: chars=3490 replacement=0
+  alt pymupdf: chars=3078 replacement=0
+
+=== PDFplumber: file.pdf ===
+pages=1
+
+----- PAGE 1 -----
+O diagnóstico da espasticidade é clínico e a avaliação inicia-se com o levantamento da história clínica detalhada e exame
+físico do paciente3,16. A graduação da espasticidade pode ser realizada por meio de um sistema de pontuação validado, como a
+escala de Ashworth ou a escala de Tardieu17,18. A Escala de Ashworth foi publicada na década de 60, como um método de
+classificação da espasticidade em trabalhos com pacientes com esclerose múltipla. É uma escala que mensura a resistência em
+um músculo, que não necessariamente é causada pela espasticidade, exigindo uma interpretação mais cuidadosa. Já a escala de
+Tardieu avalia tanto a resistência do músculo quanto seu ângulo de captura e velocidade do movimento19.
+No fim da década de 80, a escala foi modificada com intuito de aumentar sua sensibilidade, sendo adicionado um grau
+(grau 1+) (Quadro 2)20. A partir do grau 1, um indicador associado à disfunção, à dor e a necessidades de assistência, um
+tratamento pode ser indicado. A Escala de Ashworth modificada (EAM) é amplamente usada, especialmente pela facilidade de
+uso17,18, servindo tanto para avaliar a intensidade da hipertonia como para avaliar a resposta terapêutica. Trata-se de uma escala
+numérica de 5 pontos (0 a 4), em que 0 representa um músculo sem resistência e 4 um músculo rígido em flexão ou extensão.
+Quadro 2 - Escala de Ashworth modificada (EAM)
+Grau Descrição
+0 Tônus normal.
+1 Leve aumento do tônus muscular, com mínima resistência no fim do movimento.
+1+ Leve aumento do tônus muscular, com mínima resistência em menos da metade do
+movimento.
+2 Aumento mais marcado do tônus muscular na maior parte do movimento, mas a mobilização passiva é efetuada
+com facilidade.
+3 Considerável aumento do tônus muscular, e o movimento passivo é difícil.
+4 Segmento afetado rígido em flexão ou extensão.
+Fonte: Baunsgaard et al (2016)5.
+É importante destacar que, de forma isolada, a avaliação pelas escalas não é suficiente para determinar o plano terapêutico
+ou seus resultados. Por isso, a equipe multiprofissional de saúde deve considerar também o quanto a espasticidade interfere na
+funcionalidade e se leva à incapacidade para realização de atividades cotidianas21,22. Em situações excepcionais, a critério
+médico, a confirmação dos grupos musculares espásticos pode ser feita por meio de eletromiografia, eletroestimulação ou
+ultrassonografia23.
+4. CRITÉRIOS DE INCLUSÃO
+Serão incluídos neste Protocolo os pacientes com espasticidade segmentar ou focal que apresentarem todas as condições
+abaixo:
+- um dos diagnósticos codificados no item 2 - Classificação Estatística Internacional de Doenças e Problemas
+Relacionados à Saúde (CID-10);
+- grau 1, 1+, 2 ou 3 na EAM;
+- comprometimento funcional, dor ou risco de desenvolvimento de deformidades osteomusculoarticulares, devidamente
+informados por laudo médico; e
+- inserção em programa de reabilitação ou, no mínimo, realização de fisioterapia ou terapia ocupacional.
+
+--- TABLE p1-0 ---
+Grau || Descrição
+0 || Tônus normal.
+1 || Leve aumento do tônus muscular, com mínima resistência no fim do movimento.
+1+ || Leve aumento do tônus muscular, com mínima resistência em menos da metade do | movimento.
+2 || Aumento mais marcado do tônus muscular na maior parte do movimento, mas a mobilização passiva é efetuada | com facilidade.
+3 || Considerável aumento do tônus muscular, e o movimento passivo é difícil.
+4 || Segmento afetado rígido em flexão ou extensão.
