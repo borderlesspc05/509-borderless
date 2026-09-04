@@ -23,10 +23,18 @@ export function useAgendaStatusSync() {
 
       if (!result.success) {
         console.error("[agenda-sync]", result.error);
-        return null;
+        return { ok: false as const, error: result.error };
       }
 
-      return result.data?.appointment ?? null;
+      const syncedAppointment = result.data?.appointment;
+      if (!syncedAppointment) {
+        return {
+          ok: false as const,
+          error: "Status atualizado sem retorno do agendamento.",
+        };
+      }
+
+      return { ok: true as const, appointment: syncedAppointment };
     },
     []
   );

@@ -35,7 +35,7 @@ import {
 import {
   buildPatientDocumentStoragePath,
   CLINICAL_FILES_BUCKET,
-  PATIENT_DOCUMENT_ALLOWED_MIME_TYPES,
+  isAllowedPatientDocumentFile,
   PATIENT_DOCUMENT_MAX_BYTES,
 } from "@/lib/clinical-files";
 
@@ -668,12 +668,7 @@ export async function uploadPatientDocumentAction(
     };
   }
 
-  if (
-    file.type &&
-    !PATIENT_DOCUMENT_ALLOWED_MIME_TYPES.includes(
-      file.type as (typeof PATIENT_DOCUMENT_ALLOWED_MIME_TYPES)[number]
-    )
-  ) {
+  if (!isAllowedPatientDocumentFile(file)) {
     return {
       success: false,
       error: "Formato não suportado. Use PDF, imagem ou documento Office.",

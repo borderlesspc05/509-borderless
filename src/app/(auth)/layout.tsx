@@ -7,8 +7,8 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="app-auth-shell min-h-dvh lg:grid lg:grid-cols-[minmax(340px,0.88fr)_minmax(560px,1.12fr)]">
-      <section className="auth-brand-panel relative hidden min-h-dvh overflow-hidden p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
+    <main className="app-auth-shell h-full overflow-y-auto overscroll-contain lg:grid lg:grid-cols-[minmax(340px,0.88fr)_minmax(560px,1.12fr)]">
+      <section className="auth-brand-panel relative hidden min-h-full overflow-hidden p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
         <div className="relative z-10 flex items-center gap-3">
           <div className="flex size-11 items-center justify-center rounded-xl bg-white text-[oklch(0.44_0.11_225)] shadow-sm">
             <HeartPulse className="size-6" strokeWidth={1.8} aria-hidden />
@@ -50,7 +50,7 @@ export default function AuthLayout({
         <p className="relative z-10 text-xs text-white/45">© 2026 Nurse Care</p>
       </section>
 
-      <section className="flex min-h-dvh flex-col bg-background">
+      <section className="flex min-h-full flex-col bg-background">
         <header className="flex items-center justify-center border-b border-border/60 px-5 py-4 lg:hidden">
           <Image
             src="/brand/logo-nurse-care-sm.png"

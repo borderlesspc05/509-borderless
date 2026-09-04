@@ -62,16 +62,19 @@ export type VacantSlot = {
   role: ProfessionalRole | null;
 };
 
-export const CLINIC_TIME_SLOTS = [
-  { time: "08:00", endTime: "09:00" },
-  { time: "09:00", endTime: "10:00" },
-  { time: "10:00", endTime: "11:00" },
-  { time: "11:00", endTime: "12:00" },
-  { time: "13:00", endTime: "14:00" },
-  { time: "14:00", endTime: "15:00" },
-  { time: "15:00", endTime: "16:00" },
-  { time: "16:00", endTime: "17:00" },
-] as const;
+function padHour(hour: number) {
+  return String(hour).padStart(2, "0");
+}
+
+function buildClinicTimeSlots() {
+  return Array.from({ length: 24 }, (_, hour) => ({
+    time: `${padHour(hour)}:00`,
+    endTime: hour === 23 ? "24:00" : `${padHour(hour + 1)}:00`,
+  }));
+}
+
+/** Grade de 24h usada no novo agendamento, busca de horário e vagas padrão. */
+export const CLINIC_TIME_SLOTS = buildClinicTimeSlots();
 
 export { APPOINTMENT_STATUS_OPTIONS as AGENDA_STATUS_FILTER_OPTIONS } from "@/lib/appointment-status";
 

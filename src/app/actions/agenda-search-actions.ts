@@ -3,6 +3,7 @@
 import { requirePermission } from "@/lib/auth-guard";
 import { PERMISSIONS, CLINICAL_ROLES } from "@/lib/rbac";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import type { AppointmentStatus } from "@/lib/agenda-types";
 import type { ProfessionalRole } from "@/lib/professionals-data";
 import { PROFESSIONAL_ROLES } from "@/lib/professionals-data";
 
@@ -106,6 +107,62 @@ export async function searchAgendaProfessionalsAction(
         professionalRole: isProfessionalRole(professional.professional_role)
           ? professional.professional_role
           : null,
+      })),
+    },
+  };
+}
+
+export type PatientAgendaAppointment = {
+  id: string;
+  date: string;
+  time: string;
+  endTime: string;
+  professional: string;
+  status: AppointmentStatus;
+  careType: string | null;
+};
+
+export async function listPatientAgendaAppointmentsAction(
+  patientId: string
+): Promise<ActionResult<{ appointments: PatientAgendaAppointment[] }>> {
+  await requirePermission(PERMISSIONS.AGENDA_VIEW);
+
+  const trimmed = patientId.trim();
+  if (!trimmed) {
+    return { success: true, data: { appointments: [] } };
+  }
+
+  const supabase = await createServerSupabaseClient();
+
+  if (!supabase) {
+    return { success: false, error: "Supabase não configurado." };
+  }
+
+  const { data, error } = await supabase
+    .from("agenda_events")
+    .select(
+      "id, event_date, start_time, end_time, professional_name, status, care_type"
+    )
+    .eq("patient_id", trimmed)
+    .order("event_date", { ascending: false })
+    .order("start_time", { ascending: true })
+    .limit(40);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  return {
+    success: true,
+    data: {
+      appointments: (data ?? []).map((event) => ({
+        id: event.id,
+        date: event.event_date,
+        time: event.start_time,
+        endTime: event.end_time,
+        professional: event.professional_name,
+        status: event.status,
+        careType: event.care_type,
       })),
     },
   };

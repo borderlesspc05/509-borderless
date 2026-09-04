@@ -74,6 +74,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useUserRole } from "@/hooks/use-user-role";
 import { getAnamnesisTypesForSession } from "@/lib/anamnesis-types";
 import {
+  PATIENT_DOCUMENT_FILE_ACCEPT,
   PATIENT_DOCUMENT_TYPE_OPTIONS,
   getPatientDocumentTypeLabel,
 } from "@/lib/clinical-files";
@@ -397,7 +398,7 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
           <TabsTrigger value="orientacoes">Orientações à família</TabsTrigger>
           <TabsTrigger value="programas">Programas</TabsTrigger>
           <TabsTrigger value="atividades-casa">Atividades para Casa</TabsTrigger>
-          <TabsTrigger value="documentos">Documentos</TabsTrigger>
+          <TabsTrigger value="documentos">Anexos</TabsTrigger>
         </TabsList>
 
         <TabsContent value="historico">
@@ -1073,10 +1074,11 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Upload className="size-5 text-primary" />
-                Anexar documento
+                Anexar arquivo
               </CardTitle>
               <CardDescription>
-                Envie laudos, termos, pareceres e outros anexos clínicos.
+                Envie laudos, relatórios, fotos e outros documentos do aprendiz
+                (PDF, Word, Excel, imagens da câmera ou da galeria).
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -1134,11 +1136,15 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
                 <Input
                   id="document-file"
                   type="file"
+                  accept={PATIENT_DOCUMENT_FILE_ACCEPT}
                   className="h-10"
                   onChange={(event) =>
                     setDocumentFile(event.target.files?.[0] ?? null)
                   }
                 />
+                <p className="text-xs text-muted-foreground">
+                  Fotografe o documento ou envie PDF, Word, Excel ou imagem.
+                </p>
               </div>
 
               <div className="flex justify-end">
@@ -1166,7 +1172,7 @@ export function PatientRecordView({ record }: PatientRecordViewProps) {
                 Documentos do prontuário
               </CardTitle>
               <CardDescription>
-                Laudos, termos de consentimento e anexos clínicos.
+                Laudos, relatórios, fotos e anexos clínicos.
               </CardDescription>
             </CardHeader>
             <CardContent>

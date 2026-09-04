@@ -19,6 +19,10 @@ import {
 import { useAppToast } from "@/hooks/use-app-toast";
 import { ProtectedComponent } from "@/components/auth/protected-component";
 import {
+  emptyToEvolutionFormState,
+  ToEvolutionStructuredForm,
+} from "@/components/clinical-evolution/to-evolution-structured-form";
+import {
   RichTextEditor,
   buildDocumentTemplateVariables,
 } from "@/components/clinical-evolution/rich-text-editor";
@@ -34,7 +38,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserRole } from "@/hooks/use-user-role";
+import { getClinicalAreasForSession } from "@/lib/clinical-areas";
 import { PERMISSIONS } from "@/lib/rbac";
 import {
   getClinicalPatient,
@@ -43,6 +49,11 @@ import {
 import { getDocumentBrandingAction } from "@/app/actions/document-branding-actions";
 import { generateClinicalEvolutionPdf } from "@/lib/clinical-evolution-pdf";
 import { toDateKey } from "@/lib/calendar-utils";
+import {
+  buildToEvolutionHtml,
+  isToEvolutionHtml,
+  type ToEvolutionFormState,
+} from "@/lib/terapia-ocupacional/to-evolution";
 import type { ClinicalEvolutionRecordRow } from "@/lib/supabase/database.types";
 
 type ClinicalEvolutionFormProps = {
@@ -60,12 +71,24 @@ function formatUpdatedAt(value: string) {
 }
 
 export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) {
-  const { userName, displayRole, professionalCouncil, hasPermission } =
-    useUserRole();
+  const {
+    userName,
+    displayRole,
+    professionalCouncil,
+    professionalRole,
+    isMaster,
+    hasPermission,
+  } = useUserRole();
 
   const canManageClinicalEvolution = hasPermission(
     PERMISSIONS.CLINICAL_EVOLUTION_MANAGE
   );
+
+  const clinicalAreas = getClinicalAreasForSession({
+    professionalRole,
+    isMaster,
+  });
+  const prefersToModel = clinicalAreas.includes("terapia_ocupacional");
 
   const activePatients = patients.filter((patient) => patient.id);
   const patientSelectItems = activePatients.map((patient) => ({
@@ -76,6 +99,12 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
   const [patientId, setPatientId] = useState(activePatients[0]?.id ?? "");
   const [sessionDate, setSessionDate] = useState(toDateKey(new Date()));
   const [contentHtml, setContentHtml] = useState("");
+  const [editorMode, setEditorMode] = useState<"to_structured" | "free">(
+    prefersToModel ? "to_structured" : "free"
+  );
+  const [toFormState, setToFormState] = useState<ToEvolutionFormState>(
+    emptyToEvolutionFormState
+  );
   const [drafts, setDrafts] = useState<ClinicalEvolutionRecordRow[]>([]);
   const [searchProfessional, setSearchProfessional] = useState("all");
   const [searchPatientId, setSearchPatientId] = useState("all");
@@ -97,6 +126,30 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
 
   const selectedPatient = getClinicalPatient(activePatients, patientId);
+
+  useEffect(() => {
+    if (editorMode !== "to_structured" || !selectedPatient) {
+      return;
+    }
+
+    setContentHtml(
+      buildToEvolutionHtml(toFormState, {
+        sessionDate,
+        patientName: selectedPatient.name,
+        professionalName: userName,
+        professionalRole: displayRole,
+        professionalCouncil: professionalCouncil ?? undefined,
+      })
+    );
+  }, [
+    editorMode,
+    toFormState,
+    sessionDate,
+    selectedPatient,
+    userName,
+    displayRole,
+    professionalCouncil,
+  ]);
 
   const templateVariables = buildDocumentTemplateVariables({
     patientName: selectedPatient?.name,
@@ -139,9 +192,17 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
     }
 
     setContentHtml(result.record?.content_html ?? "");
+    if (result.record?.content_html && isToEvolutionHtml(result.record.content_html)) {
+      setEditorMode("to_structured");
+    } else if (result.record?.content_html) {
+      setEditorMode("free");
+    } else if (prefersToModel) {
+      setEditorMode("to_structured");
+      setToFormState(emptyToEvolutionFormState);
+    }
     setLastSavedAt(result.record?.updated_at ?? null);
     setIsLoadingDraft(false);
-  }, [patientId, sessionDate, userName]);
+  }, [patientId, sessionDate, userName, prefersToModel]);
 
   useEffect(() => {
     void loadDrafts();
@@ -190,6 +251,9 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
     setPatientId(record.patient_id);
     setSessionDate(record.session_date);
     setContentHtml(record.content_html);
+    setEditorMode(
+      isToEvolutionHtml(record.content_html) ? "to_structured" : "free"
+    );
     setLastSavedAt(record.updated_at);
   }
 
@@ -307,6 +371,9 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
     setPatientId(draft.patient_id);
     setSessionDate(draft.session_date);
     setContentHtml(draft.content_html);
+    setEditorMode(
+      isToEvolutionHtml(draft.content_html) ? "to_structured" : "free"
+    );
     setLastSavedAt(draft.updated_at);
   }
 
@@ -549,10 +616,10 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
 
       <section className="space-y-3">
         <div className="space-y-1">
-          <h2 className="text-sm font-semibold">Relatório narrativo da sessão</h2>
+          <h2 className="text-sm font-semibold">Evolução da sessão</h2>
           <p className="text-sm text-muted-foreground">
-            Redija a evolução de forma descritiva, incluindo observações
-            comportamentais, intervenções realizadas e recomendações.
+            Use o Modelo TO (prontuário estruturado do setor) ou o editor livre
+            com modelos da biblioteca.
           </p>
         </div>
 
@@ -562,13 +629,33 @@ export function ClinicalEvolutionForm({ patients }: ClinicalEvolutionFormProps) 
             Carregando rascunho...
           </div>
         ) : (
-          <RichTextEditor
-            value={contentHtml}
-            onChange={setContentHtml}
-            disabled={!canManageClinicalEvolution}
-            enableTemplateInsert={canManageClinicalEvolution}
-            templateVariables={templateVariables}
-          />
+          <Tabs
+            value={editorMode}
+            onValueChange={(value) =>
+              setEditorMode(value as "to_structured" | "free")
+            }
+          >
+            <TabsList>
+              <TabsTrigger value="to_structured">Modelo TO</TabsTrigger>
+              <TabsTrigger value="free">Editor livre</TabsTrigger>
+            </TabsList>
+            <TabsContent value="to_structured" className="mt-4">
+              <ToEvolutionStructuredForm
+                value={toFormState}
+                onChange={setToFormState}
+                disabled={!canManageClinicalEvolution}
+              />
+            </TabsContent>
+            <TabsContent value="free" className="mt-4">
+              <RichTextEditor
+                value={contentHtml}
+                onChange={setContentHtml}
+                disabled={!canManageClinicalEvolution}
+                enableTemplateInsert={canManageClinicalEvolution}
+                templateVariables={templateVariables}
+              />
+            </TabsContent>
+          </Tabs>
         )}
       </section>
 

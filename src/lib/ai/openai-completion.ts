@@ -13,6 +13,7 @@ export type OpenAiCompletionOptions = {
   messages: OpenAiChatMessage[];
   temperature?: number;
   maxTokens?: number;
+  model?: string;
 };
 
 export async function completeOpenAiChat(
@@ -39,7 +40,7 @@ export async function completeOpenAiChat(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: getOpenAiDefaultModel(),
+      model: options.model?.trim() || getOpenAiDefaultModel(),
       temperature: options.temperature ?? 0.3,
       max_tokens: options.maxTokens ?? 4096,
       messages: options.messages,

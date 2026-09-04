@@ -38,8 +38,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-dvh flex flex-col">
+    <html
+      lang="pt-BR"
+      suppressHydrationWarning
+      className={`${inter.variable} h-full antialiased`}
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(()=>{try{const t=localStorage.getItem("509-theme");const d=t==="dark"||((t!=="light")&&window.matchMedia("(prefers-color-scheme: dark)").matches);if(d)document.documentElement.classList.add("dark")}catch(e){}})();',
+          }}
+        />
+      </head>
+      <body className="h-full overflow-hidden bg-background">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

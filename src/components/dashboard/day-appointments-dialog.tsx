@@ -261,16 +261,18 @@ export function DayAppointmentsDialog({
         )
       );
 
-      const failedCount = syncResults.filter((result) => !result).length;
+      const failed = syncResults.filter((result) => !result.ok);
+      const failedCount = failed.length;
 
       if (failedCount > 0) {
         onAppointmentsChange(previousAppointments);
         toast.error({
           title: "Falha na atualização",
           description:
-            failedCount === affectedIds.length
+            failed[0]?.error ??
+            (failedCount === affectedIds.length
               ? "Não foi possível salvar a situação. Tente novamente."
-              : `${failedCount} de ${affectedIds.length} atendimentos não foram salvos. A agenda foi restaurada.`,
+              : `${failedCount} de ${affectedIds.length} atendimentos não foram salvos. A agenda foi restaurada.`),
         });
         return false;
       }
@@ -278,12 +280,12 @@ export function DayAppointmentsDialog({
       let mergedAppointments = nextAppointments;
 
       syncResults.forEach((synced) => {
-        if (!synced) {
+        if (!synced.ok) {
           return;
         }
 
         mergedAppointments = mergedAppointments.map((item) =>
-          item.id === synced.id ? synced : item
+          item.id === synced.appointment.id ? synced.appointment : item
         );
       });
 

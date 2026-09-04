@@ -12,7 +12,6 @@ import {
   isUserOnline,
   type OnlineProfessional,
 } from "@/lib/internal-communication";
-import { validateAgendaAppointmentSlot } from "@/lib/agenda-conflict-server";
 import { resolveQueueNumberForAppointment } from "@/lib/reception-panel-queue";
 import { CLINICAL_ROLES, PERMISSIONS } from "@/lib/rbac";
 
@@ -64,47 +63,19 @@ export async function syncAgendaStatusAction(
     input.professionalName
   );
 
-  if (input.status !== "cancelado") {
-    try {
-      const conflict = await validateAgendaAppointmentSlot(supabase, {
-        id: input.appointmentId,
-        patientName: input.patientName,
-        professionalName: input.professionalName,
-        professionalUserId,
-        eventDate: input.eventDate,
-        startTime: input.startTime,
-        endTime: input.endTime,
-      });
-
-      if (conflict) {
-        return {
-          success: false,
-          error: conflict.message,
-          conflictType: conflict.type,
-        };
-      }
-    } catch (error) {
-      return {
-        success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Não foi possível validar conflitos de agenda.",
-      };
-    }
-  }
-
-  const payload = {
-    id: input.appointmentId,
-    patient_name: input.patientName,
-    professional_name: input.professionalName,
-    professional_user_id: professionalUserId,
-    event_date: input.eventDate,
-    start_time: input.startTime,
-    end_time: input.endTime,
+  const payload: {
+    status: SyncAgendaStatusInput["status"];
+    updated_at: string;
+    professional_user_id?: string | null;
+    queue_number?: number;
+  } = {
     status: input.status,
     updated_at: new Date().toISOString(),
   };
+
+  if (professionalUserId) {
+    payload.professional_user_id = professionalUserId;
+  }
 
   if (input.status === "em_espera") {
     try {
@@ -114,7 +85,7 @@ export async function syncAgendaStatusAction(
         input.appointmentId
       );
 
-      Object.assign(payload, { queue_number: queueNumber });
+      payload.queue_number = queueNumber;
     } catch (error) {
       return {
         success: false,
@@ -128,14 +99,28 @@ export async function syncAgendaStatusAction(
 
   const { data, error } = await supabase
     .from("agenda_events")
-    .upsert(payload, {
-      onConflict: "id",
-    })
+    .update(payload)
+    .eq("id", input.appointmentId)
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) {
-    return { success: false, error: error.message };
+    const message = error.message ?? "";
+    if (message.includes("agenda_events_status_check")) {
+      return {
+        success: false,
+        error:
+          "O banco ainda não aceita este status. Execute o script supabase/apply-appointment-statuses.sql no SQL Editor do Supabase.",
+      };
+    }
+    return { success: false, error: message || "Não foi possível atualizar o status." };
+  }
+
+  if (!data) {
+    return {
+      success: false,
+      error: "Agendamento não encontrado. Atualize a agenda e tente novamente.",
+    };
   }
 
   return {

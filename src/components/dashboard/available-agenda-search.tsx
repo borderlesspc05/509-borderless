@@ -11,7 +11,15 @@ import {
   UserRound,
 } from "lucide-react";
 
+import Link from "next/link";
+
 import { searchAvailableProfessionalsAction } from "@/app/actions/agenda-availability-actions";
+import {
+  listPatientAgendaAppointmentsAction,
+  searchAgendaPatientsAction,
+  type AgendaSearchPatient,
+  type PatientAgendaAppointment,
+} from "@/app/actions/agenda-search-actions";
 import { useAppToast } from "@/hooks/use-app-toast";
 import {
   NewAppointmentDialog,
@@ -38,6 +46,7 @@ import {
   type AvailableProfessional,
 } from "@/lib/agenda-availability";
 import { PROFESSIONAL_ROLES, type ProfessionalRole } from "@/lib/professionals-data";
+import { appointmentStatusLabels } from "@/lib/appointment-status";
 import { formatFullDate } from "@/lib/calendar-utils";
 
 const roleSelectItems = PROFESSIONAL_ROLES.map((role) => ({
@@ -60,6 +69,19 @@ export function AvailableAgendaSearch() {
     useState<NewAppointmentDefaults | null>(null);
   const [isAppointmentDialogOpen, setIsAppointmentDialogOpen] = useState(false);
   const [isSearching, startSearchTransition] = useTransition();
+  const [patientQuery, setPatientQuery] = useState("");
+  const [patientMatches, setPatientMatches] = useState<AgendaSearchPatient[]>(
+    []
+  );
+  const [selectedPatient, setSelectedPatient] =
+    useState<AgendaSearchPatient | null>(null);
+  const [patientAppointments, setPatientAppointments] = useState<
+    PatientAgendaAppointment[]
+  >([]);
+  const [patientSearchError, setPatientSearchError] = useState<string | null>(
+    null
+  );
+  const [isPatientSearching, startPatientSearchTransition] = useTransition();
 
   const startTimeOptions = useMemo(() => getTimeSlotOptions(), []);
   const endTimeOptions = useMemo(
@@ -121,8 +143,172 @@ export function AvailableAgendaSearch() {
     setIsAppointmentDialogOpen(true);
   }
 
+  function handlePatientSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPatientSearchError(null);
+
+    startPatientSearchTransition(async () => {
+      const result = await searchAgendaPatientsAction(patientQuery);
+
+      if (!result.success) {
+        setPatientSearchError(result.error);
+        setPatientMatches([]);
+        toast.error({
+          title: "Falha na busca do aprendiz",
+          description: result.error,
+        });
+        return;
+      }
+
+      setPatientMatches(result.data.patients);
+      if (result.data.patients.length === 0) {
+        toast.info({
+          title: "Nenhum aprendiz encontrado",
+          description: "Tente outro nome.",
+        });
+      }
+    });
+  }
+
+  function handleSelectPatient(patient: AgendaSearchPatient) {
+    setSelectedPatient(patient);
+    setPatientSearchError(null);
+
+    startPatientSearchTransition(async () => {
+      const result = await listPatientAgendaAppointmentsAction(patient.id);
+      if (!result.success) {
+        setPatientAppointments([]);
+        setPatientSearchError(result.error);
+        toast.error({
+          title: "Não foi possível listar a agenda",
+          description: result.error,
+        });
+        return;
+      }
+      setPatientAppointments(result.data.appointments);
+    });
+  }
+
   return (
     <div className="space-y-6">
+      <section className="app-surface-card p-4 sm:p-6">
+        <div className="mb-5 space-y-1">
+          <h2 className="flex items-center gap-2 text-lg font-semibold">
+            <UserRound className="size-5 text-primary" />
+            Buscar aprendiz na agenda
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Localize o aprendiz pelo nome e veja os agendamentos vinculados.
+          </p>
+        </div>
+
+        <form
+          className="flex flex-col gap-3 sm:flex-row sm:items-end"
+          onSubmit={handlePatientSearch}
+        >
+          <div className="min-w-0 flex-1 space-y-2">
+            <Label htmlFor="patient-agenda-search">Nome do aprendiz</Label>
+            <Input
+              id="patient-agenda-search"
+              className="h-11"
+              placeholder="Digite ao menos 2 letras"
+              value={patientQuery}
+              onChange={(event) => setPatientQuery(event.target.value)}
+            />
+          </div>
+          <Button
+            type="submit"
+            className="h-11 gap-2"
+            disabled={isPatientSearching || patientQuery.trim().length < 2}
+          >
+            {isPatientSearching ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Search className="size-4" />
+            )}
+            Buscar aprendiz
+          </Button>
+        </form>
+
+        {patientSearchError ? (
+          <p className="mt-4 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+            {patientSearchError}
+          </p>
+        ) : null}
+
+        {patientMatches.length > 0 ? (
+          <ul className="mt-4 divide-y rounded-lg border">
+            {patientMatches.map((patient) => (
+              <li key={patient.id}>
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-muted/50"
+                  onClick={() => handleSelectPatient(patient)}
+                >
+                  <span className="font-medium">{patient.fullName}</span>
+                  {selectedPatient?.id === patient.id ? (
+                    <Badge variant="secondary">Selecionado</Badge>
+                  ) : null}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+
+        {selectedPatient ? (
+          <div className="mt-5 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="text-sm font-semibold">
+                Agenda de {selectedPatient.fullName}
+              </h3>
+              <Button
+                variant="outline"
+                size="sm"
+                nativeButton={false}
+                render={
+                  <Link
+                    href={`/paciente/${selectedPatient.id}/prontuario`}
+                  />
+                }
+              >
+                Abrir prontuário
+              </Button>
+            </div>
+            {patientAppointments.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                Nenhum agendamento encontrado para este aprendiz.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {patientAppointments.map((appointment) => (
+                  <li
+                    key={appointment.id}
+                    className="flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm"
+                  >
+                    <span>
+                      {formatFullDate(appointment.date)} · {appointment.time}–
+                      {appointment.endTime}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {appointment.professional}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {appointment.careType ? (
+                        <Badge variant="outline">{appointment.careType}</Badge>
+                      ) : null}
+                      <Badge variant="secondary">
+                        {appointmentStatusLabels[appointment.status] ??
+                          appointment.status}
+                      </Badge>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ) : null}
+      </section>
+
       <section className="app-surface-card p-4 sm:p-6">
         <div className="mb-5 space-y-1">
           <h2 className="flex items-center gap-2 text-lg font-semibold">

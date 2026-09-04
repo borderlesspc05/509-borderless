@@ -55,7 +55,7 @@ export function getEndTimeOptions(startTime: string) {
     return [];
   }
 
-  return CLINIC_TIME_SLOTS.slice(startIndex + 1).map((slot) => ({
+  return CLINIC_TIME_SLOTS.slice(startIndex).map((slot) => ({
     value: slot.endTime,
     label: slot.endTime,
   }));

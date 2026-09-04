@@ -39,12 +39,12 @@ export function DashboardShell({
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-background lg:flex-row">
-      <aside className="hidden h-dvh w-[17.5rem] shrink-0 border-r border-sidebar-border bg-sidebar shadow-[2px_0_12px_rgb(0_0_0_/_0.04)] lg:sticky lg:top-0 lg:flex lg:flex-col">
+    <div className="flex h-full min-h-0 overflow-hidden bg-background lg:flex-row">
+      <aside className="hidden h-full w-[17.5rem] shrink-0 border-r border-sidebar-border bg-sidebar shadow-[2px_0_12px_rgb(0_0_0_/_0.04)] lg:flex lg:flex-col">
         <div className="flex h-16 shrink-0 items-center border-b border-sidebar-border px-5">
           <AppLogo linkToHome variant="compact" />
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto py-2">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2">
           <Suspense fallback={null}>
             <DashboardNav />
           </Suspense>
@@ -65,8 +65,8 @@ export function DashboardShell({
         </Suspense>
         <PatientWaitingBanner />
 
-        <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
-          <div className="page-content pb-24">{children}</div>
+        <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain">
+          <div className="page-content pb-16">{children}</div>
         </main>
 
         {needsTermsAcceptance ? (

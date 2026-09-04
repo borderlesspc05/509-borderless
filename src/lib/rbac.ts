@@ -69,11 +69,12 @@ const CLINICAL_EVOLUTION_EDITOR_PERMISSIONS = [
   PERMISSIONS.FINANCE_MANAGE,
 ] as const satisfies readonly Permission[];
 
-/** Permissões de administrador, exceto atendimento convencional. */
+/** Colaborador: amplo acesso clínico, sem auditoria nem configurações administrativas. */
 const COLABORADOR_PERMISSIONS = Object.values(PERMISSIONS).filter(
   (permission) =>
-    permission !== PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW &&
-    permission !== PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE
+    permission !== PERMISSIONS.SETTINGS_VIEW &&
+    permission !== PERMISSIONS.SETTINGS_MANAGE &&
+    permission !== PERMISSIONS.AUDIT_LOGS_VIEW
 );
 
 const AT_PERMISSIONS = [
@@ -127,7 +128,7 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     PERMISSIONS.CONVENTIONAL_EVOLUTION_VIEW,
     PERMISSIONS.CONVENTIONAL_EVOLUTION_MANAGE,
   ],
-  // Colaborador: mesmos acessos do admin, sem módulo convencional
+  // Colaborador: acesso clínico amplo (inclui agenda convencional), sem logs/configurações
   [ROLES.COLABORADOR]: COLABORADOR_PERMISSIONS,
   // Administrador: acesso geral
   [ROLES.ADMIN]: Object.values(PERMISSIONS),

@@ -108,8 +108,8 @@ export function AgendaWorkloadSettingsView() {
         ...windows,
         {
           id: createAvailabilityWindowId(),
-          startTime: "08:00",
-          endTime: "18:00",
+          startTime: "07:00",
+          endTime: "21:00",
         },
       ])
     );

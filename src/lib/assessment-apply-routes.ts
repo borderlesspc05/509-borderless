@@ -8,6 +8,11 @@ import { DEMUCA_TEMPLATE_NAME } from "@/lib/demuca";
 import { DICCAO_TEMPLATE_NAME } from "@/lib/diccao";
 import { EBAI_TEMPLATE_NAME } from "@/lib/ebai";
 import { PBS_TEMPLATE_NAME } from "@/lib/pbs";
+import { AFLS_TEMPLATE_NAME, ABLLS_TEMPLATE_NAME } from "@/lib/psychology/skill-checklists";
+import {
+  DESFRALDE_TEMPLATE_NAME,
+  SINAIS_ANTECEDENTES_TEMPLATE_NAME,
+} from "@/lib/to/desfralde-sinais";
 import { POP_TEMPLATE_NAME } from "@/lib/pop";
 import { PEDI_TEMPLATE_NAME } from "@/lib/pedi";
 import { SENSORY_PROFILE_TEMPLATE_NAME } from "@/lib/sensory-profile";
@@ -36,6 +41,11 @@ export const ASSESSMENT_APPLY_ROUTES: Record<string, string> = {
   [ASHWORTH_TEMPLATE_NAME]: "/dashboard/avaliacoes/ashworth",
   [POP_TEMPLATE_NAME]: "/dashboard/avaliacoes/pop",
   [PBS_TEMPLATE_NAME]: "/dashboard/avaliacoes/pbs",
+  [AFLS_TEMPLATE_NAME]: "/dashboard/avaliacoes/afls",
+  [ABLLS_TEMPLATE_NAME]: "/dashboard/avaliacoes/ablls",
+  [DESFRALDE_TEMPLATE_NAME]: "/dashboard/avaliacoes/desfralde",
+  [SINAIS_ANTECEDENTES_TEMPLATE_NAME]:
+    "/dashboard/avaliacoes/sinais-antecedentes",
 };
 
 /** Instrumentos com tela de aplicação — usado no hub de atendimento. */
@@ -63,9 +73,27 @@ export const APPLICABLE_ASSESSMENTS = [
     href: ASSESSMENT_APPLY_ROUTES[EBAI_TEMPLATE_NAME],
     buttonLabel: "EBAI",
     description:
-      "Escala Brasileira de Avaliação do Desenvolvimento Infantil.",
+      "Escala Brasileira de Avaliação do Desenvolvimento Infantil (permanece em Psicologia/ABA). Itens oficiais em consolidação — use como estrutura de registro até a versão completa.",
     clinicalAreas: ["aba", "psicologia"] as const satisfies readonly ClinicalArea[],
     specialty: "Desenvolvimento",
+  },
+  {
+    name: DESFRALDE_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[DESFRALDE_TEMPLATE_NAME],
+    buttonLabel: "Desfralde",
+    description:
+      "Protocolo clínico de observação do processo de desfralde (consciência, banheiro, controle e contexto).",
+    clinicalAreas: ["terapia_ocupacional"] as const satisfies readonly ClinicalArea[],
+    specialty: "AVDs / Desfralde",
+  },
+  {
+    name: SINAIS_ANTECEDENTES_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[SINAIS_ANTECEDENTES_TEMPLATE_NAME],
+    buttonLabel: "Sinais Antecedentes",
+    description:
+      "Mapeamento de gatilhos e sinais precoces para prevenção e manejo comportamental.",
+    clinicalAreas: ["terapia_ocupacional", "aba"] as const satisfies readonly ClinicalArea[],
+    specialty: "Comportamento",
   },
   {
     name: DEMUCA_TEMPLATE_NAME,
@@ -156,6 +184,24 @@ export const APPLICABLE_ASSESSMENTS = [
       "Pediatric Balance Scale — equilíbrio pediátrico (14 itens, máximo 56).",
     clinicalAreas: ["fisioterapia"] as const satisfies readonly ClinicalArea[],
     specialty: "Equilíbrio",
+  },
+  {
+    name: AFLS_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[AFLS_TEMPLATE_NAME],
+    buttonLabel: "AFLS",
+    description:
+      "Habilidades funcionais de vida — básica, doméstica, comunidade, escola, independência e vocacional.",
+    clinicalAreas: ["psicologia", "aba"] as const satisfies readonly ClinicalArea[],
+    specialty: "Habilidades funcionais",
+  },
+  {
+    name: ABLLS_TEMPLATE_NAME,
+    href: ASSESSMENT_APPLY_ROUTES[ABLLS_TEMPLATE_NAME],
+    buttonLabel: "ABLLS-R",
+    description:
+      "Linguagem e habilidades de aprendizagem — cooperação, visual, receptivo, imitação, mandos, tatos e acadêmico.",
+    clinicalAreas: ["psicologia", "aba"] as const satisfies readonly ClinicalArea[],
+    specialty: "Linguagem e aprendizagem",
   },
 ] as const;
 

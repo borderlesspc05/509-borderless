@@ -111,8 +111,8 @@ export function ReceptionDisplayPanel() {
     highlightKey === `${currentCall.id}-${currentCall.calledAt}`;
 
   return (
-    <div className="min-h-dvh bg-[linear-gradient(160deg,#0f2744_0%,#12365f_45%,#0b1f38_100%)] text-white">
-      <div className="mx-auto flex min-h-dvh max-w-[1600px] flex-col px-6 py-6 lg:px-10 lg:py-8">
+    <div className="h-full overflow-y-auto overscroll-contain bg-[linear-gradient(160deg,#0f2744_0%,#12365f_45%,#0b1f38_100%)] text-white">
+      <div className="mx-auto flex min-h-full max-w-[1600px] flex-col px-6 py-6 lg:px-10 lg:py-8">
         <header className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div className="space-y-1">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/50">

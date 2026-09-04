@@ -11,6 +11,7 @@ import {
   type AiToolContext,
 } from "@/features/ai/application/tool-registry";
 import { isAiMockMode } from "@/lib/ai/env";
+import { completeOpenAiChat } from "@/lib/ai/openai-completion";
 
 function buildMockReply(
   agentId: AiAgentId,
@@ -82,13 +83,57 @@ export async function runChatCompletion(
     return runMockChatCompletion(agentId, message, input, context);
   }
 
-  const apiKey = process.env.OPENAI_API_KEY?.trim();
+  const agent = getAiAgent(agentId);
+  const inferred = inferToolsFromMessage(message, agent.tools);
+  const tools = getToolDefinitions(inferred);
+  const toolCalls = tools.map((tool) => tool.simulate({}, context));
+  const toolSummaries = toolCalls.map(
+    (trace) => `\`${trace.name}\`: ${trace.summary}`
+  );
 
-  if (!apiKey) {
-    return runMockChatCompletion(agentId, message, input, context);
-  }
+  const screenHint = context.screenContext
+    ? [
+        context.screenContext.route
+          ? `Tela atual: ${context.screenContext.route}`
+          : "",
+        context.screenContext.entityLabel
+          ? `Contexto: ${context.screenContext.entityLabel}`
+          : "",
+      ]
+        .filter(Boolean)
+        .join(". ")
+    : "";
 
-  // Ponto de extensão: substituir por chamada real à OpenAI Responses/Chat API.
-  // Mantemos fallback mock até a integração live ser configurada feature a feature.
-  return runMockChatCompletion(agentId, message, input, context);
+  const history = input.messages
+    .filter((item) => item.role === "user" || item.role === "assistant")
+    .map((item) => ({
+      role: item.role as "user" | "assistant",
+      content: item.content,
+    }));
+
+  const result = await completeOpenAiChat({
+    model: input.model,
+    temperature: 0.4,
+    messages: [
+      {
+        role: "system",
+        content: [
+          input.systemPrompt,
+          screenHint,
+          toolSummaries.length > 0
+            ? `Ferramentas consultadas internamente:\n${toolSummaries.join("\n")}`
+            : "",
+          "Responda em português, de forma objetiva e clínica, sem inventar dados de prontuário.",
+        ]
+          .filter(Boolean)
+          .join("\n\n"),
+      },
+      ...history,
+    ],
+  });
+
+  return {
+    content: result.content,
+    toolCalls,
+  };
 }

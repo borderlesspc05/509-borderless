@@ -24,7 +24,7 @@ export function FamilyPortalShell({ session, children }: FamilyPortalShellProps)
   }
 
   return (
-    <div className="min-h-dvh bg-[linear-gradient(180deg,oklch(0.97_0.02_245)_0%,var(--background)_28%)]">
+    <div className="h-full overflow-y-auto overscroll-contain bg-[linear-gradient(180deg,oklch(0.97_0.02_245)_0%,var(--background)_28%)]">
       <header className="sticky top-0 z-30 border-b border-border/50 bg-background/85 backdrop-blur-lg">
         <div className="mx-auto flex w-full max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">

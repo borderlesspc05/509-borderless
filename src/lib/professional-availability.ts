@@ -73,14 +73,15 @@ export function normalizeTimeValue(value: string) {
   const hours = Number(match[1]);
   const minutes = Number(match[2]);
 
-  if (
-    !Number.isInteger(hours) ||
-    !Number.isInteger(minutes) ||
-    hours < 0 ||
-    hours > 23 ||
-    minutes < 0 ||
-    minutes > 59
-  ) {
+  if (!Number.isInteger(hours) || !Number.isInteger(minutes)) {
+    return null;
+  }
+
+  if (hours === 24 && minutes === 0) {
+    return "24:00";
+  }
+
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
     return null;
   }
 
@@ -101,6 +102,10 @@ export function timeToMinutes(time: string) {
 export function minutesToTime(totalMinutes: number) {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
+
+  if (hours === 24 && minutes === 0) {
+    return "24:00";
+  }
 
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }

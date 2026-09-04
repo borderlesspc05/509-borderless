@@ -13,6 +13,9 @@ export const PATIENT_DOCUMENT_ALLOWED_MIME_TYPES = [
   "image/png",
   "image/jpeg",
   "image/webp",
+  "image/heic",
+  "image/heif",
+  "image/gif",
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -20,6 +23,34 @@ export const PATIENT_DOCUMENT_ALLOWED_MIME_TYPES = [
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "text/plain",
 ] as const;
+
+export const PATIENT_DOCUMENT_FILE_ACCEPT =
+  "image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.heic,.heif";
+
+export function isAllowedPatientDocumentFile(file: File) {
+  if (file.type) {
+    return (PATIENT_DOCUMENT_ALLOWED_MIME_TYPES as readonly string[]).includes(
+      file.type
+    );
+  }
+
+  const name = file.name.toLowerCase();
+  return [
+    ".pdf",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp",
+    ".gif",
+    ".heic",
+    ".heif",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".txt",
+  ].some((extension) => name.endsWith(extension));
+}
 
 export type AvatarEntityType = "patient" | "professional";
 
